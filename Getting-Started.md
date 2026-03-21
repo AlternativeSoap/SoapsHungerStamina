@@ -34,10 +34,11 @@ Run `/shs reload` in-game to apply changes without restarting.
 
 ## Default Behavior
 
-- **Sprint:** 5 stamina per second
-- **Jump:** 8 stamina per jump
-- **Swim:** 3 stamina per second
+- **Sprint:** 2 stamina per second
+- **Jump:** 3 stamina per jump
+- **Swim:** 1.5 stamina per second
 - **Hunger overflow:** 1 hunger point per second (when stamina is empty)
+- **Exhaustion effects:** Off by default (slowness, sweat, darkness, stumble — enable in config)
 - **Display:** Action Bar showing Stamina/Max-Stamina
 
 Everything works out of the box. Tune it later if needed.

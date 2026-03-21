@@ -12,22 +12,26 @@ Higher costs to make stamina management matter in fights.
 actions:
   sprint:
     enabled: true
-    drain-per-second: 10.0  # Double default, drains faster
+    drain-per-second: 8.0  # 4x default, drains fast
   jump:
     enabled: true
-    cost: 12.0  # More expensive
+    cost: 10.0  # Much more expensive
     cooldown: 400  # Slightly longer cooldown
   swim:
     enabled: true
-    drain-per-second: 6.0  # Double
+    drain-per-second: 5.0  # 3x+ default
 
 hunger:
   enabled: true
   drain-per-second: 2.0  # Penalty is harsher
   min-hunger: 4  # Can't fully starve
+
+effects:
+  enabled: true  # Exhaustion effects active
+  recovery-threshold: 15.0
 ```
 
-Result: Every sprint counts. Stamina management is tight. Hunger is a real risk.
+Result: Every sprint counts. Stamina management is tight. Hunger is a real risk. Exhaustion effects punish reckless play.
 
 ---
 
@@ -39,14 +43,14 @@ Lower costs so travel doesn't feel punishing.
 actions:
   sprint:
     enabled: true
-    drain-per-second: 2.0  # Much gentler
+    drain-per-second: 1.0  # Half default
   jump:
     enabled: true
-    cost: 4.0  # Cheaper
+    cost: 1.5  # Half default
     cooldown: 200
   swim:
     enabled: true
-    drain-per-second: 1.0  # Gentle
+    drain-per-second: 0.5  # Gentle
 
 hunger:
   enabled: true
@@ -66,14 +70,14 @@ Stamina is a real survival resource.
 actions:
   sprint:
     enabled: true
-    drain-per-second: 8.0
+    drain-per-second: 6.0  # 3x default
   jump:
     enabled: true
-    cost: 10.0
+    cost: 8.0  # ~3x default
     cooldown: 350
   swim:
     enabled: true
-    drain-per-second: 5.0
+    drain-per-second: 4.0  # ~3x default
 
 hunger:
   enabled: true
@@ -83,9 +87,17 @@ hunger:
 
 general:
   stop-sprint-on-empty: true
+
+effects:
+  enabled: true
+  recovery-threshold: 15.0
+  stumble:
+    enabled: true
+    chance: 0.10  # Doubles default stumble chance
+    strength: 0.15
 ```
 
-Result: Stamina is critical. Hunger is deadly. Every action matters.
+Result: Stamina is critical. Hunger is deadly. Exhaustion effects are brutal. Every action matters.
 
 ---
 
@@ -99,13 +111,16 @@ actions:
     enabled: false  # Off
   jump:
     enabled: true
-    cost: 5.0  # Moderate cost
+    cost: 2.0  # Lighter than default
     cooldown: 250
   swim:
     enabled: false  # Off
 
 hunger:
   enabled: false  # No overflow
+
+effects:
+  enabled: false  # No exhaustion effects
 
 ui:
   type: ACTION_BAR
@@ -123,19 +138,22 @@ Stamina is barely noticeable; emphasis is roleplay.
 actions:
   sprint:
     enabled: true
-    drain-per-second: 1.0  # Minimal
+    drain-per-second: 0.5  # Barely there
   jump:
     enabled: true
-    cost: 2.0  # So cheap
+    cost: 1.0  # So cheap
     cooldown: 150
   swim:
     enabled: true
-    drain-per-second: 0.5
+    drain-per-second: 0.3
 
 hunger:
   enabled: true
   drain-per-second: 0.2  # Almost negligible
   min-hunger: 10  # Always clearly alive
+
+effects:
+  enabled: false  # Too immersive for RP
 ```
 
 Result: Stamina bar is present but not dominating gameplay.

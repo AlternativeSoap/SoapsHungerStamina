@@ -27,31 +27,31 @@ general:
 actions:
   sprint:
     enabled: true
-    drain-per-second: 5.0
+    drain-per-second: 2.0
 ```
 
-Sprinting drains 5 stamina per second. If you're bad at stamina math: 20 stamina lasts 4 seconds of sprinting.
+Sprinting drains 2 stamina per second. If you're bad at stamina math: 20 stamina lasts 10 seconds of sprinting.
 
 ### Jump
 
 ```yaml
   jump:
     enabled: true
-    cost: 8.0
+    cost: 3.0
     cooldown: 300
 ```
 
-Each jump costs 8 stamina. You can jump at most once every 300ms (about 3 jumps per second). This prevents spam-jump exploitation.
+Each jump costs 3 stamina. You can jump at most once every 300ms (about 3 jumps per second). This prevents spam-jump exploitation.
 
 ### Swim
 
 ```yaml
   swim:
     enabled: true
-    drain-per-second: 3.0
+    drain-per-second: 1.5
 ```
 
-Swimming drains 3 stamina per second (slower than sprinting).
+Swimming drains 1.5 stamina per second (slower than sprinting).
 
 ### Hunger Overflow
 
@@ -94,14 +94,44 @@ engine:
 ui:
   type: ACTION_BAR
   update-threshold: 0.5
+  message-cooldown: 0
   low-stamina-warning: true
   low-stamina-threshold: 20.0
 ```
 
-- **type:** Shows stamina on the action bar (above hotbar)
+- **type:** Shows stamina on the action bar (above hotbar). Also supports `BOSS_BAR` (top of screen) and `CHAT` (client-sided messages)
 - **update-threshold:** UI only updates when stamina changes by 0.5 or more (reduces flicker)
+- **message-cooldown:** Milliseconds between UI messages (0 = no cooldown). For `CHAT` mode, recommended 2000-5000
 - **low-stamina-warning:** Show a special Warning message when stamina is low
 - **low-stamina-threshold:** "Low" means below 20% stamina
+
+### Exhaustion Effects
+
+```yaml
+effects:
+  enabled: false
+  recovery-threshold: 10.0
+  slowness:
+    enabled: true
+    amplifier: 1
+  sweat-particles:
+    enabled: true
+    count: 3
+  heavy-breathing:
+    enabled: true
+  stumble:
+    enabled: true
+    chance: 0.05
+    strength: 0.1
+```
+
+Off by default. When enabled, these effects activate when stamina reaches zero:
+
+- **slowness:** Applies Slow II while exhausted (amplifier 1 = Slow II)
+- **sweat-particles:** Water drip particles around the player's head (3 per tick)
+- **heavy-breathing:** Brief darkness pulses on screen edges
+- **stumble:** 5% chance per tick of a small random knockback nudge
+- **recovery-threshold:** Effects clear once stamina recovers past 10%
 
 ---
 
@@ -117,6 +147,8 @@ Key sections:
 - **ui.format** — Stamina display on action bar
 - **ui.low-stamina-format** — Warning display when stamina is low
 - **command.*** — All command response messages
+- **exhaustion.enter** — Message shown when exhaustion effects activate
+- **exhaustion.recover** — Message shown when stamina recovers from exhaustion
 
 You can edit any of these to match your server's style or language.
 

@@ -31,14 +31,14 @@ Three actions drain stamina. You can enable/disable and tune each.
 actions:
   sprint:
     enabled: true
-    drain-per-second: 5.0
+    drain-per-second: 2.0
   jump:
     enabled: true
-    cost: 8.0
+    cost: 3.0
     cooldown: 300
   swim:
     enabled: true
-    drain-per-second: 3.0
+    drain-per-second: 1.5
 ```
 
 **sprint.drain-per-second** — How much stamina drains every second while sprinting and actually moving.
@@ -108,17 +108,64 @@ engine:
 ui:
   type: ACTION_BAR
   update-threshold: 0.5
+  message-cooldown: 0
   low-stamina-warning: true
   low-stamina-threshold: 20.0
 ```
 
-**type** — `ACTION_BAR` (above hotbar) or `BOSS_BAR` (top of screen).
+**type** — `ACTION_BAR` (above hotbar), `BOSS_BAR` (top of screen), or `CHAT` (client-sided chat messages).
 
 **update-threshold** — Stamina change needed before the UI refreshes (reduces flicker on tiny drains).
+
+**message-cooldown** — Milliseconds between UI messages. Set to 0 for no cooldown. For `CHAT` mode, recommended 2000-5000 to prevent chat spam.
 
 **low-stamina-warning** — Show a warning message when stamina drops below the threshold.
 
 **low-stamina-threshold** — Percentage (20% = warning at 1/5 stamina remaining).
+
+---
+
+## Exhaustion Effects
+
+Visual and gameplay effects applied when stamina hits zero. Disabled by default.
+
+```yaml
+effects:
+  enabled: false
+  recovery-threshold: 10.0
+  slowness:
+    enabled: true
+    amplifier: 1
+  sweat-particles:
+    enabled: true
+    count: 3
+  heavy-breathing:
+    enabled: true
+  stumble:
+    enabled: true
+    chance: 0.05
+    strength: 0.1
+```
+
+**enabled** — Master toggle for the entire effects system.
+
+**recovery-threshold** — Stamina percentage the player must recover to before effects clear. At 10%, effects linger until the player regens past 10% stamina.
+
+**slowness.enabled** — Applies a Slowness potion effect while exhausted.
+
+**slowness.amplifier** — Slowness strength (0 = Slow I, 1 = Slow II, etc.).
+
+**sweat-particles.enabled** — Spawns water drip particles around the player's head.
+
+**sweat-particles.count** — Number of particles per tick. Higher = more visible sweat.
+
+**heavy-breathing.enabled** — Applies brief Darkness pulses (screen edges darken).
+
+**stumble.enabled** — Random small knockback nudges while exhausted.
+
+**stumble.chance** — Chance per engine tick (0.05 = 5% chance each tick).
+
+**stumble.strength** — How hard the stumble pushes (0.1 = very subtle).
 
 ---
 
@@ -127,5 +174,13 @@ ui:
 All player-facing text is in `plugins/SoapsHungerStamina/messages.yml`.
 
 Supports MiniMessage formatting (colors, gradients, bold, etc.).
+
+Key sections:
+- **prefix** — Colored tag added to every message
+- **command.*** — All command response messages
+- **exhaustion.enter** — Message when exhaustion effects activate
+- **exhaustion.recover** — Message when stamina recovers
+- **ui.format** — Stamina display format
+- **ui.low-stamina-format** — Warning display when stamina is low
 
 Edit and reload to rebrand for your server.

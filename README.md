@@ -8,7 +8,8 @@ SoapsHungerStamina bridges MMOCore stamina and vanilla survival. Sprint, jump, a
 
 - Sprinting, jumping, and swimming cost MMOCore stamina
 - Once stamina hits zero, overflow costs are paid in hunger
-- Shows real-time stamina on action bar or boss bar
+- Exhaustion effects kick in when stamina is fully depleted — slowness, sweat particles, heavy breathing, and stumble
+- Shows real-time stamina via action bar, boss bar, or chat
 - Players feel stamina management in combat, travel, and exploration
 
 ## Quick Links

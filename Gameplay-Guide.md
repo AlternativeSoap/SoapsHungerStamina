@@ -66,6 +66,22 @@ When stamina hits zero, that's when hunger starts draining.
 
 ---
 
+## Exhaustion Effects
+
+When stamina is completely empty, your character starts showing it physically. These effects are optional (off by default) but add a layer of immersion.
+
+**Slowness** — You move slower. No more running at full speed on empty.
+
+**Sweat particles** — Water drips from your character. Other players can see you're struggling.
+
+**Heavy breathing** — Your screen edges darken briefly. Short pulses, not blinding.
+
+**Stumble** — Small random knockback nudges. You lose control for a split second.
+
+All effects clear once your stamina recovers past a threshold (default: 10%). You'll get a message when effects kick in and when they clear.
+
+---
+
 ## Game Modes
 
 This plugin only affects **Survival** and **Adventure** modes.
