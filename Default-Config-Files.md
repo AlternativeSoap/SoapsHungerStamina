@@ -10,7 +10,7 @@ On first run, the plugin creates three files:
 
 ```
 plugins/SoapsHungerStamina/
-  ├── config.yml     (all settings — actions, effects, biomes, UI, etc.)
+  ├── config.yml     (all settings: actions, effects, biomes, UI, etc.)
   ├── messages.yml   (all player-facing text)
   └── weight.yml     (item weights for the encumbrance system)
 ```
@@ -30,9 +30,9 @@ general:
   debug: false
 ```
 
-- **bypass-permission:** Players with this permission skip all stamina/hunger drain
-- **stop-sprint-on-empty:** Forces sprinting to stop at 0 stamina
-- **debug:** Prints drain info to console (off by default)
+- `bypass-permission`: players with this permission skip all stamina/hunger drain
+- `stop-sprint-on-empty`: forces sprinting to stop at 0 stamina
+- `debug`: prints drain info to console (off by default)
 
 ### GUI
 
@@ -41,7 +41,7 @@ gui:
   enabled: true
 ```
 
-- **enabled:** The `/shs gui` settings panel is available. Turn off to disable it (commands still work)
+The `/shs gui` settings panel is available. Turn off to disable it (commands still work).
 
 ### Actions
 
@@ -92,9 +92,7 @@ hunger:
   drain-saturation: true
 ```
 
-- When stamina is empty, food drains at 1 point per second (half a shank)
-- Can drain all the way to 0 (full starvation possible)
-- Saturation goes first, then the food bar
+When stamina is empty, food drains at 1 point per second (half a shank). Can drain all the way to 0 (full starvation possible). Saturation goes first, then the food bar.
 
 ### Hunger Bar
 
@@ -113,8 +111,7 @@ engine:
   movement-threshold: 0.05
 ```
 
-- Checks every 4 ticks (5 times per second) — smooth and efficient
-- You need to move at least 0.05 blocks to count as "moving"
+Checks every 4 ticks (5 times per second), smooth and efficient. You need to move at least 0.05 blocks to count as "moving."
 
 ### Exhaustion Effects
 
@@ -137,10 +134,10 @@ effects:
 ```
 
 Off by default. When you turn them on:
-- **Slowness I** while exhausted (amplifier 0)
-- **3 water drip particles** per tick around the head
-- **Brief darkness flashes** on screen edges
-- **3% chance** per tick of a small knockback stumble
+- Slowness I while exhausted (amplifier 0)
+- 3 water drip particles per tick around the head
+- Brief darkness flashes on screen edges
+- 3% chance per tick of a small knockback stumble
 - Everything clears once stamina gets above 15%
 
 ### Biomes
@@ -177,8 +174,7 @@ encumbrance:
     max-multiplier: 1.75
 ```
 
-- Severely encumbered players lose 8 air ticks per engine tick underwater
-- Fall damage can increase up to 75% at max weight
+Severely encumbered players lose 8 air ticks per engine tick underwater. Fall damage can increase up to 75% at max weight.
 
 ### UI
 
@@ -208,14 +204,14 @@ ui:
 Controls all player-facing text. Everything uses [MiniMessage formatting](https://docs.advntr.dev/minimessage/).
 
 Key sections:
-- **prefix** — Gradient-colored plugin name added to all messages
-- **command.*** — Responses for every command
-- **exhaustion.*** — "You are exhausted" / "strength returning" messages
-- **encumbrance.*** — Weight warning/recovery messages
-- **biome.*** — Climate change messages (entering cold/hot/neutral biomes)
-- **ui.format** — Normal stamina display
-- **ui.low-stamina-format** — Warning display when low
-- **gui.*** — All text in the admin settings GUI (titles, labels, setting names, value names)
+- `prefix` - gradient-colored plugin name added to all messages
+- `command.*` - responses for every command
+- `exhaustion.*` - "You are exhausted" / "strength returning" messages
+- `encumbrance.*` - weight warning/recovery messages
+- `biome.*` - climate change messages (entering cold/hot/neutral biomes)
+- `ui.format` - normal stamina display
+- `ui.low-stamina-format` - warning display when low
+- `gui.*` - all text in the admin settings GUI (titles, labels, setting names, value names)
 
 ---
 
@@ -236,20 +232,20 @@ Each armor material has a multiplier that affects stamina drain:
 | Diamond | 1.25 | 25% faster drain |
 | Netherite | 1.35 | 35% faster drain |
 
-The plugin multiplies all 4 armor slots together. Full netherite = ~1.35⁴ ≈ 3.3x drain.
+The plugin multiplies all 4 armor slots together. Full netherite comes out to about 3.3x drain.
 
 ### Encumbrance Thresholds
 
-- **max-weight:** 100 — above this, you're "encumbered" (message + faster drain)
-- **severe-weight:** 150 — above this, you're "severely encumbered" (drowning + fall damage penalties)
+- `max-weight`: 100 - above this, you're "encumbered" (message + faster drain)
+- `severe-weight`: 150 - above this, you're "severely encumbered" (drowning + fall damage penalties)
 
 ### Item Weights
 
 Every item type has a weight. Some examples from the defaults:
-- Blocks (stone, dirt, etc.): 1.0–2.0 per stack slot
-- Tools (pickaxe, sword): 2.0–4.0
-- Armor pieces: 3.0–6.0
-- Heavy items (anvil, enchanting table): 10.0–15.0
-- Light items (sticks, seeds): 0.1–0.5
+- Blocks (stone, dirt, etc.): 1.0-2.0 per stack slot
+- Tools (pickaxe, sword): 2.0-4.0
+- Armor pieces: 3.0-6.0
+- Heavy items (anvil, enchanting table): 10.0-15.0
+- Light items (sticks, seeds): 0.1-0.5
 
 The full list is in weight.yml and can be customized per item.

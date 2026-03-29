@@ -5,9 +5,9 @@
 ### `/stamina`
 Shows your current stamina, max stamina, percentage, and hunger level.
 
-**Permission:** `soapsstamina.use` (default: everyone)
+Permission: `soapsstamina.use` (default: everyone)
 
-**Alias:** `/shs stamina`
+Alias: `/shs stamina`
 
 ---
 
@@ -24,14 +24,14 @@ Opens the in-game settings panel. Click items to toggle features and adjust valu
 ### `/shs toggle <setting>`
 Flips a setting on or off.
 
-**Available settings:** `sprint`, `jump`, `swim`, `block-place`, `block-break`, `sneak`, `attack`, `shield-block`, `hunger`, `hunger-bar`, `drain-saturation`, `effects`, `slowness`, `sweat-particles`, `heavy-breathing`, `stumble`, `debug`, `stop-sprint-on-empty`, `low-stamina-warning`, `biomes`, `biome-freeze`, `biome-sweat`, `encumbered-drowning`, `encumbered-fall-damage`, `stamina-bar`
+Available settings: `sprint`, `jump`, `swim`, `block-place`, `block-break`, `sneak`, `attack`, `shield-block`, `hunger`, `hunger-bar`, `drain-saturation`, `effects`, `slowness`, `sweat-particles`, `heavy-breathing`, `stumble`, `debug`, `stop-sprint-on-empty`, `low-stamina-warning`, `biomes`, `biome-freeze`, `biome-sweat`, `encumbered-drowning`, `encumbered-fall-damage`, `stamina-bar`
 
-**Example:** `/shs toggle effects` — turns exhaustion effects on or off.
+Example: `/shs toggle effects` turns exhaustion effects on or off.
 
 ### `/shs config set <group> <key> <value>`
 Changes a specific config value.
 
-**Example:** `/shs config set sprint drain-per-second 3.0`
+Example: `/shs config set sprint drain-per-second 3.0`
 
 Groups include: `sprint`, `jump`, `swim`, `block-place`, `block-break`, `sneak`, `attack`, `shield-block`, `hunger`, `engine`, `effects`, `slowness`, `sweat-particles`, `stumble`, `ui`, `general`, `biomes`, `encumbrance`, `stamina-bar`
 
@@ -40,7 +40,7 @@ Tab completion shows you the available keys and value hints for each group.
 ### `/shs stamina give <player> <amount>`
 Gives stamina to a player (won't go above their max).
 
-**Example:** `/shs stamina give Steve 50`
+Example: `/shs stamina give Steve 50`
 
 ### `/shs stamina reset <player>`
 Sets a player's stamina back to full.
@@ -58,15 +58,15 @@ Lists all available commands.
 |---|---|---|
 | `soapsstamina.use` | Check own stamina with `/stamina` | Everyone |
 | `soapsstamina.admin` | All admin commands (reload, gui, toggle, config, give, reset) | OP |
-| `soapsstamina.bypass` | Skip **all** stamina and hunger drain | Nobody |
+| `soapsstamina.bypass` | Skip all stamina and hunger drain | Nobody |
 
 ---
 
 ### Per-Feature Bypass Permissions
 
-These let you exempt specific players from specific features. Give a player one of these permissions and that feature won't affect them — even if the feature is enabled for everyone else.
+These let you exempt specific players from specific features. Give a player one of these and that feature won't affect them, even if it's enabled for everyone else.
 
-All default to **nobody** (false).
+All default to nobody (false).
 
 | Permission | What it bypasses |
 |---|---|
@@ -87,8 +87,7 @@ All default to **nobody** (false).
 | `soapsstamina.bypass.biomes` | Biome drain multipliers and effects |
 | `soapsstamina.bypass.encumbrance` | Encumbrance drain multipliers and effects |
 
-**How it works with `soapsstamina.bypass`:**  
-The global bypass skips everything. The per-feature permissions are more surgical — if you only want someone to skip sprint drain but still pay for everything else, give them `soapsstamina.bypass.sprint` instead of the full bypass.
+The global `soapsstamina.bypass` skips everything. The per-feature ones are more targeted - if you only want someone to skip sprint drain but still pay for everything else, give them `soapsstamina.bypass.sprint` instead.
 
 ---
 

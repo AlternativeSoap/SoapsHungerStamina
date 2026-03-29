@@ -15,11 +15,11 @@ general:
   debug: false
 ```
 
-**bypass-permission** — Players with this permission skip all stamina and hunger drain. Give it to staff or event ranks.
+`bypass-permission` - players with this permission skip all stamina and hunger drain. Give it to staff or event ranks.
 
-**stop-sprint-on-empty** — Forces players to stop sprinting when stamina hits 0. Without this, they'd keep sprinting while hunger drains, which feels weird.
+`stop-sprint-on-empty` - forces players to stop sprinting when stamina hits 0. Without this, they'd keep sprinting while hunger drains, which feels weird.
 
-**debug** — Prints drain info to the console. Only turn this on when you're testing.
+`debug` - prints drain info to the console. Only turn this on when you're testing.
 
 ---
 
@@ -30,7 +30,7 @@ gui:
   enabled: true
 ```
 
-**enabled** — Turns the in-game settings panel on or off. When off, `/shs gui` tells the player it's disabled. All commands (`/shs toggle`, `/shs config set`, etc.) still work regardless.
+`enabled` - turns the in-game settings panel on or off. When off, `/shs gui` tells the player it's disabled. All commands (`/shs toggle`, `/shs config set`, etc.) still work regardless.
 
 ---
 
@@ -75,25 +75,23 @@ actions:
     drain-per-second: 0.5
 ```
 
-**sprint.drain-per-second** — Stamina lost every second while sprinting and actually moving. Standing still while holding sprint doesn't count.
+`sprint.drain-per-second` - stamina lost every second while sprinting and actually moving. Standing still while holding sprint doesn't count.
 
-**jump.cost** — Flat cost per jump. The cooldown stops rapid double-jumps from all counting.
+`jump.cost` - flat cost per jump. The cooldown stops rapid double-jumps from all counting.
 
-**jump.cooldown** — Milliseconds between jumps that cost stamina. 300ms means ~3 jumps per second max.
+`jump.cooldown` - milliseconds between jumps that cost stamina. 300ms means about 3 jumps per second max.
 
-**swim.drain-per-second** — Stamina lost per second while in water.
+`swim.drain-per-second` - stamina lost per second while in water.
 
-**block-place.cost** — Stamina cost each time you place a block.
+`block-place.cost` / `block-break.cost` - stamina cost each time you place or break a block.
 
-**block-break.cost** — Stamina cost each time you break a block.
+`sneak.regen-per-second` - bonus stamina recovery per second while sneaking. This adds on top of MMOCore's natural regen.
 
-**sneak.regen-per-second** — Bonus stamina recovery per second while sneaking. This adds on top of MMOCore's natural regen.
+`attack.cost` - stamina cost per melee hit.
 
-**attack.cost** — Stamina cost per melee hit.
+`shield-block.initial-cost` - one-time cost when you raise your shield.
 
-**shield-block.initial-cost** — One-time cost when you raise your shield.
-
-**shield-block.drain-per-second** — Ongoing cost while your shield stays up.
+`shield-block.drain-per-second` - ongoing cost while your shield stays up.
 
 ---
 
@@ -109,11 +107,11 @@ hunger:
   drain-saturation: true
 ```
 
-**drain-per-second** — How fast the food bar drops. 1 point = half a food shank.
+`drain-per-second` - how fast the food bar drops. 1 point = half a food shank.
 
-**min-hunger** — The food bar won't go below this number (0–20). Set it to 3 or 4 if you don't want players to fully starve from stamina drain.
+`min-hunger` - the food bar won't go below this number (0-20). Set it to 3 or 4 if you don't want players to fully starve from stamina drain.
 
-**drain-saturation** — If true, the golden saturation drains first before the actual food bar. This matches how vanilla hunger works.
+`drain-saturation` - if true, the golden saturation drains first before the actual food bar. Matches how vanilla hunger works.
 
 ---
 
@@ -124,7 +122,7 @@ hunger-bar:
   enabled: false
 ```
 
-Turns the vanilla food bar into a stamina display. Your stamina percentage (0–100%) maps to the food bar (0–20 shanks). Vanilla hunger mechanics are paused while this is on.
+Turns the vanilla food bar into a stamina display. Your stamina percentage (0-100%) maps to the food bar (0-20 shanks). Vanilla hunger mechanics are paused while this is on.
 
 Only use this if you want a completely different visual approach.
 
@@ -138,9 +136,9 @@ engine:
   movement-threshold: 0.05
 ```
 
-**tick-interval** — How often the plugin runs its checks, in server ticks. 20 ticks = 1 second. Lower numbers = smoother drain but more CPU. 4 is a good balance.
+`tick-interval` - how often the plugin runs its checks, in server ticks. 20 ticks = 1 second. Lower numbers = smoother drain but more CPU. 4 is a good balance.
 
-**movement-threshold** — How far (in blocks) a player needs to move to count as "moving." Prevents stamina draining while standing still. 0.05 is fine for normal play.
+`movement-threshold` - how far (in blocks) a player needs to move to count as "moving." Prevents stamina draining while standing still. 0.05 is fine for normal play.
 
 ---
 
@@ -170,17 +168,17 @@ effects:
     strength: 0.1
 ```
 
-**recovery-threshold** — The player has to regen past this stamina percentage before effects go away. At 15%, effects stick around until they get above 15% stamina.
+`recovery-threshold` - the player has to regen past this stamina percentage before effects go away. At 15%, effects stick around until they get above 15% stamina.
 
-**slowness.amplifier** — 0 = Slowness I, 1 = Slowness II, etc.
+`slowness.amplifier` - 0 = Slowness I, 1 = Slowness II, etc.
 
-**sweat-particles.count** — Water drip particles spawned per engine tick. More = more visible.
+`sweat-particles.count` - water drip particles spawned per engine tick. More = more visible.
 
-**heavy-breathing** — Brief darkness pulses on the screen edges. On or off, no settings.
+`heavy-breathing` - brief darkness pulses on the screen edges. On or off, no extra settings.
 
-**stumble.chance** — Chance per engine tick (0.0 to 1.0). 0.03 = 3% chance each tick.
+`stumble.chance` - chance per engine tick (0.0 to 1.0). 0.03 = 3% chance each tick.
 
-**stumble.strength** — How hard the knockback pushes. 0.1 is subtle.
+`stumble.strength` - how hard the knockback pushes. 0.1 is subtle.
 
 ---
 
@@ -205,15 +203,15 @@ biomes:
   encumbrance-biome-bonus: 0.15
 ```
 
-**cold-drain-multiplier** — How much faster stamina drains in cold biomes. 1.15 = 15% faster.
+`cold-drain-multiplier` - how much faster stamina drains in cold biomes. 1.15 = 15% faster.
 
-**hot-drain-multiplier** — Same thing for hot biomes. 1.10 = 10% faster.
+`hot-drain-multiplier` - same thing for hot biomes. 1.10 = 10% faster.
 
-**freeze.ticks-per-tick** — How many freeze ticks get added per engine tick in cold biomes. Higher = freezes faster.
+`freeze.ticks-per-tick` - how many freeze ticks get added per engine tick in cold biomes. Higher = freezes faster.
 
-**sweat.count** — Water drip particles per engine tick in hot biomes.
+`sweat.count` - water drip particles per engine tick in hot biomes.
 
-**encumbrance-biome-bonus** — If the player is also carrying too much weight, the biome drain gets even worse. This multiplier stacks on top.
+`encumbrance-biome-bonus` - if the player is also carrying too much weight, the biome drain gets even worse. This multiplier stacks on top.
 
 ### Biome List
 
@@ -230,11 +228,11 @@ Below the settings, there's a `list:` section where you define which biomes are 
       multiplier: 1.50
 ```
 
-**type** — Set to `hot` or `cold`. This controls whether the biome causes sweat or freeze, and uses the default drain multiplier.
+`type` - set to `hot` or `cold`. Controls whether the biome causes sweat or freeze, and uses the default drain multiplier.
 
-**multiplier** — Optional. Overrides the default drain multiplier for that specific biome. Useful for places like the Nether where you want higher drain.
+`multiplier` - optional. Overrides the default drain multiplier for that specific biome. Useful for places like the Nether where you want higher drain.
 
-You can also set just a multiplier with no type — that changes the drain without adding freeze or sweat effects.
+You can also set just a multiplier with no type, which changes the drain without adding freeze or sweat effects.
 
 ---
 
@@ -253,9 +251,9 @@ encumbrance:
     max-multiplier: 1.75
 ```
 
-**drowning.air-loss-per-tick** — Severely encumbered players lose this many air ticks per engine tick when underwater. Vanilla gives you 300 air ticks total (15 seconds), so 8 per tick drains it fast.
+`drowning.air-loss-per-tick` - severely encumbered players lose this many air ticks per engine tick when underwater. Vanilla gives you 300 air ticks total (15 seconds), so 8 per tick drains it fast.
 
-**fall-damage.max-multiplier** — Fall damage is multiplied by up to this amount at max weight. 1.75 = 75% more fall damage when fully loaded.
+`fall-damage.max-multiplier` - fall damage is multiplied by up to this amount at max weight. 1.75 = 75% more fall damage when fully loaded.
 
 ---
 
@@ -275,17 +273,17 @@ ui:
     empty-char: "░"
 ```
 
-**type** — Where stamina is shown. `ACTION_BAR` (above the hotbar), `BOSS_BAR` (top of screen), or `CHAT` (chat messages).
+`type` - where stamina is shown. `ACTION_BAR` (above the hotbar), `BOSS_BAR` (top of screen), or `CHAT` (chat messages).
 
-**update-threshold** — How much stamina has to change before the display refreshes. Prevents flickering on tiny changes.
+`update-threshold` - how much stamina has to change before the display refreshes. Prevents flickering on tiny changes.
 
-**message-cooldown** — Milliseconds between display updates. For CHAT mode, set this to 2000–5000 so it doesn't spam.
+`message-cooldown` - milliseconds between display updates. For CHAT mode, set this to 2000-5000 so it doesn't spam.
 
-**low-stamina-warning** — Shows a different colored format when stamina drops below the threshold.
+`low-stamina-warning` - shows a different colored format when stamina drops below the threshold.
 
-**low-stamina-threshold** — What percentage counts as "low." 25 means the warning kicks in below 25% stamina.
+`low-stamina-threshold` - what percentage counts as "low." 25 means the warning kicks in below 25% stamina.
 
-**bar** — A text-based stamina bar using characters. When enabled, you can use `%stamina_bar%` in your messages.yml format strings.
+`bar` - a text-based stamina bar using characters. When enabled, you can use `%stamina_bar%` in your messages.yml format strings.
 
 ---
 
@@ -293,17 +291,17 @@ ui:
 
 All player-facing text is in `plugins/SoapsHungerStamina/messages.yml`.
 
-Everything supports [MiniMessage formatting](https://docs.advntr.dev/minimessage/) — colors, gradients, bold, etc.
+Everything supports [MiniMessage formatting](https://docs.advntr.dev/minimessage/) for colors, gradients, bold, etc.
 
 Key sections:
-- **prefix** — The colored tag added to every message
-- **command.*** — All command responses
-- **exhaustion.*** — Messages when effects activate/clear
-- **encumbrance.*** — Messages for weight thresholds
-- **biome.*** — Messages when entering hot/cold/neutral biomes
-- **ui.format** — The stamina display format
-- **ui.low-stamina-format** — Warning display when low
-- **gui.*** — All text shown in the admin settings GUI
+- `prefix` - the colored tag added to every message
+- `command.*` - all command responses
+- `exhaustion.*` - messages when effects activate/clear
+- `encumbrance.*` - messages for weight thresholds
+- `biome.*` - messages when entering hot/cold/neutral biomes
+- `ui.format` - the stamina display format
+- `ui.low-stamina-format` - warning display when low
+- `gui.*` - all text shown in the admin settings GUI
 
 ---
 
@@ -312,8 +310,8 @@ Key sections:
 Item weights are in `plugins/SoapsHungerStamina/weight.yml`.
 
 This file controls:
-- **Armor weight multipliers** — how much each armor piece slows stamina drain
-- **Encumbrance thresholds** — weight limits for "encumbered" and "severely encumbered"
-- **Per-item weights** — every item type can have a custom weight
+- Armor weight multipliers and how much each armor piece slows stamina drain
+- Encumbrance thresholds for "encumbered" and "severely encumbered"
+- Per-item weights so every item type can have a custom weight
 
 See [Default Config Files](Default-Config-Files.md) for details on the weight system.

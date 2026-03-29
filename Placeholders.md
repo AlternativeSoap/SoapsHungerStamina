@@ -10,7 +10,7 @@ Requires [PlaceholderAPI](https://www.spigotmc.org/resources/placeholderapi.6245
 |---|---|---|
 | `%shs_stamina%` | Current stamina (whole number) | `78` |
 | `%shs_stamina_max%` | Max stamina (whole number) | `100` |
-| `%shs_stamina_percent%` | Stamina as a percentage 0–100 | `78` |
+| `%shs_stamina_percent%` | Stamina as a percentage 0-100 | `78` |
 | `%shs_stamina_bar%` | Text stamina bar using filled/empty characters | `████████░░` |
 | `%shs_weight%` | Total inventory weight (1 decimal) | `42.5` |
 | `%shs_encumbered%` | Encumbrance level | `NONE`, `NORMAL`, or `SEVERE` |
@@ -19,7 +19,7 @@ Requires [PlaceholderAPI](https://www.spigotmc.org/resources/placeholderapi.6245
 
 ## Notes
 
-- **`%shs_stamina_bar%`** only works when the text bar is enabled in config:
+- `%shs_stamina_bar%` only works when the text bar is enabled in config:
   ```yaml
   ui:
     bar:
@@ -30,10 +30,10 @@ Requires [PlaceholderAPI](https://www.spigotmc.org/resources/placeholderapi.6245
   ```
   If the bar is disabled, this placeholder returns an empty string.
 
-- **`%shs_encumbered%`** returns one of three values:
-  - `NONE` — under the weight limit
-  - `NORMAL` — over the encumbered threshold (default: 100)
-  - `SEVERE` — over the severely encumbered threshold (default: 150)
+- `%shs_encumbered%` returns one of three values:
+  - `NONE` - under the weight limit
+  - `NORMAL` - over the encumbered threshold (default: 100)
+  - `SEVERE` - over the severely encumbered threshold (default: 150)
 
 ---
 
@@ -54,4 +54,4 @@ Stamina: %shs_stamina%/%shs_stamina_max%
 Weight: %shs_weight% [%shs_encumbered%]
 ```
 
-These work anywhere PlaceholderAPI placeholders are supported — scoreboards, tab lists, holograms, chat formats, BossBar plugins, etc.
+These work anywhere PlaceholderAPI placeholders are supported: scoreboards, tab lists, holograms, chat formats, BossBar plugins, etc.

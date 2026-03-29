@@ -1,69 +1,36 @@
 # Introduction
 
-## The Problem
+## Why this plugin exists
 
-Vanilla survival hunger doesn't interact with MMOCore stamina. Players manage two separate resources that don't feel connected.
+Vanilla survival hunger and MMOCore stamina don't talk to each other. Players end up managing two separate resources that feel completely disconnected.
 
-## The Solution
+SoapsHungerStamina fixes that by making stamina the primary resource for everything physical. When stamina is gone, hunger becomes the cost. Your inventory weight matters. The biome you're in matters.
 
-SoapsHungerStamina makes stamina the primary resource for everything physical. When stamina is gone, hunger becomes the cost. Your inventory weight matters. The biome you're in matters.
+## How it works
 
-## How It Works
+Stamina is your movement currency. Sprinting drains it per second, jumping costs a flat amount per jump, swimming drains it per second, and attacking costs stamina per hit. Placing and breaking blocks cost a small amount each. Raising a shield costs stamina upfront and keeps draining while held. Sneaking is the one exception - it gives bonus stamina regen on top of MMOCore's natural regen.
 
-**Stamina is your movement currency:**
-- Sprinting drains stamina per second
-- Jumping costs a flat amount per jump
-- Swimming drains stamina per second
-- Attacking costs stamina per hit
-- Placing and breaking blocks cost stamina
-- Raising a shield costs stamina upfront and keeps draining while held
-- Sneaking gives you bonus stamina regen on top of MMOCore's natural regen
+When stamina is empty and you keep doing stuff, your food bar starts draining instead. Saturation goes first, then actual hunger. There's a configurable minimum so hunger can stop at a floor you set instead of going all the way to zero.
 
-**Hunger kicks in when stamina is empty:**
-- Keep doing stuff after stamina hits zero? Your food bar starts draining instead
-- Saturation drains first, then actual hunger
-- There's a configurable minimum — hunger can stop draining at a floor you set
+If exhaustion effects are enabled, hitting zero stamina has physical consequences. Slowness makes you sluggish, sweat particles drip from your character, heavy breathing darkens your vision briefly, and stumble nudges knock you off course. All effects clear once stamina recovers past a configurable threshold.
 
-**Exhaustion effects hit when you're empty:**
-- Slowness makes you sluggish
-- Sweat particles drip from your character
-- Heavy breathing darkens your vision briefly
-- Stumble nudges knock you off course
-- All effects clear once stamina recovers past a configurable threshold
+Biomes add another layer. Cold biomes (snowy plains, frozen ocean, etc.) freeze you and drain stamina faster. Hot biomes (desert, jungle, nether) make you sweat and drain faster too. Each biome can have its own custom drain multiplier, and being encumbered in an extreme biome makes it even worse.
 
-**Biomes change everything:**
-- Cold biomes (snowy plains, frozen ocean, etc.) freeze you and drain stamina faster
-- Hot biomes (desert, jungle, nether) make you sweat and drain stamina faster
-- Each biome can have a custom drain multiplier
-- Being encumbered in an extreme biome makes it even worse
+Weight matters too. Armor has weight, and heavier armor means faster stamina drain. Items in your inventory add up. Cross a threshold and you're encumbered with faster drain. Cross the severe threshold and it gets really bad - you drown faster and take more fall damage.
 
-**Weight slows you down:**
-- Armor has weight — heavier armor means faster stamina drain
-- Items in your inventory have weight too
-- Cross a threshold and you're "encumbered" — stamina drains faster
-- Cross the severe threshold and things get really bad: you can drown faster and take more fall damage
+For feedback, you get real-time stamina display through action bar, boss bar, or chat messages. There's an optional text-character stamina bar (`████░░░░░░`), low stamina warnings that change color, and messages when exhaustion kicks in or clears. Biome transition messages tell you when the climate changes.
 
-**Real-time feedback:**
-- Action bar, boss bar, or chat messages show your stamina level
-- Optional text-character stamina bar (`████░░░░░░`)
-- Low stamina warning changes color when you're running dry
-- Exhaustion enter/recover messages tell you when effects kick in
-- Biome transition messages tell you when the climate changes
+Admins can open `/shs gui` to toggle features and change values in-game. No config file editing needed, every setting has a clickable item. Left/right click to adjust values, shift-click for bigger jumps.
 
-**Admin GUI:**
-- Open `/shs gui` to toggle features and change every value in-game
-- No config file editing needed — every setting has a clickable item
-- Left/right click to adjust values, shift-click for bigger jumps
+## Why it matters
 
-## Why It Matters
-
-Your server now has a real resource system:
+Your server gets a real resource loop:
 - Travel costs stamina
 - Combat costs stamina
 - Carrying heavy gear has a downside
 - Biomes feel different to be in
-- Running out means hunger becomes the problem and exhaustion effects hit
+- Running out means hunger drain and exhaustion effects
 - Food becomes valuable again
 - Resting and recovery feel necessary
 
-Stamina → Hunger overflow → Exhaustion effects. That's the loop.
+Stamina -> hunger overflow -> exhaustion effects. That's the loop.
