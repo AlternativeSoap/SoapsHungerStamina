@@ -105,15 +105,4 @@ All admin commands have tab completion. It shows:
 
 ## PlaceholderAPI
 
-If PlaceholderAPI is installed, these placeholders are available:
-
-| Placeholder | Value |
-|---|---|
-| `%shs_stamina%` | Current stamina |
-| `%shs_max_stamina%` | Max stamina |
-| `%shs_stamina_percent%` | Stamina percentage |
-| `%shs_weight%` | Current inventory weight |
-| `%shs_max_weight%` | Max weight threshold |
-| `%shs_encumbrance%` | Encumbrance multiplier |
-
-Use these in scoreboards, holograms, tab lists, or any plugin that supports PlaceholderAPI.
+If PlaceholderAPI is installed, placeholders are registered automatically. See [Placeholders](Placeholders.md) for the full list and usage examples.
