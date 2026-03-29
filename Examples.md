@@ -198,5 +198,3 @@ actions:
 hunger:
   enabled: false
 ```
-
-Pure jump management. Run freely, but time your jumps.

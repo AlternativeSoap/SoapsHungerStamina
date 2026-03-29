@@ -20,7 +20,7 @@ Weight matters too. Armor has weight, and heavier armor means faster stamina dra
 
 For feedback, you get real-time stamina display through action bar, boss bar, or chat messages. There's an optional text-character stamina bar (`████░░░░░░`), low stamina warnings that change color, and messages when exhaustion kicks in or clears. Biome transition messages tell you when the climate changes.
 
-Admins can open `/shs gui` to toggle features and change values in-game. No config file editing needed, every setting has a clickable item. Left/right click to adjust values, shift-click for bigger jumps.
+Admins can open `/shs gui` to toggle features and change values in-game. No config file editing needed, every setting has a clickable item. Left/right click to adjust values, shift-click for bigger jumps. The GUI includes a biome settings page for adding, removing, and editing biomes. Weight and encumbrance settings can be managed with `/shs weight` commands.
 
 ## Why it matters
 

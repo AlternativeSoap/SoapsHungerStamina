@@ -49,50 +49,50 @@ The `/shs gui` settings panel is available. Turn off to disable it (commands sti
 actions:
   sprint:
     enabled: true
-    drain-per-second: 2.5
+    drain-per-second: 1.2
   jump:
     enabled: true
-    cost: 4.0
+    cost: 2.0
     cooldown: 300
   swim:
     enabled: true
-    drain-per-second: 2.0
+    drain-per-second: 1.0
   block-place:
     enabled: true
-    cost: 0.3
+    cost: 0.15
   block-break:
     enabled: true
-    cost: 0.8
+    cost: 0.4
   sneak:
     enabled: true
-    regen-per-second: 1.5
+    regen-per-second: 0.8
   attack:
     enabled: true
-    cost: 2.5
+    cost: 1.2
   shield-block:
     enabled: true
-    initial-cost: 1.5
-    drain-per-second: 0.5
+    initial-cost: 0.8
+    drain-per-second: 0.3
 ```
 
 Quick math on the defaults:
-- 100 stamina lasts 40 seconds of sprinting
-- 100 stamina = 25 jumps
-- 100 stamina = 40 melee hits
-- 100 stamina = 333 blocks placed
-- Sneaking regens 1.5/sec on top of MMOCore's natural regen
+- 100 stamina lasts ~83 seconds of sprinting
+- 100 stamina = 50 jumps
+- 100 stamina = ~83 melee hits
+- 100 stamina = 666 blocks placed
+- Sneaking regens 0.8/sec on top of MMOCore's natural regen
 
 ### Hunger Overflow
 
 ```yaml
 hunger:
   enabled: true
-  drain-per-second: 1.0
+  drain-per-second: 0.5
   min-hunger: 0
   drain-saturation: true
 ```
 
-When stamina is empty, food drains at 1 point per second (half a shank). Can drain all the way to 0 (full starvation possible). Saturation goes first, then the food bar.
+When stamina is empty, food drains at 0.5 points per second. Can drain all the way to 0 (full starvation possible). Saturation goes first, then the food bar.
 
 ### Hunger Bar
 
@@ -118,7 +118,7 @@ Checks every 4 ticks (5 times per second), smooth and efficient. You need to mov
 ```yaml
 effects:
   enabled: false
-  recovery-threshold: 15.0
+  recovery-threshold: 10.0
   slowness:
     enabled: true
     amplifier: 0
@@ -138,28 +138,28 @@ Off by default. When you turn them on:
 - 3 water drip particles per tick around the head
 - Brief darkness flashes on screen edges
 - 3% chance per tick of a small knockback stumble
-- Everything clears once stamina gets above 15%
+- Everything clears once stamina gets above 10%
 
 ### Biomes
 
 ```yaml
 biomes:
   enabled: false
-  cold-drain-multiplier: 1.15
-  hot-drain-multiplier: 1.10
+  cold-drain-multiplier: 1.10
+  hot-drain-multiplier: 1.08
   freeze:
     enabled: true
     ticks-per-tick: 1
   sweat:
     enabled: true
     count: 4
-  encumbrance-biome-bonus: 0.15
+  encumbrance-biome-bonus: 0.10
 ```
 
 Off by default. When enabled:
-- Cold biomes drain 15% faster and apply freeze ticks
-- Hot biomes drain 10% faster and show sweat particles
-- Being encumbered in an extreme biome adds another 15% on top
+- Cold biomes drain 10% faster and apply freeze ticks
+- Hot biomes drain 8% faster and show sweat particles
+- Being encumbered in an extreme biome adds another 10% on top
 - 36 biomes are pre-configured (20 cold, 11 hot, 5 nether with custom multipliers)
 
 ### Encumbrance
@@ -221,31 +221,34 @@ Controls the weight/encumbrance system.
 
 ### Armor Weight
 
-Each armor material has a multiplier that affects stamina drain:
+Armor uses a per-piece weight system. The total drain multiplier is `1.0 + sum(equipped piece weights)`. Each piece adds a small amount:
 
-| Material | Multiplier | Effect |
-|---|---|---|
-| Leather | 1.0 | No change |
-| Chainmail | 1.05 | 5% faster drain |
-| Gold | 1.1 | 10% faster drain |
-| Iron | 1.15 | 15% faster drain |
-| Diamond | 1.25 | 25% faster drain |
-| Netherite | 1.35 | 35% faster drain |
-
-The plugin multiplies all 4 armor slots together. Full netherite comes out to about 3.3x drain.
+| Material | Helmet | Chestplate | Leggings | Boots | Full Set |
+|---|---|---|---|---|---|
+| Leather | 0.01 | 0.02 | 0.015 | 0.01 | 1.055 (5.5% more drain) |
+| Chainmail | 0.02 | 0.04 | 0.03 | 0.02 | 1.11 (11% more drain) |
+| Gold | 0.025 | 0.05 | 0.04 | 0.025 | 1.14 (14% more drain) |
+| Iron | 0.04 | 0.08 | 0.06 | 0.04 | 1.22 (22% more drain) |
+| Diamond | 0.05 | 0.10 | 0.08 | 0.05 | 1.28 (28% more drain) |
+| Netherite | 0.07 | 0.13 | 0.10 | 0.07 | 1.37 (37% more drain) |
+| Turtle | 0.035 | — | — | — | (helmet only) |
 
 ### Encumbrance Thresholds
 
-- `max-weight`: 100 - above this, you're "encumbered" (message + faster drain)
-- `severe-weight`: 150 - above this, you're "severely encumbered" (drowning + fall damage penalties)
+- `max-weight`: 300 - above this, you're "encumbered" (message + faster drain)
+- `severe-weight`: 500 - above this, you're "severely encumbered" (drowning + fall damage penalties)
+- `encumbered-drain-multiplier`: 1.4 (40% faster drain when encumbered)
+- `severe-drain-multiplier`: 2.0 (double drain when severely encumbered)
+- `default-weight`: 0.25 (weight for any item not explicitly listed)
 
 ### Item Weights
 
-Every item type has a weight. Some examples from the defaults:
-- Blocks (stone, dirt, etc.): 1.0-2.0 per stack slot
+The plugin ships with over 1000 item weight entries covering all survival-obtainable items. Some examples:
+- Stone/ore blocks: 1.0-1.5
+- Dirt/sand: 0.8-0.9
+- Wood logs/planks: 0.5-0.8
 - Tools (pickaxe, sword): 2.0-4.0
-- Armor pieces: 3.0-6.0
-- Heavy items (anvil, enchanting table): 10.0-15.0
-- Light items (sticks, seeds): 0.1-0.5
+- Heavy blocks (anvil, enchanting table): 10.0-15.0
+- Light items (sticks, seeds): 0.1-0.3
 
-The full list is in weight.yml and can be customized per item.
+Unlisted items use the `default-weight` (0.25). The full list is in weight.yml and can be customized per item or managed with `/shs weight` commands.

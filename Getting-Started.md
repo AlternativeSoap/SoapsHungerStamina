@@ -35,15 +35,15 @@ You can either edit `plugins/SoapsHungerStamina/config.yml` and run `/shs reload
 
 ## Default Behavior
 
-- Sprint: 2.5 stamina per second
-- Jump: 4 stamina per jump
-- Swim: 2 stamina per second
-- Attack: 2.5 stamina per hit
-- Block place: 0.3 stamina per block
-- Block break: 0.8 stamina per block
-- Shield block: 1.5 upfront + 0.5 per second
-- Sneak: +1.5 stamina regen per second
-- Hunger overflow: 1 hunger point per second when stamina is empty
+- Sprint: 1.2 stamina per second
+- Jump: 2.0 stamina per jump
+- Swim: 1.0 stamina per second
+- Attack: 1.2 stamina per hit
+- Block place: 0.15 stamina per block
+- Block break: 0.4 stamina per block
+- Shield block: 0.8 upfront + 0.3 per second
+- Sneak: +0.8 stamina regen per second
+- Hunger overflow: 0.5 hunger points per second when stamina is empty
 - Exhaustion effects: off by default (enable in config)
 - Biome effects: off by default (enable in config)
 - Weight/encumbrance: uses weight.yml thresholds

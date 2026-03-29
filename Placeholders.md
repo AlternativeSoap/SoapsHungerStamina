@@ -32,8 +32,8 @@ Requires [PlaceholderAPI](https://www.spigotmc.org/resources/placeholderapi.6245
 
 - `%shs_encumbered%` returns one of three values:
   - `NONE` - under the weight limit
-  - `NORMAL` - over the encumbered threshold (default: 100)
-  - `SEVERE` - over the severely encumbered threshold (default: 150)
+  - `NORMAL` - over the encumbered threshold (default: 300)
+  - `SEVERE` - over the severely encumbered threshold (default: 500)
 
 ---
 

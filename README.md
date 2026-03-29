@@ -12,6 +12,8 @@ SoapsHungerStamina ties MMOCore stamina into vanilla survival. Sprinting, jumpin
 - Biome system with cold/hot zones that affect drain speed
 - Weight system where heavy armor and full inventories hurt your recovery
 - Admin GUI to change every setting in-game without touching config files
+- In-game biome management (add, remove, edit biomes from the GUI)
+- Weight commands to manage items and encumbrance settings from chat
 - 18 per-player bypass permissions for exempting specific features
 - Real-time stamina display via action bar, boss bar, or chat
 - PlaceholderAPI support for scoreboards and other plugins

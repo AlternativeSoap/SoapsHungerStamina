@@ -21,6 +21,28 @@ Reloads config, messages, and weight files from disk. No restart needed.
 ### `/shs gui`
 Opens the in-game settings panel. Click items to toggle features and adjust values. Only works if `gui.enabled` is true in config.
 
+The GUI includes a Biome Settings page where you can add, remove, and edit biomes directly. Click a biome to change its type (cold/hot) or drain multiplier. No config editing needed.
+
+### `/shs weight <subcommand>`
+Manages items and settings in weight.yml without editing the file.
+
+Subcommands:
+
+- `/shs weight set <material> <weight>` - Set the weight for an item type
+- `/shs weight remove <material>` - Remove an item's custom weight (falls back to default)
+- `/shs weight info <material>` - Show the current weight of an item
+- `/shs weight armor set <material> <weight>` - Set an armor material's weight multiplier
+- `/shs weight armor remove <material>` - Remove an armor material's custom multiplier
+- `/shs weight encumbrance <key> <value>` - Change an encumbrance setting
+
+Available encumbrance keys: `max-weight`, `severe-weight`, `encumbered-drain-multiplier`, `severe-drain-multiplier`, `encumbered-slowness`, `severe-slowness`, `block-sprint-severe`, `default-weight`
+
+Examples:
+- `/shs weight set DIAMOND_SWORD 3.5` - diamonds swords weigh 3.5
+- `/shs weight armor set NETHERITE 1.5` - netherite armor multiplier 1.5x
+- `/shs weight encumbrance max-weight 150` - encumbered above 150 total weight
+- `/shs weight info IRON_PICKAXE` - shows the current weight of an iron pickaxe
+
 ### `/shs toggle <setting>`
 Flips a setting on or off.
 
@@ -97,6 +119,7 @@ All admin commands have tab completion. It shows:
 - Subcommands at each level
 - Toggle setting names
 - Config group and key names
+- Weight subcommands, material names, encumbrance keys, and value hints
 - Value hints (current value, true/false, etc.)
 - Online player names for give/reset
 

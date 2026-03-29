@@ -42,37 +42,37 @@ There are 8 actions. Each one can be turned on/off separately.
 actions:
   sprint:
     enabled: true
-    drain-per-second: 2.5
+    drain-per-second: 1.2
 
   jump:
     enabled: true
-    cost: 4.0
+    cost: 2.0
     cooldown: 300
 
   swim:
     enabled: true
-    drain-per-second: 2.0
+    drain-per-second: 1.0
 
   block-place:
     enabled: true
-    cost: 0.3
+    cost: 0.15
 
   block-break:
     enabled: true
-    cost: 0.8
+    cost: 0.4
 
   sneak:
     enabled: true
-    regen-per-second: 1.5
+    regen-per-second: 0.8
 
   attack:
     enabled: true
-    cost: 2.5
+    cost: 1.2
 
   shield-block:
     enabled: true
-    initial-cost: 1.5
-    drain-per-second: 0.5
+    initial-cost: 0.8
+    drain-per-second: 0.3
 ```
 
 `sprint.drain-per-second` - stamina lost every second while sprinting and actually moving. Standing still while holding sprint doesn't count.
@@ -102,7 +102,7 @@ When stamina hits zero and the player keeps doing stuff, their food bar starts d
 ```yaml
 hunger:
   enabled: true
-  drain-per-second: 1.0
+  drain-per-second: 0.5
   min-hunger: 0
   drain-saturation: true
 ```
@@ -149,7 +149,7 @@ Bad stuff that happens when stamina hits 0. Disabled by default.
 ```yaml
 effects:
   enabled: false
-  recovery-threshold: 15.0
+  recovery-threshold: 10.0
 
   slowness:
     enabled: true
@@ -168,7 +168,7 @@ effects:
     strength: 0.1
 ```
 
-`recovery-threshold` - the player has to regen past this stamina percentage before effects go away. At 15%, effects stick around until they get above 15% stamina.
+`recovery-threshold` - the player has to regen past this stamina percentage before effects go away. At 10%, effects stick around until they get above 10% stamina.
 
 `slowness.amplifier` - 0 = Slowness I, 1 = Slowness II, etc.
 
@@ -189,8 +189,8 @@ Cold biomes freeze you and drain stamina faster. Hot biomes make you sweat and d
 ```yaml
 biomes:
   enabled: false
-  cold-drain-multiplier: 1.15
-  hot-drain-multiplier: 1.10
+  cold-drain-multiplier: 1.10
+  hot-drain-multiplier: 1.08
 
   freeze:
     enabled: true
@@ -200,12 +200,12 @@ biomes:
     enabled: true
     count: 4
 
-  encumbrance-biome-bonus: 0.15
+  encumbrance-biome-bonus: 0.10
 ```
 
-`cold-drain-multiplier` - how much faster stamina drains in cold biomes. 1.15 = 15% faster.
+`cold-drain-multiplier` - how much faster stamina drains in cold biomes. 1.10 = 10% faster.
 
-`hot-drain-multiplier` - same thing for hot biomes. 1.10 = 10% faster.
+`hot-drain-multiplier` - same thing for hot biomes. 1.08 = 8% faster.
 
 `freeze.ticks-per-tick` - how many freeze ticks get added per engine tick in cold biomes. Higher = freezes faster.
 
@@ -215,7 +215,7 @@ biomes:
 
 ### Biome List
 
-Below the settings, there's a `list:` section where you define which biomes are hot or cold.
+Below the settings, there's a `list:` section where you define which biomes are hot or cold. You can also manage this through the in-game GUI's Biome Settings page.
 
 ```yaml
   list:
@@ -298,20 +298,3 @@ Key sections:
 - `command.*` - all command responses
 - `exhaustion.*` - messages when effects activate/clear
 - `encumbrance.*` - messages for weight thresholds
-- `biome.*` - messages when entering hot/cold/neutral biomes
-- `ui.format` - the stamina display format
-- `ui.low-stamina-format` - warning display when low
-- `gui.*` - all text shown in the admin settings GUI
-
----
-
-## Weight
-
-Item weights are in `plugins/SoapsHungerStamina/weight.yml`.
-
-This file controls:
-- Armor weight multipliers and how much each armor piece slows stamina drain
-- Encumbrance thresholds for "encumbered" and "severely encumbered"
-- Per-item weights so every item type can have a custom weight
-
-See [Default Config Files](Default-Config-Files.md) for details on the weight system.
