@@ -3,12 +3,9 @@
 ## Player Commands
 
 ### `/stamina`
-Shows your current stamina, max stamina, stamina percentage, and hunger level.
+Shows your current stamina, max stamina, percentage, and hunger level.
 
 **Permission:** `soapsstamina.use` (default: everyone)
-
-**Example output:**  
-`Stamina: 42/100 (42%) | Hunger: 19/20`
 
 **Alias:** `/shs stamina`
 
@@ -16,92 +13,107 @@ Shows your current stamina, max stamina, stamina percentage, and hunger level.
 
 ## Admin Commands
 
+All admin commands need `soapsstamina.admin` (default: op).
+
 ### `/shs reload`
-Reloads configuration and message files from disk without restarting the server.
+Reloads config, messages, and weight files from disk. No restart needed.
 
-**Permission:** `soapsstamina.admin` (default: op)
+### `/shs gui`
+Opens the in-game settings panel. Click items to toggle features and adjust values. Only works if `gui.enabled` is true in config.
 
-Use this after editing the config to apply changes live.
+### `/shs toggle <setting>`
+Flips a setting on or off.
 
----
+**Available settings:** `sprint`, `jump`, `swim`, `block-place`, `block-break`, `sneak`, `attack`, `shield-block`, `hunger`, `hunger-bar`, `drain-saturation`, `effects`, `slowness`, `sweat-particles`, `heavy-breathing`, `stumble`, `debug`, `stop-sprint-on-empty`, `low-stamina-warning`, `biomes`, `biome-freeze`, `biome-sweat`, `encumbered-drowning`, `encumbered-fall-damage`, `stamina-bar`
+
+**Example:** `/shs toggle effects` — turns exhaustion effects on or off.
+
+### `/shs config set <group> <key> <value>`
+Changes a specific config value.
+
+**Example:** `/shs config set sprint drain-per-second 3.0`
+
+Groups include: `sprint`, `jump`, `swim`, `block-place`, `block-break`, `sneak`, `attack`, `shield-block`, `hunger`, `engine`, `effects`, `slowness`, `sweat-particles`, `stumble`, `ui`, `general`, `biomes`, `encumbrance`, `stamina-bar`
+
+Tab completion shows you the available keys and value hints for each group.
 
 ### `/shs stamina give <player> <amount>`
-Gives stamina to a player (won't exceed their max).
+Gives stamina to a player (won't go above their max).
 
-**Permission:** `soapsstamina.admin`
-
-**Example:**  
-`/shs stamina give PlayerName 50`
-
-Gives 50 stamina to PlayerName (capped at their max stamina).
-
----
+**Example:** `/shs stamina give Steve 50`
 
 ### `/shs stamina reset <player>`
-Resets a player's stamina to maximum.
-
-**Permission:** `soapsstamina.admin`
-
-**Example:**  
-`/shs stamina reset PlayerName`
-
----
+Sets a player's stamina back to full.
 
 ### `/shs help`
-Shows all available commands.
-
-**Permission:** None required
-
----
-
-### `/shs`
-Shows plugin version and basic usage.
+Lists all available commands.
 
 ---
 
 ## Permissions
 
-### `soapsstamina.admin`
-Access to all admin commands: reload, give, reset.
+### Core Permissions
 
-Default: op-only
-
-If you use a permission plugin, grant this to staff ranks that manage server settings.
-
----
-
-### `soapsstamina.use`
-Permission to check own stamina with `/stamina`.
-
-Default: everyone (true)
+| Permission | What it does | Default |
+|---|---|---|
+| `soapsstamina.use` | Check own stamina with `/stamina` | Everyone |
+| `soapsstamina.admin` | All admin commands (reload, gui, toggle, config, give, reset) | OP |
+| `soapsstamina.bypass` | Skip **all** stamina and hunger drain | Nobody |
 
 ---
 
-### `soapsstamina.bypass`
-Bypasses all stamina and hunger drain.
+### Per-Feature Bypass Permissions
 
-Default: no one
+These let you exempt specific players from specific features. Give a player one of these permissions and that feature won't affect them — even if the feature is enabled for everyone else.
 
-Useful for:
-- Creative/build events (bypass so staff can test without draining)
-- Special ranks that shouldn't consume stamina
-- PvP events where stamina shouldn't matter
+All default to **nobody** (false).
 
-**To use it:**
-- Set in config: `bypass-permission: "soapsstamina.bypass"`
-- Grant `soapsstamina.bypass` to the ranks you want to exempt
-- They will perform all actions (sprint, jump, swim) without any drain
+| Permission | What it bypasses |
+|---|---|
+| `soapsstamina.bypass.sprint` | Sprint stamina drain |
+| `soapsstamina.bypass.jump` | Jump stamina cost |
+| `soapsstamina.bypass.swim` | Swim stamina drain |
+| `soapsstamina.bypass.block-place` | Block place stamina cost |
+| `soapsstamina.bypass.block-break` | Block break stamina cost |
+| `soapsstamina.bypass.sneak` | Sneak stamina regen bonus |
+| `soapsstamina.bypass.attack` | Attack stamina cost |
+| `soapsstamina.bypass.shield-block` | Shield block stamina drain |
+| `soapsstamina.bypass.hunger` | Hunger overflow drain |
+| `soapsstamina.bypass.effects` | All exhaustion effects |
+| `soapsstamina.bypass.effects.slowness` | Just the slowness effect |
+| `soapsstamina.bypass.effects.sweat` | Just sweat particles |
+| `soapsstamina.bypass.effects.breathing` | Just heavy breathing (darkness) |
+| `soapsstamina.bypass.effects.stumble` | Just the stumble knockback |
+| `soapsstamina.bypass.biomes` | Biome drain multipliers and effects |
+| `soapsstamina.bypass.encumbrance` | Encumbrance drain multipliers and effects |
+
+**How it works with `soapsstamina.bypass`:**  
+The global bypass skips everything. The per-feature permissions are more surgical — if you only want someone to skip sprint drain but still pay for everything else, give them `soapsstamina.bypass.sprint` instead of the full bypass.
 
 ---
 
 ## Tab Completion
 
-All admin commands support tab completion for player names and suggestion values.
-
-Example: `/shs stamina give [tab]` shows online player names.
+All admin commands have tab completion. It shows:
+- Subcommands at each level
+- Toggle setting names
+- Config group and key names
+- Value hints (current value, true/false, etc.)
+- Online player names for give/reset
 
 ---
 
-## Command Help
+## PlaceholderAPI
 
-Run `/shs help` in-game for a quick reference of all commands.
+If PlaceholderAPI is installed, these placeholders are available:
+
+| Placeholder | Value |
+|---|---|
+| `%shs_stamina%` | Current stamina |
+| `%shs_max_stamina%` | Max stamina |
+| `%shs_stamina_percent%` | Stamina percentage |
+| `%shs_weight%` | Current inventory weight |
+| `%shs_max_weight%` | Max weight threshold |
+| `%shs_encumbrance%` | Encumbrance multiplier |
+
+Use these in scoreboards, holograms, tab lists, or any plugin that supports PlaceholderAPI.

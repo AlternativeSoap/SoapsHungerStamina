@@ -1,14 +1,27 @@
 # Default Config Files
 
-This page explains what each default setting does.
+What each default setting does and what files the plugin creates.
+
+---
+
+## What Gets Created
+
+On first run, the plugin creates three files:
+
+```
+plugins/SoapsHungerStamina/
+  ├── config.yml     (all settings — actions, effects, biomes, UI, etc.)
+  ├── messages.yml   (all player-facing text)
+  └── weight.yml     (item weights for the encumbrance system)
+```
+
+All are fully editable. Run `/shs reload` to apply changes, or use `/shs gui` to change settings in-game.
 
 ---
 
 ## config.yml Defaults
 
-The plugin creates this file automatically. Here's what each section does.
-
-### General Settings
+### General
 
 ```yaml
 general:
@@ -17,41 +30,57 @@ general:
   debug: false
 ```
 
-- **bypass-permission:** Staff with this permission don't drain stamina/hunger
-- **stop-sprint-on-empty:** Force-stop sprinting when stamina hits 0 (feels better than drifting while hunger drains)
-- **debug:** Print detailed drain logs to console (off by default, turn on to troubleshoot)
+- **bypass-permission:** Players with this permission skip all stamina/hunger drain
+- **stop-sprint-on-empty:** Forces sprinting to stop at 0 stamina
+- **debug:** Prints drain info to console (off by default)
 
-### Sprint
+### GUI
+
+```yaml
+gui:
+  enabled: true
+```
+
+- **enabled:** The `/shs gui` settings panel is available. Turn off to disable it (commands still work)
+
+### Actions
 
 ```yaml
 actions:
   sprint:
     enabled: true
-    drain-per-second: 2.0
-```
-
-Sprinting drains 2 stamina per second. If you're bad at stamina math: 20 stamina lasts 10 seconds of sprinting.
-
-### Jump
-
-```yaml
+    drain-per-second: 2.5
   jump:
     enabled: true
-    cost: 3.0
+    cost: 4.0
     cooldown: 300
-```
-
-Each jump costs 3 stamina. You can jump at most once every 300ms (about 3 jumps per second). This prevents spam-jump exploitation.
-
-### Swim
-
-```yaml
   swim:
     enabled: true
-    drain-per-second: 1.5
+    drain-per-second: 2.0
+  block-place:
+    enabled: true
+    cost: 0.3
+  block-break:
+    enabled: true
+    cost: 0.8
+  sneak:
+    enabled: true
+    regen-per-second: 1.5
+  attack:
+    enabled: true
+    cost: 2.5
+  shield-block:
+    enabled: true
+    initial-cost: 1.5
+    drain-per-second: 0.5
 ```
 
-Swimming drains 1.5 stamina per second (slower than sprinting).
+Quick math on the defaults:
+- 100 stamina lasts 40 seconds of sprinting
+- 100 stamina = 25 jumps
+- 100 stamina = 40 melee hits
+- 100 stamina = 333 blocks placed
+- Sneaking regens 1.5/sec on top of MMOCore's natural regen
 
 ### Hunger Overflow
 
@@ -63,19 +92,18 @@ hunger:
   drain-saturation: true
 ```
 
-- **enabled:** Overflow draining is on
-- **drain-per-second:** When stamina is empty, hunger drains at 1 point/sec (half a shank)
-- **min-hunger:** Hunger won't go below 0 (players can fully starve)
-- **drain-saturation:** Saturation (sparkles) drains before visible hunger (vanilla behavior)
+- When stamina is empty, food drains at 1 point per second (half a shank)
+- Can drain all the way to 0 (full starvation possible)
+- Saturation goes first, then the food bar
 
-### Hunger Bar Mode
+### Hunger Bar
 
 ```yaml
 hunger-bar:
   enabled: false
 ```
 
-Off by default. Turn on if you want the vanilla hunger bar to show stamina percentage instead.
+Off by default. When on, the food bar displays stamina percentage instead.
 
 ### Engine
 
@@ -85,35 +113,18 @@ engine:
   movement-threshold: 0.05
 ```
 
-- **tick-interval:** Drain checks every 4 ticks (smooth, efficient). Lowering this = more checks = smoother drain but more CPU.
-- **movement-threshold:** You need to move 0.05 blocks for it to count as "moving" (prevents stationary drain).
-
-### UI
-
-```yaml
-ui:
-  type: ACTION_BAR
-  update-threshold: 0.5
-  message-cooldown: 0
-  low-stamina-warning: true
-  low-stamina-threshold: 20.0
-```
-
-- **type:** Shows stamina on the action bar (above hotbar). Also supports `BOSS_BAR` (top of screen) and `CHAT` (client-sided messages)
-- **update-threshold:** UI only updates when stamina changes by 0.5 or more (reduces flicker)
-- **message-cooldown:** Milliseconds between UI messages (0 = no cooldown). For `CHAT` mode, recommended 2000-5000
-- **low-stamina-warning:** Show a special Warning message when stamina is low
-- **low-stamina-threshold:** "Low" means below 20% stamina
+- Checks every 4 ticks (5 times per second) — smooth and efficient
+- You need to move at least 0.05 blocks to count as "moving"
 
 ### Exhaustion Effects
 
 ```yaml
 effects:
   enabled: false
-  recovery-threshold: 10.0
+  recovery-threshold: 15.0
   slowness:
     enabled: true
-    amplifier: 1
+    amplifier: 0
   sweat-particles:
     enabled: true
     count: 3
@@ -121,47 +132,124 @@ effects:
     enabled: true
   stumble:
     enabled: true
-    chance: 0.05
+    chance: 0.03
     strength: 0.1
 ```
 
-Off by default. When enabled, these effects activate when stamina reaches zero:
+Off by default. When you turn them on:
+- **Slowness I** while exhausted (amplifier 0)
+- **3 water drip particles** per tick around the head
+- **Brief darkness flashes** on screen edges
+- **3% chance** per tick of a small knockback stumble
+- Everything clears once stamina gets above 15%
 
-- **slowness:** Applies Slow II while exhausted (amplifier 1 = Slow II)
-- **sweat-particles:** Water drip particles around the player's head (3 per tick)
-- **heavy-breathing:** Brief darkness pulses on screen edges
-- **stumble:** 5% chance per tick of a small random knockback nudge
-- **recovery-threshold:** Effects clear once stamina recovers past 10%
+### Biomes
+
+```yaml
+biomes:
+  enabled: false
+  cold-drain-multiplier: 1.15
+  hot-drain-multiplier: 1.10
+  freeze:
+    enabled: true
+    ticks-per-tick: 1
+  sweat:
+    enabled: true
+    count: 4
+  encumbrance-biome-bonus: 0.15
+```
+
+Off by default. When enabled:
+- Cold biomes drain 15% faster and apply freeze ticks
+- Hot biomes drain 10% faster and show sweat particles
+- Being encumbered in an extreme biome adds another 15% on top
+- 36 biomes are pre-configured (20 cold, 11 hot, 5 nether with custom multipliers)
+
+### Encumbrance
+
+```yaml
+encumbrance:
+  drowning:
+    enabled: true
+    air-loss-per-tick: 8
+  fall-damage:
+    enabled: true
+    max-multiplier: 1.75
+```
+
+- Severely encumbered players lose 8 air ticks per engine tick underwater
+- Fall damage can increase up to 75% at max weight
+
+### UI
+
+```yaml
+ui:
+  type: BOSS_BAR
+  update-threshold: 0.5
+  message-cooldown: 0
+  low-stamina-warning: true
+  low-stamina-threshold: 25.0
+  bar:
+    enabled: false
+    length: 10
+    filled-char: "█"
+    empty-char: "░"
+```
+
+- Boss bar display by default (top of screen)
+- Updates when stamina changes by 0.5 or more
+- Warning format below 25% stamina
+- Text bar disabled by default (enable and use `%stamina_bar%` in messages.yml)
 
 ---
 
 ## messages.yml Defaults
 
-The plugin creates this file automatically. It controls all player-facing text.
-
-**Everything supports MiniMessage formatting** — colors, gradients, bold, etc.
+Controls all player-facing text. Everything uses [MiniMessage formatting](https://docs.advntr.dev/minimessage/).
 
 Key sections:
-
-- **prefix** — Added to every message (colored gradient by default)
-- **ui.format** — Stamina display on action bar
-- **ui.low-stamina-format** — Warning display when stamina is low
-- **command.*** — All command response messages
-- **exhaustion.enter** — Message shown when exhaustion effects activate
-- **exhaustion.recover** — Message shown when stamina recovers from exhaustion
-
-You can edit any of these to match your server's style or language.
+- **prefix** — Gradient-colored plugin name added to all messages
+- **command.*** — Responses for every command
+- **exhaustion.*** — "You are exhausted" / "strength returning" messages
+- **encumbrance.*** — Weight warning/recovery messages
+- **biome.*** — Climate change messages (entering cold/hot/neutral biomes)
+- **ui.format** — Normal stamina display
+- **ui.low-stamina-format** — Warning display when low
+- **gui.*** — All text in the admin settings GUI (titles, labels, setting names, value names)
 
 ---
 
-## What Gets Created
+## weight.yml Defaults
 
-On first run, the plugin creates:
+Controls the weight/encumbrance system.
 
-```
-plugins/SoapsHungerStamina/
-  ├── config.yml          (action costs, overflow, engine settings)
-  └── messages.yml        (all player-facing text)
-```
+### Armor Weight
 
-Both are fully editable. Reload with `/shs reload` to apply changes.
+Each armor material has a multiplier that affects stamina drain:
+
+| Material | Multiplier | Effect |
+|---|---|---|
+| Leather | 1.0 | No change |
+| Chainmail | 1.05 | 5% faster drain |
+| Gold | 1.1 | 10% faster drain |
+| Iron | 1.15 | 15% faster drain |
+| Diamond | 1.25 | 25% faster drain |
+| Netherite | 1.35 | 35% faster drain |
+
+The plugin multiplies all 4 armor slots together. Full netherite = ~1.35⁴ ≈ 3.3x drain.
+
+### Encumbrance Thresholds
+
+- **max-weight:** 100 — above this, you're "encumbered" (message + faster drain)
+- **severe-weight:** 150 — above this, you're "severely encumbered" (drowning + fall damage penalties)
+
+### Item Weights
+
+Every item type has a weight. Some examples from the defaults:
+- Blocks (stone, dirt, etc.): 1.0–2.0 per stack slot
+- Tools (pickaxe, sword): 2.0–4.0
+- Armor pieces: 3.0–6.0
+- Heavy items (anvil, enchanting table): 10.0–15.0
+- Light items (sticks, seeds): 0.1–0.5
+
+The full list is in weight.yml and can be customized per item.

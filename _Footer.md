@@ -1,6 +1,6 @@
 ---
 
-**SoapsHungerStamina** • Version 1.0.0 • by [AlternativeSoap](https://www.soapsuniverse.com)
+**SoapsHungerStamina** • Version 1.0.1 • by [AlternativeSoap](https://www.soapsuniverse.com)
 
 For support, visit www.soapsuniverse.com
 

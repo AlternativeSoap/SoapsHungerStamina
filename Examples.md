@@ -1,171 +1,269 @@
 # Examples
 
-Real-world configuration tuning for different server styles.
+Preset configs for different server styles. Copy the values you want into your config.yml and run `/shs reload`.
 
 ---
 
 ## PvP Arena (Short, Intense Fights)
 
-Higher costs to make stamina management matter in fights.
+High costs so stamina management matters in combat. Attacking and shielding are expensive.
 
 ```yaml
 actions:
   sprint:
     enabled: true
-    drain-per-second: 8.0  # 4x default, drains fast
+    drain-per-second: 8.0
   jump:
     enabled: true
-    cost: 10.0  # Much more expensive
-    cooldown: 400  # Slightly longer cooldown
+    cost: 10.0
+    cooldown: 400
   swim:
     enabled: true
-    drain-per-second: 5.0  # 3x+ default
+    drain-per-second: 5.0
+  attack:
+    enabled: true
+    cost: 5.0
+  shield-block:
+    enabled: true
+    initial-cost: 4.0
+    drain-per-second: 2.0
+  block-place:
+    enabled: false
+  block-break:
+    enabled: false
+  sneak:
+    enabled: true
+    regen-per-second: 3.0
 
 hunger:
   enabled: true
-  drain-per-second: 2.0  # Penalty is harsher
-  min-hunger: 4  # Can't fully starve
-
-effects:
-  enabled: true  # Exhaustion effects active
-  recovery-threshold: 15.0
-```
-
-Result: Every sprint counts. Stamina management is tight. Hunger is a real risk. Exhaustion effects punish reckless play.
-
----
-
-## Survival Exploration (Low Stakes)
-
-Lower costs so travel doesn't feel punishing.
-
-```yaml
-actions:
-  sprint:
-    enabled: true
-    drain-per-second: 1.0  # Half default
-  jump:
-    enabled: true
-    cost: 1.5  # Half default
-    cooldown: 200
-  swim:
-    enabled: true
-    drain-per-second: 0.5  # Gentle
-
-hunger:
-  enabled: true
-  drain-per-second: 0.5  # Slow penalty
-  min-hunger: 3  # Can't starve completely
-```
-
-Result: Travel is fun, stamina is a soft constraint, food is backup.
-
----
-
-## Hardcore Mode (Maximum Impact)
-
-Stamina is a real survival resource.
-
-```yaml
-actions:
-  sprint:
-    enabled: true
-    drain-per-second: 6.0  # 3x default
-  jump:
-    enabled: true
-    cost: 8.0  # ~3x default
-    cooldown: 350
-  swim:
-    enabled: true
-    drain-per-second: 4.0  # ~3x default
-
-hunger:
-  enabled: true
-  drain-per-second: 1.5
-  min-hunger: 0  # Can fully starve
-  drain-saturation: true
-
-general:
-  stop-sprint-on-empty: true
+  drain-per-second: 2.0
+  min-hunger: 4
 
 effects:
   enabled: true
   recovery-threshold: 15.0
   stumble:
     enabled: true
-    chance: 0.10  # Doubles default stumble chance
+    chance: 0.08
     strength: 0.15
 ```
 
-Result: Stamina is critical. Hunger is deadly. Exhaustion effects are brutal. Every action matters.
+Every swing counts. Blocking drains hard. Sneaking between fights is the only way to recover. Building is free because it's a PvP arena.
 
 ---
 
-## Jump-Only Server (Parkour)
+## Survival Exploration (Chill Travel)
 
-Only jumping drains stamina; sprint and swim are free.
+Low costs so travel doesn't feel punishing. Biomes add flavor.
 
 ```yaml
 actions:
   sprint:
-    enabled: false  # Off
+    enabled: true
+    drain-per-second: 1.0
   jump:
     enabled: true
-    cost: 2.0  # Lighter than default
-    cooldown: 250
+    cost: 1.5
+    cooldown: 200
   swim:
-    enabled: false  # Off
+    enabled: true
+    drain-per-second: 0.5
+  block-place:
+    enabled: true
+    cost: 0.1
+  block-break:
+    enabled: true
+    cost: 0.3
+  sneak:
+    enabled: true
+    regen-per-second: 2.0
+  attack:
+    enabled: true
+    cost: 1.0
+  shield-block:
+    enabled: true
+    initial-cost: 0.5
+    drain-per-second: 0.2
 
 hunger:
-  enabled: false  # No overflow
+  enabled: true
+  drain-per-second: 0.5
+  min-hunger: 3
+
+biomes:
+  enabled: true
+  cold-drain-multiplier: 1.10
+  hot-drain-multiplier: 1.05
 
 effects:
-  enabled: false  # No exhaustion effects
-
-ui:
-  type: ACTION_BAR
+  enabled: false
 ```
 
-Result: Parkour is the focus. Stamina bar shows jump capacity.
+Travel is fun, stamina is a soft constraint, food is backup. Biomes add atmosphere without being brutal.
 
 ---
 
-## Peaceful Roleplay (Minimal Drain)
+## Hardcore (Everything Hurts)
 
-Stamina is barely noticeable; emphasis is roleplay.
+Stamina is a real survival resource. Weight matters. Biomes are dangerous.
 
 ```yaml
 actions:
   sprint:
     enabled: true
-    drain-per-second: 0.5  # Barely there
+    drain-per-second: 6.0
   jump:
     enabled: true
-    cost: 1.0  # So cheap
+    cost: 8.0
+    cooldown: 350
+  swim:
+    enabled: true
+    drain-per-second: 4.0
+  block-place:
+    enabled: true
+    cost: 1.0
+  block-break:
+    enabled: true
+    cost: 2.0
+  sneak:
+    enabled: true
+    regen-per-second: 1.0
+  attack:
+    enabled: true
+    cost: 4.0
+  shield-block:
+    enabled: true
+    initial-cost: 3.0
+    drain-per-second: 1.5
+
+hunger:
+  enabled: true
+  drain-per-second: 1.5
+  min-hunger: 0
+  drain-saturation: true
+
+effects:
+  enabled: true
+  recovery-threshold: 20.0
+  stumble:
+    enabled: true
+    chance: 0.10
+    strength: 0.15
+
+biomes:
+  enabled: true
+  cold-drain-multiplier: 1.30
+  hot-drain-multiplier: 1.25
+  encumbrance-biome-bonus: 0.25
+
+encumbrance:
+  drowning:
+    enabled: true
+    air-loss-per-tick: 12
+  fall-damage:
+    enabled: true
+    max-multiplier: 2.5
+```
+
+Stamina is critical. Hunger is deadly. Biomes punish you. Carrying too much gear near water can kill you. Every action matters.
+
+---
+
+## Parkour (Jump Only)
+
+Only jumping costs stamina. Everything else is free.
+
+```yaml
+actions:
+  sprint:
+    enabled: false
+  jump:
+    enabled: true
+    cost: 2.0
+    cooldown: 250
+  swim:
+    enabled: false
+  block-place:
+    enabled: false
+  block-break:
+    enabled: false
+  sneak:
+    enabled: false
+  attack:
+    enabled: false
+  shield-block:
+    enabled: false
+
+hunger:
+  enabled: false
+
+effects:
+  enabled: false
+
+biomes:
+  enabled: false
+```
+
+Stamina bar shows jump capacity. Nothing else matters.
+
+---
+
+## Roleplay (Barely Noticeable)
+
+Stamina exists but doesn't dominate gameplay.
+
+```yaml
+actions:
+  sprint:
+    enabled: true
+    drain-per-second: 0.5
+  jump:
+    enabled: true
+    cost: 1.0
     cooldown: 150
   swim:
     enabled: true
     drain-per-second: 0.3
+  block-place:
+    enabled: true
+    cost: 0.05
+  block-break:
+    enabled: true
+    cost: 0.1
+  sneak:
+    enabled: true
+    regen-per-second: 2.0
+  attack:
+    enabled: true
+    cost: 0.5
+  shield-block:
+    enabled: true
+    initial-cost: 0.3
+    drain-per-second: 0.1
 
 hunger:
   enabled: true
-  drain-per-second: 0.2  # Almost negligible
-  min-hunger: 10  # Always clearly alive
+  drain-per-second: 0.2
+  min-hunger: 10
 
 effects:
-  enabled: false  # Too immersive for RP
+  enabled: false
+
+biomes:
+  enabled: false
 ```
 
-Result: Stamina bar is present but not dominating gameplay.
+Stamina bar is present but subtle. Players won't notice it unless they go all-out.
 
 ---
 
 ## How to Apply
 
-1. Edit your `config.yml` with values from an example above
+1. Copy the values you want into your `config.yml`
 2. Run `/shs reload`
 3. Test in-game for 10 minutes
 4. Tweak numbers up or down based on feel
-5. Reload again and retest
+5. Or open `/shs gui` and adjust values with clicks
 
-Don't overthink it — start with one of these and adjust.
+Start with one of these and adjust from there.
