@@ -1,36 +1,61 @@
 # Introduction
 
-## Why this plugin exists
+## Why This Plugin Exists
 
 Vanilla survival hunger and MMOCore stamina don't talk to each other. Players end up managing two separate resources that feel completely disconnected.
 
-SoapsHungerStamina fixes that by making stamina the primary resource for everything physical. When stamina is gone, hunger becomes the cost. Your inventory weight matters. The biome you're in matters.
+SoapsHungerStamina fixes that by making stamina the primary resource for everything physical. When stamina is gone, hunger becomes the cost. Your inventory weight matters. The biome you're in matters. Push too far past empty and your body starts breaking down.
 
-## How it works
+## Core Features
 
-Stamina is your movement currency. Sprinting drains it per second, jumping costs a flat amount per jump, swimming drains it per second, and attacking costs stamina per hit. Placing and breaking blocks cost a small amount each. Raising a shield costs stamina upfront and keeps draining while held. Sneaking is the one exception - it gives bonus stamina regen on top of MMOCore's natural regen.
+Stamina drains in real time while sprinting, jumping, swimming, attacking, placing blocks, breaking blocks, and shield blocking. Wading through water or touching lava costs stamina too. Sneaking gives bonus stamina regen instead of draining, and standing still provides a small passive recovery on top of MMOCore's natural regen.
 
-When stamina is empty and you keep doing stuff, your food bar starts draining instead. Saturation goes first, then actual hunger. There's a configurable minimum so hunger can stop at a floor you set instead of going all the way to zero.
+When stamina runs out, extra cost spills over into hunger - saturation burns first, then actual food. There's a configurable hunger floor so it never drops below a set minimum, and the drain is smooth and fractional with no sudden chunk loss.
 
-If exhaustion effects are enabled, hitting zero stamina has physical consequences. Slowness makes you sluggish, sweat particles drip from your character, heavy breathing darkens your vision briefly, and stumble nudges knock you off course. All effects clear once stamina recovers past a configurable threshold.
+Getting hit drains stamina through the winded system. Normal hits cost stamina and apply a drain-over-time effect. Critical hits are harsher - bigger cost, longer drain, and a regen lock that completely blocks all stamina recovery for several seconds.
 
-Biomes add another layer. Cold biomes (snowy plains, frozen ocean, etc.) freeze you and drain stamina faster. Hot biomes (desert, jungle, nether) make you sweat and drain faster too. Each biome can have its own custom drain multiplier, and being encumbered in an extreme biome makes it even worse.
+If you keep pushing with empty stamina, overexertion kicks in. There's a grace period before anything happens, but once you pass the threshold you start taking real damage that scales the longer you push. Stop and rest to recover.
 
-Weight matters too. Armor has weight, and heavier armor means faster stamina drain. Items in your inventory add up. Cross a threshold and you're encumbered with faster drain. Cross the severe threshold and it gets really bad - you drown faster and take more fall damage.
+Toggle each drain type on or off individually. Every action, every effect, every system can be enabled or disabled separately.
 
-For feedback, you get real-time stamina display through action bar, boss bar, or chat messages. There's an optional text-character stamina bar (`████░░░░░░`), low stamina warnings that change color, and messages when exhaustion kicks in or clears. Biome transition messages tell you when the climate changes.
+### Optional Systems
 
-Admins can open `/shs gui` to toggle features and change values in-game. No config file editing needed, every setting has a clickable item. Left/right click to adjust values, shift-click for bigger jumps. The GUI includes a biome settings page for adding, removing, and editing biomes. Weight and encumbrance settings can be managed with `/shs weight` commands.
+- **Exhaustion effects** at zero stamina: slowness, sweat particles, heavy breathing, and stumbling - all individually toggleable
+- **Sprint lock** when stamina hits zero
+- **Hunger bar mode** that syncs the food bar directly with stamina - eating restores stamina instead of food
 
-## Why it matters
+### Biome System (off by default)
+
+Cold and hot biomes increase stamina drain with custom multipliers. Each biome has its own passive drain on top of that. Cold biomes gradually freeze your character, hot biomes cause sweat particles. Per-biome configuration lets you add, remove, or edit biomes and set custom multipliers. Transition messages fire when entering or leaving extreme biomes. The biome effect stacks with encumbrance for even harsher drain in the worst conditions.
+
+### Weight & Encumbrance
+
+Armor weight and inventory weight affect stamina drain. Two thresholds - encumbered (faster drain, slowness) and severe (even worse drain, sprint blocked, extra slowness in water). Severely encumbered players drown faster and take more fall damage. Per-item weights are configurable in weight.yml, and the system can weigh shulker box and bundle contents. Per-player max weight can be set with permissions.
+
+With PlaceholderAPI installed, max carry weight and drain reduction can scale from other plugins - tie it to MMOCore level, strength attributes, or anything that exposes a placeholder.
+
+### Player Experience
+
+Stamina display via Action Bar, Boss Bar, or Chat with an optional text-based stamina bar. Customizable warnings for low stamina and exhaustion. Adjustable message cooldown so the UI doesn't spam. Lightweight updates avoid flickering. Works properly across death, respawn, world changes, teleports, joining, and leaving.
+
+### Admin Controls
+
+In-game GUI to toggle features and change values without editing config files. Weight commands to manage item weights and encumbrance settings in-game. Toggle and config set commands for quick adjustments. Full tab completion on all commands. Reload configs, messages, and weight files without restarting. Give stamina to players or reset them to full. Per-feature bypass permissions for granular control. Optional debug logging.
+
+### Performance & Stability
+
+Tick-based system with adjustable speed. Won't drain stamina if the player is standing still (unless in an extreme biome with passive drain). Suppresses vanilla exhaustion to avoid conflicts. Handles lag spikes gracefully by capping time between ticks. Only active in Survival and Adventure modes. PlaceholderAPI support if installed.
+
+## The Gameplay Loop
 
 Your server gets a real resource loop:
 - Travel costs stamina
-- Combat costs stamina
-- Carrying heavy gear has a downside
+- Combat costs stamina - and getting hit makes it worse
+- Carrying heavy gear has a real downside
 - Biomes feel different to be in
 - Running out means hunger drain and exhaustion effects
+- Pushing past empty means overexertion damage
 - Food becomes valuable again
 - Resting and recovery feel necessary
 
-Stamina -> hunger overflow -> exhaustion effects. That's the loop.
+Stamina → hunger overflow → exhaustion effects → overexertion. That's the loop.

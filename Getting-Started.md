@@ -6,7 +6,7 @@
    The plugin won't load without it.
 
 2. **Drop the jar into your plugins folder.**
-   Copy `SoapsHungerStamina-1.0.1.jar` into `plugins/`.
+   Copy `SoapsHungerStamina-1.0.3.jar` into `plugins/`.
 
 3. **Start your server.**
    Restart or load the plugin via your plugin manager.
@@ -25,9 +25,10 @@
 
 1. Join the server in Survival mode
 2. Hold `W + Ctrl` to sprint
-3. Watch your stamina display, it should drop
+3. Watch your stamina display - it should drop
 4. Stop sprinting and your stamina regens (handled by MMOCore)
 5. Keep sprinting after stamina hits zero and your food bar should drop
+6. If overexertion is enabled, keep pushing and you'll start taking damage
 
 ## Adjusting Settings
 
@@ -35,19 +36,6 @@ You can either edit `plugins/SoapsHungerStamina/config.yml` and run `/shs reload
 
 ## Default Behavior
 
-- Sprint: 1.2 stamina per second
-- Jump: 2.0 stamina per jump
-- Swim: 1.0 stamina per second
-- Attack: 1.2 stamina per hit
-- Block place: 0.15 stamina per block
-- Block break: 0.4 stamina per block
-- Shield block: 0.8 upfront + 0.3 per second
-- Sneak: +0.8 stamina regen per second
-- Hunger overflow: 0.5 hunger points per second when stamina is empty
-- Exhaustion effects: off by default (enable in config)
-- Biome effects: off by default (enable in config)
-- Weight/encumbrance: uses weight.yml thresholds
-- Display: Boss Bar showing stamina
-- GUI: enabled, accessible with `/shs gui`
+The plugin works out of the box with balanced defaults. Sprinting, jumping, swimming, combat, mining, and building all cost stamina. Getting hit winds you. Running on empty drains your food bar and eventually hurts you through overexertion.
 
-Everything works out of the box. Tune it later if needed.
+For exact default values, see [Default Config Files](Default-Config-Files.md).

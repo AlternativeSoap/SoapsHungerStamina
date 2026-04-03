@@ -14,6 +14,8 @@ Requires [PlaceholderAPI](https://www.spigotmc.org/resources/placeholderapi.6245
 | `%shs_stamina_bar%` | Text stamina bar using filled/empty characters | `████████░░` |
 | `%shs_weight%` | Total inventory weight (1 decimal) | `42.5` |
 | `%shs_encumbered%` | Encumbrance level | `NONE`, `NORMAL`, or `SEVERE` |
+| `%shs_overexertion%` | Current overexertion value (1 decimal) | `12.3` |
+| `%shs_overexerted%` | Whether the player is overexerting | `true` or `false` |
 
 ---
 
@@ -35,6 +37,10 @@ Requires [PlaceholderAPI](https://www.spigotmc.org/resources/placeholderapi.6245
   - `NORMAL` - over the encumbered threshold (default: 300)
   - `SEVERE` - over the severely encumbered threshold (default: 500)
 
+- `%shs_overexertion%` shows how much overexertion the player has accumulated. Overexertion builds up when the player keeps draining stamina at zero. Once it exceeds the threshold (default: 15), damage starts.
+
+- `%shs_overexerted%` returns `true` when the player is actively past the overexertion threshold and taking damage, `false` otherwise.
+
 ---
 
 ## Usage Examples
@@ -52,6 +58,11 @@ Stamina: %shs_stamina%/%shs_stamina_max%
 **Hologram with weight:**
 ```
 Weight: %shs_weight% [%shs_encumbered%]
+```
+
+**Overexertion warning on a scoreboard:**
+```
+Strain: %shs_overexertion%
 ```
 
 These work anywhere PlaceholderAPI placeholders are supported: scoreboards, tab lists, holograms, chat formats, BossBar plugins, etc.
