@@ -43,56 +43,56 @@ There are 12 action types. Each one can be turned on/off separately.
 
 ```yaml
 actions:
-  regen-action-cooldown: 1500
+  regen-action-cooldown: 2000
 
   sprint:
     enabled: true
-    drain-per-second: 1.0
+    drain-per-second: 1.2
 
   jump:
     enabled: true
-    cost: 1.0
+    cost: 2.0
     cooldown: 300
 
   swim:
     enabled: true
-    drain-per-second: 0.8
+    drain-per-second: 1.0
 
   water-contact:
     enabled: true
-    drain-per-second: 0.4
+    drain-per-second: 0.5
 
   lava-contact:
     enabled: true
-    drain-per-second: 1.5
+    drain-per-second: 2.0
 
   block-place:
     enabled: true
-    cost: 0.1
+    cost: 0.15
 
   block-break:
     enabled: true
-    cost: 0.25
+    cost: 0.4
 
   sneak:
     enabled: true
-    regen-per-second: 1.2
+    regen-per-second: 0.8
 
   idle:
     enabled: true
-    regen-per-second: 0.3
+    regen-per-second: 0.4
 
   attack:
     enabled: true
-    cost: 0.8
+    cost: 1.2
 
   shield-block:
     enabled: true
-    initial-cost: 0.5
-    drain-per-second: 0.2
+    initial-cost: 0.8
+    drain-per-second: 0.3
 ```
 
-`regen-action-cooldown` - milliseconds after any draining action before sneak and idle regen kick in. Prevents players from instantly recovering by sprint-crouch cycling. 1500 = 1.5 seconds.
+`regen-action-cooldown` - milliseconds after any draining action before sneak and idle regen kick in. Prevents players from instantly recovering by sprint-crouch cycling. 2000 = 2 seconds.
 
 `sprint.drain-per-second` - stamina lost every second while sprinting and actually moving. Standing still while holding sprint doesn't count.
 
@@ -129,14 +129,14 @@ Taking damage drains stamina. Critical hits are harsher and lock out all regen.
     enabled: true
     refresh-on-hit: true
     normal:
-      instant-cost: 1.5
-      drain-per-second: 0.8
+      instant-cost: 2.0
+      drain-per-second: 1.0
       duration: 5.0
     critical:
-      instant-cost: 3.0
-      drain-per-second: 1.6
+      instant-cost: 4.0
+      drain-per-second: 2.0
       duration: 8.0
-      regen-lock-duration: 4.0
+      regen-lock-duration: 5.0
 ```
 
 `refresh-on-hit` - getting hit again restarts the winded timer. When disabled, a new hit doesn't extend the effect.
@@ -164,12 +164,12 @@ When stamina is at zero and the player keeps performing draining actions, overex
 ```yaml
 overexertion:
   enabled: true
-  threshold: 15.0
+  threshold: 12.0
   base-damage: 1.0
   scaling-enabled: true
-  scaling-divisor: 10.0
+  scaling-divisor: 8.0
   max-damage: 8.0
-  recovery-rate: 3.0
+  recovery-rate: 2.5
   warning-threshold: 0.75
 ```
 
@@ -196,16 +196,16 @@ When stamina hits zero and the player keeps doing stuff, their food bar starts d
 ```yaml
 hunger:
   enabled: true
-  drain-per-second: 0.3
-  min-hunger: 6
+  drain-per-second: 0.5
+  min-hunger: 0
   drain-saturation: true
 ```
 
 `drain-per-second` - how fast the food bar drops. 1 point = half a food shank.
 
-`min-hunger` - the food bar won't go below this number (0-20). Default 6 means it stops at 3 shanks, so players won't fully starve from stamina drain alone.
+`min-hunger` - the food bar won't go below this number (0-20). Set it to 3 or 4 if you don't want players to fully starve from stamina drain.
 
-`drain-saturation` - if true, saturation drains first before the actual food bar. Matches how vanilla hunger works.
+`drain-saturation` - if true, the golden saturation drains first before the actual food bar. Matches how vanilla hunger works.
 
 ---
 
@@ -216,7 +216,7 @@ hunger-bar:
   enabled: false
 ```
 
-Replaces the vanilla food bar entirely with stamina. Your stamina percentage (0-100%) maps to the food bar (0-20 shanks). Eating gives stamina instead of food. Vanilla hunger mechanics are paused while this is on.
+Turns the vanilla food bar into a stamina display. Your stamina percentage (0-100%) maps to the food bar (0-20 shanks). Vanilla hunger mechanics are paused while this is on.
 
 Only use this if you want a completely different visual approach.
 
@@ -230,7 +230,7 @@ engine:
   movement-threshold: 0.05
 ```
 
-`tick-interval` - how often the plugin runs its checks, in server ticks. 20 ticks = 1 second. Lower = smoother drain but more CPU. 4 is a good balance (5 checks per second).
+`tick-interval` - how often the plugin runs its checks, in server ticks. 20 ticks = 1 second. Lower numbers = smoother drain but more CPU. 4 is a good balance.
 
 `movement-threshold` - how far (in blocks) a player needs to move to count as "moving." Prevents stamina draining while standing still. 0.05 is fine for normal play.
 
@@ -238,12 +238,12 @@ engine:
 
 ## Exhaustion Effects
 
-Penalties that kick in when stamina hits 0. Disabled by default.
+Bad stuff that happens when stamina hits 0. Disabled by default.
 
 ```yaml
 effects:
   enabled: false
-  recovery-threshold: 15.0
+  recovery-threshold: 10.0
 
   slowness:
     enabled: true
@@ -258,36 +258,36 @@ effects:
 
   stumble:
     enabled: true
-    chance: 0.02
-    strength: 0.08
+    chance: 0.03
+    strength: 0.1
 ```
 
-`recovery-threshold` - the player has to recover past this stamina percentage before effects clear. At 15%, effects stick around until they get above 15% stamina.
+`recovery-threshold` - the player has to regen past this stamina percentage before effects go away. At 10%, effects stick around until they get above 10% stamina.
 
 `slowness.amplifier` - 0 = Slowness I, 1 = Slowness II, etc.
 
-`sweat-particles.count` - water drip particles spawned per engine tick.
+`sweat-particles.count` - water drip particles spawned per engine tick. More = more visible.
 
 `heavy-breathing` - brief darkness pulses on the screen edges. On or off, no extra settings.
 
-`stumble.chance` - chance per engine tick (0.0 to 1.0). 0.02 = 2% chance each tick.
+`stumble.chance` - chance per engine tick (0.0 to 1.0). 0.03 = 3% chance each tick.
 
-`stumble.strength` - how hard the knockback pushes. 0.08 is subtle.
+`stumble.strength` - how hard the knockback pushes. 0.1 is subtle.
 
 ---
 
 ## Biomes
 
-Cold biomes freeze you and drain stamina faster. Hot biomes make you sweat and drain faster. Both also apply a passive drain just for being there. Disabled by default.
+Cold biomes freeze you and drain stamina faster. Hot biomes make you sweat and drain faster. Disabled by default.
 
 ```yaml
 biomes:
   enabled: false
-  cold-drain-multiplier: 1.08
-  hot-drain-multiplier: 1.06
+  cold-drain-multiplier: 1.10
+  hot-drain-multiplier: 1.08
 
-  cold-passive-drain: 0.5
-  hot-passive-drain: 0.4
+  cold-passive-drain: 0.6
+  hot-passive-drain: 0.5
 
   freeze:
     enabled: true
@@ -295,14 +295,14 @@ biomes:
 
   sweat:
     enabled: true
-    count: 3
+    count: 4
 
-  encumbrance-biome-bonus: 0.05
+  encumbrance-biome-bonus: 0.10
 ```
 
-`cold-drain-multiplier` - how much faster stamina drains in cold biomes. 1.08 = 8% faster.
+`cold-drain-multiplier` - how much faster stamina drains in cold biomes. 1.10 = 10% faster.
 
-`hot-drain-multiplier` - same thing for hot biomes. 1.06 = 6% faster.
+`hot-drain-multiplier` - same thing for hot biomes. 1.08 = 8% faster.
 
 `cold-passive-drain` - extra stamina drained per second just for standing in a cold biome, even if you're not doing anything.
 
@@ -326,7 +326,7 @@ Below the settings, there's a `list:` section where you define which biomes are 
       type: hot
     NETHER_WASTES:
       type: hot
-      multiplier: 1.25
+      multiplier: 1.50
 ```
 
 `type` - set to `hot` or `cold`. Controls whether the biome causes sweat or freeze, and uses the default drain multiplier.
@@ -348,8 +348,8 @@ encumbrance:
   enabled: true
   max-weight: 300.0
   severe-weight: 500.0
-  encumbered-drain-multiplier: 1.25
-  severe-drain-multiplier: 1.6
+  encumbered-drain-multiplier: 1.4
+  severe-drain-multiplier: 2.0
   encumbered-slowness: 0
   severe-slowness: 1
   block-sprint-severe: true
@@ -362,7 +362,7 @@ encumbrance:
 
 `severe-weight` - threshold for severe encumbrance.
 
-`encumbered-drain-multiplier` / `severe-drain-multiplier` - stamina drain multiplier at each tier. 1.25 = 25% more drain.
+`encumbered-drain-multiplier` / `severe-drain-multiplier` - stamina drain multiplier at each tier. 1.4 = 40% more drain.
 
 `encumbered-slowness` / `severe-slowness` - slowness amplifier at each tier (0 = Slowness I).
 
@@ -379,16 +379,16 @@ encumbrance:
 ```yaml
 drowning:
   enabled: true
-  air-loss-per-tick: 30
+  air-loss-per-tick: 8
 
 fall-damage:
   enabled: true
-  max-multiplier: 1.4
+  max-multiplier: 1.75
 ```
 
-`drowning.air-loss-per-tick` - encumbered players lose this many air ticks per engine tick when underwater. Vanilla provides 300 air ticks total (15 seconds), so 30 per tick drains it very fast.
+`drowning.air-loss-per-tick` - severely encumbered players lose this many air ticks per engine tick when underwater. Vanilla provides 300 air ticks total (15 seconds), so 8 per tick drains it noticeably faster.
 
-`fall-damage.max-multiplier` - fall damage is multiplied by up to this amount at max weight. 1.4 = 40% more fall damage when fully loaded.
+`fall-damage.max-multiplier` - fall damage is multiplied by up to this amount at max weight. 1.75 = 75% more fall damage when fully loaded.
 
 ### Scaling (PlaceholderAPI)
 
@@ -408,7 +408,7 @@ scaling-drain:
   cap: 0.50
 ```
 
-`scaling-weight` - increases max carry weight based on a placeholder value. Bonus = placeholder value x per-point, capped at cap. At level 20 with default settings: 20 x 5.0 = 100 extra carry capacity. Supports multiple sources (see config comments for the multi-source format).
+`scaling-weight` - increases max carry weight based on a placeholder value. Bonus = placeholder value x per-point, capped at cap. At level 20 with default settings: 20 x 5.0 = 100 extra carry capacity.
 
 `scaling-drain` - reduces all stamina drain based on a placeholder value. At 10 strength with defaults: 10 x 0.02 = 20% less drain. Capped at 50%.
 
@@ -422,7 +422,7 @@ ui:
   update-threshold: 0.5
   message-cooldown: 0
   low-stamina-warning: true
-  low-stamina-threshold: 20.0
+  low-stamina-threshold: 25.0
   bar:
     enabled: false
     length: 10
@@ -438,9 +438,9 @@ ui:
 
 `low-stamina-warning` - shows a different colored format when stamina drops below the threshold.
 
-`low-stamina-threshold` - what percentage counts as "low." 20 means the warning kicks in below 20% stamina.
+`low-stamina-threshold` - what percentage counts as "low." 25 means the warning kicks in below 25% stamina.
 
-`bar` - a text-based stamina bar using characters. When enabled, you can use `%stamina_bar%` in messages.yml format strings.
+`bar` - a text-based stamina bar using characters. When enabled, you can use `%stamina_bar%` in your messages.yml format strings.
 
 ---
 
@@ -461,8 +461,6 @@ Key sections:
 - `ui.format` - the stamina display format
 - `ui.low-stamina-format` - warning display when low
 - `gui.*` - all text shown in the admin settings GUI
-
-You can also manage biomes in-game through the GUI's Biome Settings page, or use `/shs weight` commands for weight management.
 
 ---
 
