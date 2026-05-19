@@ -16,6 +16,15 @@ Requires [PlaceholderAPI](https://www.spigotmc.org/resources/placeholderapi.6245
 | `%shs_encumbered%` | Encumbrance level | `NONE`, `NORMAL`, or `SEVERE` |
 | `%shs_overexertion%` | Current overexertion accumulation (1 decimal) | `8.3` |
 | `%shs_overexerted%` | Whether the player is currently overexerting | `true` or `false` |
+| `%shs_stat_drained%` | Session total stamina drained (1 decimal) | `254.3` |
+| `%shs_stat_regened%` | Session total stamina regened (1 decimal) | `180.7` |
+| `%shs_stat_second_winds%` | Session second wind trigger count | `2` |
+| `%shs_stat_overexertions%` | Session overexertion event count | `1` |
+| `%shs_stat_time_at_zero%` | Session seconds at 0 stamina (1 decimal) | `12.5` |
+| `%shs_well_fed%` | Remaining Well Fed buff seconds (0 if inactive) | `25` |
+| `%shs_well_rested%` | Remaining Well Rested buff seconds (0 if inactive) | `90` |
+| `%shs_dodge_cooldown%` | Remaining dodge cooldown seconds (0 if ready) | `1.2` |
+| `%shs_sprint_burst_cooldown%` | Remaining sprint burst cooldown seconds (0 if ready) | `22.5` |
 
 ---
 
@@ -37,7 +46,7 @@ Requires [PlaceholderAPI](https://www.spigotmc.org/resources/placeholderapi.6245
   - `NORMAL` — over the encumbered threshold (default: 300)
   - `SEVERE` — over the severely encumbered threshold (default: 500)
 
-- `%shs_overexertion%` returns the accumulated overexertion points (0.0 when not overexerting). Overexertion builds when stamina is at 0 and the player keeps draining. Once it exceeds the threshold (default: 15.0), the player takes damage.
+- `%shs_overexertion%` returns the accumulated overexertion points (0.0 when not overexerting). Overexertion builds when stamina is at 0 and the player keeps draining. Once it exceeds the threshold (default: 25.0), the player takes damage.
 
 - `%shs_overexerted%` returns `true` while the player is actively overexerting (stamina at 0 and still performing actions), `false` otherwise.
 

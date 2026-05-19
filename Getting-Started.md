@@ -6,7 +6,7 @@
    The plugin won't load without it. MythicLib is also required (it's a dependency of MMOCore).
 
 2. **Drop the jar into your plugins folder.**
-   Copy `SoapsHungerStamina-1.0.4.jar` into `plugins/`.
+   Copy `SoapsHungerStamina-1.0.6.jar` into `plugins/`.
 
 3. **Optional: Install PlaceholderAPI** for `%shs_*%` placeholders on scoreboards, tab lists, etc.
 
@@ -41,40 +41,47 @@ You can either edit the config files and run `/shs reload`, or use the in-game G
 ## Default Behavior
 
 **Actions** (configured in `actions.yml`):
-- Sprint: 1.0 stamina per second
-- Jump: 1.5 stamina per jump (300ms cooldown)
-- Swim: 1.0 stamina per second
-- Water contact: 0.5 stamina per second
-- Lava contact: 1.5 stamina per second
-- Attack: 1.0 stamina per hit
-- Block place: 0.15 stamina per block
-- Block break: 0.3 stamina per block
-- Shield block: 0.6 upfront + 0.3 per second
-- Sneak regen: +0.8 stamina per second (after 2s cooldown)
-- Idle regen: +0.4 stamina per second (after 2s cooldown)
-- Winded (hit): 0.5 instant + 0.6/s for 3.5s | Critical: 1.5 instant + 1.2/s for 5s + 3s regen lock
-- Elytra: 0.8 stamina per second
-- Climbing: 0.6 stamina per second
-- Eating: +3.0 stamina restored per food item
-- Mace smash: 2.5 extra stamina (on top of attack cost)
-- Boat: 0.3 stamina per second
-- Crawling: 0.5 stamina per second
-- Riptide: 2.5 stamina per launch
-- Tool use: hoe 0.2, shears 0.15, brush 0.1
-- Powder snow: 0.7 stamina per second
+- Sprint: 0.8 stamina per second
+- Jump: 1.0 stamina per jump
+- Swim: 0.7 stamina per second
+- Water contact: 0.3 stamina per second
+- Lava contact: 1.0 stamina per second
+- Attack: 0.8 stamina per hit (with optional per-weapon-type costs and exclusion list)
+- Block place: 0.15 stamina per block (with exclusion list)
+- Block break: 0.2 stamina per block (with exclusion list)
+- Shield block: 0.2 upfront + 0.1 per second + 0.5 per hit absorbed (shield forced down at 1.0 stamina)
+- Sneak regen: +1.2 stamina per second (after 1.5s cooldown)
+- Idle regen: +0.6 stamina per second (after 1.5s cooldown)
+- Winded (hit): 0.3 instant + 0.4/s for 3s | Critical: 1.0 instant + 0.8/s for 4s + 2.5s regen lock
+- Elytra: 0.5 stamina per second
+- Climbing: 0.4 stamina per second
+- Mace smash: 2.0 extra stamina (on top of attack cost)
+- Boat: 0.1 stamina per second
+- Crawling: 0.35 stamina per second
+- Riptide: 2.0 stamina per launch
+- Tool use: hoe 0.2, shears 0.15, brush 0.1, flint & steel 0.15
+- Powder snow: 0.5 stamina per second
 - Slime bounce: 0.5 per bounce
 - Soul sand: 1.20x drain multiplier
 - Honey block: 1.15x drain multiplier
 - Potion modifiers: disabled by default (Speed 1.15x, Haste 1.10x)
-- Damage intake: 0.5 stamina per heart of damage
+- Damage intake: 0.3 stamina per heart of damage
 
 **Systems** (configured in `config.yml`):
 - Projectiles: enabled (bow 1.5, crossbow 1.8, trident 2.0, 10 throwable types)
-- Overexertion: enabled (threshold 15.0, warns at 75%, damage starts at 1.0/tick)
+- Overexertion: enabled (threshold 25.0, warns at 75%, damage starts at 0.5/tick)
+- Second Wind: disabled by default (5s idle at zero → 30% stamina recovery, 90s cooldown)
 - Hunger overflow: enabled at 0.5 food points per second
-- Exhaustion effects: disabled by default
-- Biomes: disabled by default (36 pre-configured biomes)
+- Exhaustion effects: disabled by default (with recovery animation)
+- Sounds: disabled by default (5 configurable event sounds)
+- Biomes: disabled by default (38 pre-configured biomes with exposure system)
 - Altitude: disabled by default
+- Stamina Food: enabled (13 foods configured — golden apple, golden carrot, meats, stews)
+- Dodge: disabled by default (sneak while sprinting, 4.0 cost, 1.5s cooldown)
+- Sprint Burst: disabled by default (speed boost on sprint start, 6.0 cost, 30s cooldown)
+- Bed Rest: enabled (sleeping restores full stamina + Well Rested buff for 120s)
+- Per-world settings: disabled-worlds list and optional per-world drain multipliers
+- Player display choice: disabled by default (let players pick actionbar/bossbar/off)
 - Display: Boss Bar showing stamina
 - GUI: enabled, accessible with `/shs gui`
 

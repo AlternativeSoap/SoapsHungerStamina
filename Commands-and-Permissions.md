@@ -9,6 +9,14 @@ Permission: `soapsstamina.use` (default: everyone)
 
 Alias: `/shs stamina`
 
+### `/stamina display <mode>`
+Let players choose how their stamina is displayed. Modes: `actionbar`, `bossbar`, or `off`.
+
+Only works when `player-display-choice.enabled` is true in config.
+Also requires `ui.enabled: true` in config. If UI is globally disabled, this command will show a notice and do nothing.
+
+Permission: `soapsstamina.display.choose` (default: everyone)
+
 ### `/weight`
 Shows your current total weight and max weight.
 
@@ -83,15 +91,15 @@ Available settings:
 | `idle-regen` | Idle regen |
 | `elytra` | Elytra gliding drain |
 | `climbing` | Climbing drain |
-| `eating-regen` | Eating stamina restore |
+| `block-interact` | Block interaction stamina cost |
 | `mace` | Mace smash extra cost |
 | `potion-modifiers` | Potion effect drain modifiers |
 | `damage-intake` | Damage intake drain |
 | `boat` | Boat paddling drain |
 | `crawling` | Crawling drain |
 | `riptide` | Riptide launch cost |
-| `tool-use` | Tool use (hoe/shears/brush) cost |
-| `powder-snow` | Powder snow drain |
+| `tool-use` | Tool use (hoe/shears/brush/flint-and-steel) cost |
+| `powder-snow` | Powder snow exposure multiplier |
 | `slime-bounce` | Slime bounce cost |
 | `soul-sand` | Soul sand drain multiplier |
 | `honey-block` | Honey block drain multiplier |
@@ -100,6 +108,17 @@ Available settings:
 | `drain-saturation` | Drain saturation first |
 | `overexertion` | Overexertion system |
 | `overexertion-scaling` | Overexertion damage scaling |
+| `second-wind` | Second Wind recovery |
+| `weapon-costs` | Per-weapon-type attack costs |
+| `sounds` | Sound effects for stamina events |
+| `recovery-animation` | Recovery particle animation |
+| `player-display-choice` | Player display preference |
+| `stamina-food` | Stamina food system |
+| `dodge` | Dodge active ability |
+| `sprint-burst` | Sprint burst speed boost |
+| `bed-rest` | Bed rest stamina recovery |
+| `bed-rest-buff` | Well Rested buff from bed rest |
+| `container-weight` | Container weight calculation |
 | `projectiles` | All projectile costs |
 | `bow` | Bow cost |
 | `bow-scale-with-charge` | Bow charge scaling |
@@ -122,7 +141,7 @@ Available settings:
 | `scaling-drain` | Scaling drain reduction (PAPI) |
 | `mmoitems-weight` | MMOItems custom weights |
 | `debug` | Console debug logging |
-| `stop-sprint-on-empty` | Stop sprint at 0 stamina |
+| `sprint-lock-enabled` | Hard sprint lock at 0 stamina |
 | `low-stamina-warning` | Low stamina UI warning |
 | `stamina-bar` | Text stamina bar |
 
@@ -138,7 +157,7 @@ Available groups and their keys:
 | Group | Keys |
 |---|---|
 | `sprint` | `drain-per-second` |
-| `jump` | `cost`, `cooldown` |
+| `jump` | `cost` |
 | `swim` | `drain-per-second` |
 | `water-contact` | `drain-per-second` |
 | `lava-contact` | `drain-per-second` |
@@ -146,25 +165,31 @@ Available groups and their keys:
 | `block-break` | `cost` |
 | `sneak` | `regen-per-second` |
 | `attack` | `cost` |
-| `shield-block` | `initial-cost`, `drain-per-second` |
+| `shield-block` | `initial-cost`, `drain-per-second`, `min-stamina`, `damage-cost` |
 | `winded` | `normal-instant-cost`, `normal-drain-per-second`, `normal-duration`, `critical-instant-cost`, `critical-drain-per-second`, `critical-duration`, `critical-regen-lock-duration`, `refresh-on-hit` |
 | `idle` | `regen-per-second`, `regen-action-cooldown` |
 | `elytra` | `drain-per-second` |
 | `climbing` | `drain-per-second` |
-| `eating-regen` | `regen-amount` |
 | `mace` | `cost` |
 | `potion-modifiers` | `speed-multiplier`, `haste-multiplier` |
 | `damage-intake` | `cost-per-heart` |
 | `boat` | `drain-per-second` |
 | `crawling` | `drain-per-second` |
 | `riptide` | `cost` |
-| `tool-use` | `hoe-cost`, `shears-cost`, `brush-cost` |
-| `powder-snow` | `drain-per-second` |
+| `tool-use` | `hoe-cost`, `shears-cost`, `brush-cost`, `flint-and-steel-cost` |
+| `powder-snow` | `exposure-multiplier` |
 | `slime-bounce` | `cost` |
 | `soul-sand` | `drain-multiplier` |
 | `honey-block` | `drain-multiplier` |
 | `hunger` | `drain-per-second`, `min-hunger`, `drain-saturation` |
 | `overexertion` | `threshold`, `base-damage`, `scaling-divisor`, `max-damage`, `recovery-rate`, `warning-threshold` |
+| `second-wind` | `idle-seconds`, `recovery-percent`, `cooldown-seconds` |
+| `weapon-costs` | `sword`, `axe`, `trident`, `fist` |
+| `stamina-food` | (per-item: use the item material name as key, e.g. `GOLDEN_APPLE instant-stamina 15.0`) |
+| `dodge` | `cost`, `cooldown-ms`, `velocity`, `invulnerable-ticks` |
+| `sprint-burst` | `min-stamina-percent`, `cost`, `speed-amplifier`, `duration-ticks`, `cooldown-ms` |
+| `bed-rest` | `restore-percent`, `buff-duration-seconds`, `buff-drain-reduction` |
+| `biomes` | `cold-drain-multiplier`, `hot-drain-multiplier`, `encumbrance-biome-bonus`, `cold-duration`, `hot-duration`, `decay-rate`, `exposed-drain-cold`, `exposed-drain-hot`, `armor-protection` |
 | `bow` | `cost` |
 | `crossbow` | `cost` |
 | `trident` | `cost` |
@@ -177,7 +202,6 @@ Available groups and their keys:
 | `ui` | `type`, `update-threshold`, `message-cooldown`, `low-stamina-threshold` |
 | `stamina-bar` | `length`, `filled-char`, `empty-char` |
 | `general` | `bypass-permission` |
-| `biomes` | `cold-drain-multiplier`, `hot-drain-multiplier`, `encumbrance-biome-bonus`, `freeze-ticks`, `sweat-count`, `freeze-particles-count` |
 | `altitude` | `high-threshold`, `high-multiplier`, `high-passive-drain`, `low-threshold`, `low-multiplier`, `low-passive-drain` |
 | `encumbrance` | `drowning-air-loss`, `fall-damage-max-multiplier` |
 
@@ -194,6 +218,11 @@ Sets a player's stamina back to full.
 ### `/shs help`
 Lists all available commands.
 
+### `/shs stats`
+Shows session statistics for the current session: total stamina drained, total stamina restored, number of second winds triggered, number of overexertions, and time spent at zero stamina.
+
+Permission: `soapsstamina.admin`
+
 ---
 
 ## Permissions
@@ -203,8 +232,9 @@ Lists all available commands.
 | Permission | What it does | Default |
 |---|---|---|
 | `soapsstamina.use` | Check own stamina with `/stamina` and weight with `/weight` | Everyone |
-| `soapsstamina.admin` | All admin commands (reload, gui, toggle, config, give, reset, weight management) | OP |
+| `soapsstamina.admin` | All admin commands (reload, gui, toggle, config, give, reset, weight management, stats) | OP |
 | `soapsstamina.bypass` | Skip all stamina and hunger drain | Nobody |
+| `soapsstamina.display.choose` | Let players choose their display mode with `/stamina display` | Everyone |
 
 ---
 
@@ -218,13 +248,16 @@ All default to nobody (false).
 |---|---|
 | `soapsstamina.bypass.sprint` | Sprint stamina drain |
 | `soapsstamina.bypass.jump` | Jump stamina cost |
-| `soapsstamina.bypass.swim` | Swim stamina drain |
+| `soapsstamina.bypass.swim` | Swim, water-contact, and lava-contact stamina drain |
 | `soapsstamina.bypass.block-place` | Block place stamina cost |
 | `soapsstamina.bypass.block-break` | Block break stamina cost |
 | `soapsstamina.bypass.sneak` | Sneak stamina regen bonus |
 | `soapsstamina.bypass.attack` | Attack stamina cost |
 | `soapsstamina.bypass.shield-block` | Shield block stamina drain |
+| `soapsstamina.bypass.winded` | Winded stamina drain (damage-taken drain + regen lock) |
+| `soapsstamina.bypass.idle` | Idle stamina regen bonus |
 | `soapsstamina.bypass.hunger` | Hunger overflow drain |
+| `soapsstamina.bypass.overexertion` | Overexertion damage |
 | `soapsstamina.bypass.effects` | All exhaustion effects |
 | `soapsstamina.bypass.effects.slowness` | Just the slowness effect |
 | `soapsstamina.bypass.effects.sweat` | Just sweat particles |
@@ -236,18 +269,26 @@ All default to nobody (false).
 | `soapsstamina.bypass.encumbrance` | Encumbrance drain multipliers and effects |
 | `soapsstamina.bypass.elytra` | Elytra gliding stamina drain |
 | `soapsstamina.bypass.climbing` | Climbing stamina drain |
-| `soapsstamina.bypass.eating` | Eating stamina regen |
+| `soapsstamina.bypass.eating` | Eating stamina regen (legacy, see stamina-food) |
 | `soapsstamina.bypass.mace` | Mace smash extra stamina cost |
 | `soapsstamina.bypass.damage-intake` | Damage intake stamina drain |
 | `soapsstamina.bypass.boat` | Boat paddling stamina drain |
 | `soapsstamina.bypass.crawling` | Crawling stamina drain |
 | `soapsstamina.bypass.riptide` | Riptide trident stamina cost |
-| `soapsstamina.bypass.tool-use` | Tool use (hoe, shears, brush) stamina cost |
+| `soapsstamina.bypass.tool-use` | Tool use (hoe, shears, brush, flint & steel) stamina cost |
 | `soapsstamina.bypass.powder-snow` | Powder snow stamina drain |
 | `soapsstamina.bypass.slime-bounce` | Slime bounce stamina cost |
 | `soapsstamina.bypass.soul-sand` | Soul sand drain multiplier |
 | `soapsstamina.bypass.honey-block` | Honey block drain multiplier |
+| `soapsstamina.bypass.second-wind` | Second Wind recovery |
+| `soapsstamina.bypass.stamina-food` | Stamina food effects |
+| `soapsstamina.bypass.dodge` | Dodge active ability |
+| `soapsstamina.bypass.sprint-burst` | Sprint burst speed boost |
+| `soapsstamina.bypass.bed-rest` | Bed rest stamina recovery |
+| `soapsstamina.display.choose` | Let players pick their own display mode (actionbar/bossbar/off) |
 | `soapsstamina.maxweight.*` | Set custom max weight per player (e.g. `soapsstamina.maxweight.500`) |
+| `soapsstamina.weightignore.<MATERIAL>` | Skip weight for a specific item (e.g. `soapsstamina.weightignore.diamond_sword`) |
+| `soapsstamina.weightignore.container.<MATERIAL>` | Skip weight for a container and its contents (e.g. `soapsstamina.weightignore.container.shulker_box`) |
 
 The global `soapsstamina.bypass` skips everything. The per-feature ones are more targeted — if you only want someone to skip sprint drain but still pay for everything else, give them `soapsstamina.bypass.sprint` instead.
 

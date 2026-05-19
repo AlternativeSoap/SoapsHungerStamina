@@ -8,9 +8,11 @@ SoapsHungerStamina fixes that by making stamina the primary resource for everyth
 
 ## How it works
 
-Stamina is your movement currency. Sprinting drains it per second, jumping costs a flat amount per jump, swimming drains it per second, and attacking costs stamina per hit. Placing and breaking blocks cost a small amount each. Raising a shield costs stamina upfront and keeps draining while held. Sneaking and standing still give bonus stamina regen on top of MMOCore's natural regen.
+Stamina is your movement currency. Sprinting drains it per second, jumping costs a flat amount per jump, swimming drains it per second, and attacking costs stamina per hit. Placing and breaking blocks cost a small amount each (with optional exclusion lists so specific blocks never cost stamina). Raising a shield costs stamina upfront, keeps draining while held, and absorbing hits costs extra — if stamina gets too low the shield is forced down. Sneaking and standing still give bonus stamina regen on top of MMOCore's natural regen.
 
-Beyond the basics, the plugin tracks a wide range of physical actions. Gliding with an elytra drains stamina over time. Climbing ladders, vines, or scaffolding costs stamina. Eating food restores a flat amount of stamina. Mace smash attacks cost extra on top of the normal attack drain. Shooting a bow, crossbow, or trident costs stamina (bows can scale with draw charge). Throwing items — snowballs, eggs, ender pearls, potions, wind charges, and more — each have their own stamina cost. Paddling a boat, crawling through 1-block gaps, launching with riptide, and using tools like hoes, shears, and brushes all drain stamina too.
+Beyond the basics, the plugin tracks a wide range of physical actions. Gliding with an elytra drains stamina over time. Climbing ladders, vines, or scaffolding costs stamina. Eating food restores a flat amount of stamina. Mace smash attacks cost extra on top of the normal attack drain. Shooting a bow, crossbow, or trident costs stamina (bows can scale with draw charge). Throwing items — snowballs, eggs, ender pearls, potions, wind charges, and more — each have their own stamina cost. Paddling a boat, crawling through 1-block gaps, launching with riptide, and using tools like hoes, shears, brushes, and flint & steel all drain stamina too.
+
+Weapon-type costs let you make swords, axes, tridents, and fists each cost a different amount of stamina per swing. You can also exclude specific weapons from costing anything at all.
 
 The environment plays a role as well. Walking on soul sand or honey blocks increases drain. Standing in powder snow drains stamina. Bouncing on slime blocks costs a small amount per bounce. Standing in water or lava drains stamina passively. Active potion effects like Speed and Haste can multiply your drain if that feature is enabled.
 
@@ -18,9 +20,11 @@ Taking damage has its own mechanic called "winded." Getting hit drains stamina i
 
 When stamina is empty and you keep doing stuff, two things happen. First, your food bar starts draining instead (overflow mode), or the food bar can be replaced entirely with a stamina display (bar mode). Second, overexertion accumulates — keep pushing past zero and you start taking real damage that scales up the longer you ignore it. There's a grace period before damage starts and a warning message before it gets dangerous.
 
-If exhaustion effects are enabled, hitting zero stamina has physical consequences. Slowness makes you sluggish, sweat particles drip from your character, heavy breathing darkens your vision briefly, and stumble nudges knock you off course. All effects clear once stamina recovers past a configurable threshold.
+If you're stuck at zero and just stand still, Second Wind kicks in — after a few seconds of not moving, you get a burst of stamina to get back on your feet. It has a cooldown so players can't spam it.
 
-Biomes add another layer. Cold biomes (snowy plains, frozen ocean, deep dark, etc.) freeze you and drain stamina faster, with freeze particles to show the cold. Hot biomes (desert, jungle, nether) make you sweat and drain faster too. Each biome can have its own custom drain multiplier, and being encumbered in an extreme biome makes it even worse. The nether biomes come preconfigured with higher multipliers.
+If exhaustion effects are enabled, hitting zero stamina has physical consequences. Slowness makes you sluggish, sweat particles drip from your character, heavy breathing darkens your vision briefly, and stumble nudges knock you off course. All effects clear once stamina recovers past a configurable threshold, and a recovery animation plays to show you've caught your breath.
+
+Biomes add another layer with a full exposure system. When you enter a cold or hot biome, an exposure timer starts counting up. Once it reaches the limit, the effects kick in. In cold biomes you start freezing if you're not wearing enough armor. In hot biomes, taking your armor off or standing in water protects you. Being over-encumbered in a hot biome skips the grace period entirely. Each biome can have its own custom drain multiplier, and the nether biomes come preconfigured with higher multipliers. 38 biomes are pre-configured out of the box.
 
 Altitude matters too. Above a configurable height threshold, thin mountain air increases stamina drain and applies passive drain. Below a configurable depth threshold, stuffy cave air does the same. Between the two thresholds is a comfortable zone with no penalty. The multiplier scales linearly from the threshold edge to the world boundary.
 
@@ -28,7 +32,17 @@ Weight matters. Armor has weight — full netherite adds 37% more stamina drain.
 
 MMOItems integration lets you assign custom weights to specific items by their MMOItems type and ID, or set default weights for entire item types. If a weapon already applied a stamina cost through MythicLib, the plugin's attack drain is automatically skipped to prevent double-charging.
 
-For feedback, you get real-time stamina display through action bar, boss bar, or chat messages. There's an optional text-character stamina bar (`████░░░░░░`), low stamina warnings that change color, and messages when exhaustion kicks in or clears. Biome transition messages tell you when the climate changes. Overexertion warnings tell you when you're pushing too hard.
+Certain foods can be configured to restore stamina instantly and give a temporary "Well Fed" regen buff. Golden apples, golden carrots, cooked meat, and stews each have their own stamina value. This works on top of hunger bar mode — food becomes genuinely useful for stamina recovery.
+
+Dodge lets players press sneak while sprinting to perform an evasive roll. It costs stamina, launches them forward, and gives brief invulnerability frames. Sprint Burst gives an automatic speed boost when starting a sprint with high enough stamina. Both have configurable cooldowns.
+
+Bed Rest makes sleeping actually useful for stamina. Getting out of bed restores a chunk of stamina and can grant a "Well Rested" buff that reduces all stamina drain for a couple of minutes.
+
+For feedback, you get real-time stamina display through action bar, boss bar, or chat messages. Players can choose their own display type with `/stamina display`. There's an optional text-character stamina bar (`████░░░░░░`), low stamina warnings that change color, and messages when exhaustion kicks in or clears. Sound effects play at key moments — exhaustion, recovery, low stamina warning, overexertion, and second wind all have their own configurable sounds.
+
+Session stats track how much stamina you've drained and recovered, how many second winds and overexertions you've had, and how long you've spent at zero. Check them with `/shs stats`.
+
+Per-world settings let you disable stamina entirely in certain worlds (like lobbies or minigame worlds) or set a drain multiplier per world so the nether feels harsher without touching the biome system.
 
 Admins can open `/shs gui` to toggle features and change values in-game. No config file editing needed, every setting has a clickable item. Left/right click to adjust values, shift-click for bigger jumps. The GUI includes a biome settings page for adding, removing, and editing biomes. Weight and encumbrance settings can be managed with `/shs weight` commands.
 
@@ -36,14 +50,18 @@ Admins can open `/shs gui` to toggle features and change values in-game. No conf
 
 Your server gets a real resource loop:
 - Travel costs stamina
-- Combat costs stamina
+- Combat costs stamina — different weapons drain different amounts
 - Projectiles and abilities cost stamina
 - Gliding, climbing, and boating cost stamina
 - Carrying heavy gear has a downside
-- Biomes feel different to be in
+- Biomes feel different to be in — exposure builds over time
 - Altitude matters for mountain and cave exploration
 - Running out means hunger drain, exhaustion effects, and overexertion damage
-- Food becomes valuable again — eating restores stamina
-- Resting and recovery feel necessary
+- Second Wind gives you a way back from zero without dying
+- Special foods restore stamina and give regen buffs
+- Sleeping in a bed restores stamina and reduces drain afterward
+- Dodge and Sprint Burst give active abilities that cost stamina
+- Sound effects and recovery animations make it all feel real
+- Per-world settings let you tune or disable stamina where it doesn't belong
 
-Stamina → hunger overflow → exhaustion effects → overexertion damage. That's the loop.
+Stamina → hunger overflow → exhaustion effects → overexertion damage → Second Wind. That's the loop.

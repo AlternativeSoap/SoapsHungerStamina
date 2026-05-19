@@ -28,14 +28,19 @@ All are fully editable. Run `/shs reload` to apply changes, or use `/shs gui` to
 general:
   bypass-permission: "soapsstamina.bypass"
   ignore-flying: true
-  stop-sprint-on-empty: true
+  sprint-lock:
+    enabled: true
+    unlock-mode: above-zero
+    unlock-threshold-percent: 0.0
   debug: false
+  disabled-worlds: []
 ```
 
 - `bypass-permission`: players with this permission skip all stamina/hunger drain
 - `ignore-flying`: skips players in creative flight (elytra unaffected)
-- `stop-sprint-on-empty`: forces sprinting to stop at 0 stamina
+- `sprint-lock`: hard-locks sprint at zero stamina and controls unlock behavior
 - `debug`: prints drain info to console (off by default)
+- `disabled-worlds`: list of world folder names where stamina is completely turned off (empty by default)
 
 ### GUI
 
@@ -92,16 +97,28 @@ All projectile costs are enabled by default. Bow shots can scale with draw charg
 ```yaml
 overexertion:
   enabled: true
-  threshold: 15.0
-  base-damage: 1.0
+  threshold: 25.0
+  base-damage: 0.5
   scaling-enabled: true
   scaling-divisor: 8.0
-  max-damage: 6.0
-  recovery-rate: 3.0
+  max-damage: 4.0
+  recovery-rate: 5.0
   warning-threshold: 0.75
 ```
 
-When stamina is at 0 and the player keeps draining, overexertion accumulates. After 15 points of drain, damage starts at 1.0 (half a heart) per tick and scales up. Maximum 6.0 (3 hearts) per tick. Player is warned at 75% of the threshold. Recovers at 3.0 per second when resting.
+When stamina is at 0 and the player keeps draining, overexertion accumulates. After 25 points of drain, damage starts at 0.5 (a quarter heart) per tick and scales up. Maximum 4.0 (2 hearts) per tick. Player is warned at 75% of the threshold. Recovers at 5.0 per second when resting.
+
+### Second Wind
+
+```yaml
+second-wind:
+  enabled: false
+  idle-seconds: 5.0
+  recovery-percent: 0.30
+  cooldown-seconds: 90.0
+```
+
+Off by default. When enabled, standing still at zero stamina for 5 seconds gives a burst of 30% max stamina. 90 second cooldown prevents abuse.
 
 ### Hunger
 
@@ -121,6 +138,10 @@ Three modes available: `overflow` (food drains when stamina is empty), `bar` (fo
 effects:
   enabled: false
   recovery-threshold: 10.0
+  recovery-animation:
+    enabled: true
+    particle: HAPPY_VILLAGER
+    count: 15
   slowness:
     enabled: true
     amplifier: 0
@@ -141,6 +162,7 @@ Off by default. When you turn them on:
 - Brief darkness flashes on screen edges
 - 3% chance per tick of a small knockback stumble
 - Everything clears once stamina gets above 10%
+- Recovery animation: green sparkles (HAPPY_VILLAGER) burst when effects clear, so the player knows they've recovered
 
 ### Biomes
 
@@ -149,25 +171,37 @@ biomes:
   enabled: false
   cold-drain-multiplier: 1.10
   hot-drain-multiplier: 1.08
-  cold-passive-drain: 0.6
-  hot-passive-drain: 0.5
-  freeze:
-    enabled: true
-    ticks-per-tick: 1
-  sweat:
-    enabled: true
-    count: 4
-  freeze-particles:
-    enabled: true
-    count: 4
+  exposure:
+    cold-duration: 60
+    hot-duration: 45
+    decay-rate: 2.0
+  cold:
+    exposed-drain: 0.6
+    armor-protection: 0.5
+    encumbered-slowness: 2
+    freeze:
+      enabled: true
+      ticks-per-tick: 1
+      tick-cap: 0.95
+    freeze-particles:
+      enabled: true
+      count: 4
+  hot:
+    exposed-drain: 0.5
+    water-cooldown: true
+    no-armor-protection: true
+    encumbered-instant: true
+    sweat:
+      enabled: true
+      count: 4
   encumbrance-biome-bonus: 0.10
 ```
 
-Off by default. When enabled:
-- Cold biomes drain 10% faster, plus 0.6/sec passive drain, freeze ticks, and freeze particles
-- Hot biomes drain 8% faster, plus 0.5/sec passive drain and sweat particles
+Off by default. When enabled, biomes use an **exposure system** — players get a grace period (60s cold, 45s hot) before effects kick in:
+- **Cold:** wearing 2+ armor pieces protects you. Once exposed: 10% faster drain, 0.6/sec passive drain, freeze overlay, snowflake particles. Over-encumbered? Immediate Slowness III.
+- **Hot:** wearing no armor, or standing in water, protects you. Once exposed: 8% faster drain, 0.5/sec passive drain, sweat particles. Over-encumbered? Instant exposure, no grace period.
 - Being encumbered in an extreme biome adds another 10% on top
-- 36 biomes are pre-configured (20 cold, 11 hot, 5 nether with custom multipliers)
+- 38 biomes are pre-configured (22 cold, 12 hot, 5 nether with custom multipliers)
 
 ### Altitude
 
@@ -191,6 +225,7 @@ Off by default. When enabled:
 
 ```yaml
 ui:
+  enabled: true
   type: BOSS_BAR
   update-threshold: 0.5
   message-cooldown: 0
@@ -203,10 +238,124 @@ ui:
     empty-char: "░"
 ```
 
+- UI is enabled globally by default
 - Boss bar display by default (top of screen)
 - Updates when stamina changes by 0.5 or more
 - Warning format below 25% stamina
 - Text bar disabled by default (enable and use `%stamina_bar%` in messages.yml)
+
+### Sounds
+
+```yaml
+sounds:
+  enabled: false
+  exhaustion-enter:
+    sound: ENTITY_PLAYER_BREATH
+    volume: 0.6
+    pitch: 0.8
+  exhaustion-recover:
+    sound: ENTITY_PLAYER_LEVELUP
+    volume: 0.5
+    pitch: 1.2
+  low-stamina-warning:
+    sound: BLOCK_NOTE_BLOCK_BASS
+    volume: 0.5
+    pitch: 0.5
+  overexertion-warning:
+    sound: ENTITY_VILLAGER_NO
+    volume: 0.7
+    pitch: 0.7
+  second-wind:
+    sound: ENTITY_PLAYER_LEVELUP
+    volume: 0.8
+    pitch: 1.5
+```
+
+Off by default. 5 configurable sound events: entering/leaving exhaustion, low stamina warning, overexertion warning, and second wind activation.
+
+### Per-World Multipliers
+
+```yaml
+worlds:
+  # world_nether: 1.25
+  # world_the_end: 0.80
+```
+
+No worlds configured by default. Uncomment and add entries to change drain multipliers per world. Stacks with biome, altitude, and encumbrance multipliers.
+
+### Player Display Preference
+
+```yaml
+player-display-choice:
+  enabled: false
+```
+
+Off by default. When enabled, players can pick their own display mode with `/stamina display <actionbar|bossbar|off>`.
+
+### Stamina Food
+
+```yaml
+stamina-food:
+  enabled: true
+  items:
+    GOLDEN_APPLE:
+      instant-stamina: 10.0
+      buff-duration: 30
+      buff-regen-bonus: 0.5
+    ENCHANTED_GOLDEN_APPLE:
+      instant-stamina: 20.0
+      buff-duration: 60
+      buff-regen-bonus: 1.0
+    GOLDEN_CARROT:
+      instant-stamina: 5.0
+      buff-duration: 15
+      buff-regen-bonus: 0.3
+    COOKED_BEEF:
+      instant-stamina: 3.0
+    # ...plus 9 more foods
+```
+
+On by default. 13 foods configured. Golden foods give the most stamina plus a "Well Fed" regen buff. Regular cooked meats give a small instant boost. Replaces the old `eating-regen` system from v1.0.4.
+
+### Dodge
+
+```yaml
+dodge:
+  enabled: false
+  cost: 4.0
+  cooldown-ms: 1500
+  velocity: 1.2
+  invulnerable-ticks: 12
+```
+
+Off by default. Press sneak while sprinting to dodge. Costs 4 stamina, 1.5s cooldown, launches forward, 0.6s of invulnerability.
+
+### Sprint Burst
+
+```yaml
+sprint-burst:
+  enabled: false
+  min-stamina-percent: 80.0
+  cost: 6.0
+  speed-amplifier: 1
+  duration-ticks: 60
+  cooldown-ms: 30000
+```
+
+Off by default. Auto-triggers when sprinting at 80%+ stamina. Costs 6 stamina, gives Speed II for 3 seconds, 30 second cooldown.
+
+### Bed Rest
+
+```yaml
+bed-rest:
+  enabled: true
+  restore-percent: 1.0
+  buff-enabled: true
+  buff-duration-seconds: 120
+  buff-drain-reduction: 0.65
+```
+
+On by default. Sleeping restores full stamina and gives Well Rested buff for 2 minutes (35% drain reduction).
 
 ---
 
@@ -217,53 +366,72 @@ All action drain and regen values live in this file, separate from config.yml.
 ### Core Actions
 
 ```yaml
-regen-action-cooldown: 2000
+regen-action-cooldown: 1500
 
 sprint:
   enabled: true
-  drain-per-second: 1.0
+  drain-per-second: 0.8
 jump:
   enabled: true
-  cost: 1.5
-  cooldown: 300
+  cost: 1.0
 swim:
   enabled: true
-  drain-per-second: 1.0
+  drain-per-second: 0.7
 water-contact:
   enabled: true
-  drain-per-second: 0.5
+  drain-per-second: 0.3
 lava-contact:
   enabled: true
-  drain-per-second: 1.5
+  drain-per-second: 1.0
 block-place:
   enabled: true
   cost: 0.15
+  exclude:
+    - TORCH
+    - SOUL_TORCH
+    - WALL_TORCH
+    - SOUL_WALL_TORCH
+    - REDSTONE_TORCH
+    - REDSTONE_WALL_TORCH
 block-break:
   enabled: true
-  cost: 0.3
+  cost: 0.2
+  exclude: []
 sneak:
   enabled: true
-  regen-per-second: 0.8
+  regen-per-second: 1.2
 idle:
   enabled: true
-  regen-per-second: 0.4
+  regen-per-second: 0.6
 attack:
   enabled: true
-  cost: 1.0
+  cost: 0.8
+  exclude: []
+  weapon-costs:
+    enabled: false
+    sword: 0.6
+    axe: 1.0
+    trident: 0.9
+    fist: 0.3
 shield-block:
   enabled: true
-  initial-cost: 0.6
-  drain-per-second: 0.3
+  initial-cost: 0.2
+  drain-per-second: 0.10
+  min-stamina: 1.0
+  damage-cost: 0.5
 ```
 
 Quick math on the defaults:
-- 100 stamina lasts ~100 seconds of sprinting
-- 100 stamina = ~66 jumps
-- 100 stamina = 100 seconds of swimming
-- 100 stamina = 100 melee hits
+- 100 stamina lasts ~125 seconds of sprinting
+- 100 stamina = 100 jumps
+- 100 stamina = ~143 seconds of swimming
+- 100 stamina = 125 melee hits
 - 100 stamina = ~666 blocks placed
-- Sneaking regens 0.8/sec on top of MMOCore's natural regen (after a 2s cooldown)
-- Standing still regens 0.4/sec extra (after the same cooldown)
+- Sneaking regens 1.2/sec on top of MMOCore's natural regen (after a 1.5s cooldown)
+- Standing still regens 0.6/sec extra (after the same cooldown)
+- Torches don't cost stamina to place by default
+- Shield is forced down at 1.0 stamina, and loses 0.5 extra per hit blocked
+- Weapon costs are off by default, but when enabled: swords 0.6, axes 1.0, tridents 0.9, fists 0.3
 
 ### Winded
 
@@ -272,57 +440,55 @@ winded:
   enabled: true
   refresh-on-hit: true
   normal:
-    instant-cost: 0.5
-    drain-per-second: 0.6
-    duration: 3.5
+    instant-cost: 0.3
+    drain-per-second: 0.4
+    duration: 3.0
   critical:
-    instant-cost: 1.5
-    drain-per-second: 1.2
-    duration: 5.0
-    regen-lock-duration: 3.0
+    instant-cost: 1.0
+    drain-per-second: 0.8
+    duration: 4.0
+    regen-lock-duration: 2.5
 ```
 
-Taking damage costs stamina. A normal hit drains 0.5 instantly + 0.6/sec for 3.5 seconds (2.6 total). A critical hit drains 1.5 instantly + 1.2/sec for 5 seconds (7.5 total) and blocks all regen for 3 seconds.
+Taking damage costs stamina. A normal hit drains 0.3 instantly + 0.4/sec for 3 seconds (1.5 total). A critical hit drains 1.0 instantly + 0.8/sec for 4 seconds (4.2 total) and blocks all regen for 2.5 seconds.
 
 ### Extended Actions
 
 ```yaml
 elytra:
   enabled: true
-  drain-per-second: 0.8
+  drain-per-second: 0.5
 climbing:
   enabled: true
-  drain-per-second: 0.6
-eating-regen:
-  enabled: true
-  regen-amount: 3.0
+  drain-per-second: 0.4
 mace:
   enabled: true
-  cost: 2.5
+  cost: 2.0
 potion-modifiers:
   enabled: false
   speed-multiplier: 1.15
   haste-multiplier: 1.10
 damage-intake:
   enabled: true
-  cost-per-heart: 0.5
+  cost-per-heart: 0.3
 boat:
   enabled: true
-  drain-per-second: 0.3
+  drain-per-second: 0.1
 crawling:
   enabled: true
-  drain-per-second: 0.5
+  drain-per-second: 0.35
 riptide:
   enabled: true
-  cost: 2.5
+  cost: 2.0
 tool-use:
   enabled: true
   hoe-cost: 0.2
   shears-cost: 0.15
   brush-cost: 0.1
+  flint-and-steel-cost: 0.15
 powder-snow:
   enabled: true
-  drain-per-second: 0.7
+  exposure-multiplier: 2.0
 slime-bounce:
   enabled: true
   cost: 0.5
@@ -334,7 +500,7 @@ honey-block:
   drain-multiplier: 1.15
 ```
 
-Most extended actions are enabled by default except `potion-modifiers` (disabled). Each has its own bypass permission.
+Most extended actions are enabled by default except `potion-modifiers` (disabled). Tool use now includes flint and steel (0.15 per use). Each action has its own bypass permission.
 
 ---
 
@@ -344,12 +510,18 @@ Controls all player-facing text. Everything uses [MiniMessage formatting](https:
 
 Key sections:
 - `prefix` — gradient-colored plugin name added to all messages
-- `command.*` — responses for every command (stamina, weight, toggle, config set, help)
+- `command.*` — responses for every command (stamina, weight, toggle, config set, help, stats, display)
 - `exhaustion.*` — "You are exhausted" / "strength returning" messages
 - `encumbrance.*` — weight warning/recovery messages and drowning warning
 - `winded.*` — normal hit, critical hit, and recovery messages
 - `overexertion.*` — warning, damage start, damage tick, and recovery messages
+- `second-wind.*` — activation and cooldown messages
 - `biome.*` — climate change messages (entering cold/hot/neutral biomes)
+- `stamina-food.*` — Well Fed buff messages
+- `dodge.*` — dodge activation and cooldown messages
+- `sprint-burst.*` — sprint burst activation messages
+- `bed-rest.*` — Well Rested buff messages
+- `stats.*` — session statistics display
 - `ui.format` — normal stamina display
 - `ui.low-stamina-format` — warning display when low
 - `gui.*` — all text in the admin settings GUI (titles, labels, setting names, value names)

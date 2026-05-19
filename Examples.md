@@ -16,17 +16,24 @@ sprint:
 jump:
   enabled: true
   cost: 10.0
-  cooldown: 400
 swim:
   enabled: true
   drain-per-second: 5.0
 attack:
   enabled: true
   cost: 5.0
+  weapon-costs:
+    enabled: true
+    sword: 4.0
+    axe: 7.0
+    trident: 6.0
+    fist: 2.0
 shield-block:
   enabled: true
   initial-cost: 4.0
   drain-per-second: 2.0
+  min-stamina: 5.0
+  damage-cost: 3.0
 block-place:
   enabled: false
 block-break:
@@ -77,9 +84,27 @@ effects:
     enabled: true
     chance: 0.08
     strength: 0.15
+
+dodge:
+  enabled: true
+  cost: 6.0
+  cooldown-ms: 2000
+  velocity: 1.5
+  invulnerable-ticks: 10
+
+sprint-burst:
+  enabled: true
+  min-stamina-percent: 90.0
+  cost: 8.0
+  speed-amplifier: 1
+  duration-ticks: 40
+  cooldown-ms: 20000
+
+sounds:
+  enabled: true
 ```
 
-Every swing counts. Blocking drains hard. Getting hit (winded + damage-intake) punishes overcommitting. Sneaking between fights is the only way to recover. Building is free because it's a PvP arena. Potion effects add a drain boost so speed potions come at a cost.
+Every swing counts. Weapon-type costs mean axes hit harder but drain more. Shield drops at 5 stamina and eats 3.0 per blocked hit — turtling is expensive. Dodge lets skilled players escape combos. Sprint burst rewards patient play. Building is free because it's a PvP arena.
 
 ---
 
@@ -95,7 +120,6 @@ sprint:
 jump:
   enabled: true
   cost: 1.5
-  cooldown: 200
 swim:
   enabled: true
   drain-per-second: 0.5
@@ -115,6 +139,8 @@ shield-block:
   enabled: true
   initial-cost: 0.5
   drain-per-second: 0.2
+  min-stamina: 1.0
+  damage-cost: 0.3
 elytra:
   enabled: true
   drain-per-second: 0.4
@@ -124,9 +150,6 @@ boat:
 climbing:
   enabled: true
   drain-per-second: 0.3
-eating-regen:
-  enabled: true
-  regen-amount: 5.0
 soul-sand:
   enabled: true
   drain-multiplier: 1.10
@@ -146,6 +169,9 @@ biomes:
   enabled: true
   cold-drain-multiplier: 1.10
   hot-drain-multiplier: 1.05
+  exposure:
+    cold-duration: 90
+    hot-duration: 75
 
 altitude:
   enabled: true
@@ -155,9 +181,18 @@ altitude:
 
 effects:
   enabled: false
+
+stamina-food:
+  enabled: true
+
+bed-rest:
+  enabled: true
+  restore-percent: 1.0
+  buff-duration-seconds: 180
+  buff-drain-reduction: 0.50
 ```
 
-Travel is fun, stamina is a soft constraint, food is backup. Biomes and altitude add atmosphere without being brutal. Eating food restores 5.0 stamina as a nice bonus.
+Travel is fun, stamina is a soft constraint, food gives stamina back. Biomes and altitude add atmosphere with longer grace periods so they don't ambush you. Sleeping gives full stamina plus a generous 3-minute Well Rested buff (50% drain reduction) for morning exploration.
 
 ---
 
@@ -173,7 +208,6 @@ sprint:
 jump:
   enabled: true
   cost: 8.0
-  cooldown: 350
 swim:
   enabled: true
   drain-per-second: 4.0
@@ -189,10 +223,18 @@ sneak:
 attack:
   enabled: true
   cost: 4.0
+  weapon-costs:
+    enabled: true
+    sword: 3.0
+    axe: 5.0
+    trident: 4.5
+    fist: 1.5
 shield-block:
   enabled: true
   initial-cost: 3.0
   drain-per-second: 1.5
+  min-stamina: 3.0
+  damage-cost: 2.0
 elytra:
   enabled: true
   drain-per-second: 2.0
@@ -222,12 +264,13 @@ riptide:
   cost: 5.0
 powder-snow:
   enabled: true
-  drain-per-second: 1.5
+  exposure-multiplier: 3.0
 tool-use:
   enabled: true
   hoe-cost: 0.5
   shears-cost: 0.4
   brush-cost: 0.3
+  flint-and-steel-cost: 0.4
 ```
 
 **config.yml:**
@@ -244,6 +287,9 @@ overexertion:
   max-damage: 10.0
   recovery-rate: 1.5
 
+second-wind:
+  enabled: false
+
 effects:
   enabled: true
   recovery-threshold: 20.0
@@ -256,6 +302,10 @@ biomes:
   enabled: true
   cold-drain-multiplier: 1.30
   hot-drain-multiplier: 1.25
+  exposure:
+    cold-duration: 30
+    hot-duration: 20
+    decay-rate: 1.0
   encumbrance-biome-bonus: 0.25
 
 altitude:
@@ -275,6 +325,17 @@ projectiles:
     cost: 4.0
   trident:
     cost: 5.0
+
+stamina-food:
+  enabled: true
+
+bed-rest:
+  enabled: true
+  restore-percent: 0.50
+  buff-enabled: false
+
+sounds:
+  enabled: true
 ```
 
 **weight.yml:**
@@ -294,7 +355,7 @@ fall-damage:
   max-multiplier: 2.5
 ```
 
-Stamina is critical. Hunger is deadly. Biomes and altitude punish you. Overexertion hits faster and harder. Carrying too much gear near water can kill you. Every action matters.
+Stamina is critical. Hunger is deadly. Biomes and altitude punish you with short grace periods (30s cold, 20s hot). Overexertion hits faster and harder. Carrying too much gear near water can kill you. Second wind is disabled — no free recovery. Bed rest only gives back 50% stamina and no buff. Weapon costs make every swing a strategic choice. Sounds are on so players hear when they're in danger.
 
 ---
 
@@ -309,7 +370,6 @@ sprint:
 jump:
   enabled: true
   cost: 2.0
-  cooldown: 250
 swim:
   enabled: false
 block-place:
@@ -356,6 +416,12 @@ jump:
 attack:
   enabled: true
   cost: 1.5
+  weapon-costs:
+    enabled: true
+    sword: 1.0
+    axe: 2.0
+    trident: 1.8
+    fist: 0.5
 mace:
   enabled: true
   cost: 3.0
@@ -366,9 +432,6 @@ potion-modifiers:
   enabled: true
   speed-multiplier: 1.15
   haste-multiplier: 1.10
-eating-regen:
-  enabled: true
-  regen-amount: 4.0
 ```
 
 **config.yml:**
@@ -381,6 +444,38 @@ overexertion:
   enabled: true
   threshold: 20.0
   max-damage: 4.0
+
+second-wind:
+  enabled: true
+  idle-seconds: 4.0
+  recovery-percent: 0.25
+  cooldown-seconds: 60.0
+
+stamina-food:
+  enabled: true
+
+dodge:
+  enabled: true
+  cost: 3.0
+  cooldown-ms: 2000
+  velocity: 1.0
+  invulnerable-ticks: 15
+
+sprint-burst:
+  enabled: true
+  min-stamina-percent: 75.0
+  cost: 5.0
+
+bed-rest:
+  enabled: true
+  buff-duration-seconds: 180
+  buff-drain-reduction: 0.50
+
+player-display-choice:
+  enabled: true
+
+sounds:
+  enabled: true
 ```
 
 **weight.yml:**
@@ -408,4 +503,4 @@ mmoitems-weight:
     ARMOR:MITHRIL_ARMOR: 10.0
 ```
 
-Max carry weight increases by 5 per level (up to +200). Every point of strength reduces drain by 2% (up to 50% less). MMOItems get custom weights so your rare gear feels appropriately heavy. Eating food recovers stamina so food items have RPG value.
+Max carry weight increases by 5 per level (up to +200). Every point of strength reduces drain by 2% (up to 50% less). MMOItems get custom weights so your rare gear feels appropriately heavy. Stamina food gives your golden apples and cooked meats RPG value. Weapon costs differentiate playstyles — sword fighters are more efficient than axe users. Dodge and sprint burst add action-RPG flair. Second wind prevents complete wipe-outs. Players can pick their own UI display style. Sleeping gives a generous Well Rested buff for morning adventures.
