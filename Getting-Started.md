@@ -6,7 +6,7 @@
    The plugin won't load without it. MythicLib is also required (it's a dependency of MMOCore).
 
 2. **Drop the jar into your plugins folder.**
-   Copy `SoapsHungerStamina-1.0.6.jar` into `plugins/`.
+   Copy `SoapsHungerStamina-1.0.7.jar` into `plugins/`.
 
 3. **Optional: Install PlaceholderAPI** for `%shs_*%` placeholders on scoreboards, tab lists, etc.
 
@@ -91,5 +91,18 @@ You can either edit the config files and run `/shs reload`, or use the in-game G
 - Drowning/fall damage: enabled
 - 1000+ item weights preconfigured
 - MMOItems weights: disabled by default
+- Scaling-drain: disabled by default (stat vs carry weight — see below)
 
 Everything works out of the box. Tune it later if needed.
+
+## Optional: Stat vs carry weight (RPG servers)
+
+If you use MMOCore stats and PlaceholderAPI, you can make **strength (or any stat) offset inventory load**:
+
+1. In `weight.yml`, set `scaling-drain.enabled: true`.
+2. Leave the defaults or point `placeholder` at your stat (e.g. `%mmocore_attribute_strength%`).
+3. Reload with `/shs reload`.
+
+High strength = carrying a full inventory costs less stamina. Low strength + heavy bags = sprinting and fighting drain faster. Encumbrance slowness and sprint block still apply — this only changes how stamina drain scales with load.
+
+Pair with `scaling-weight` if you also want player level to raise max carry capacity.

@@ -489,8 +489,10 @@ scaling-weight:
 scaling-drain:
   enabled: true
   placeholder: "%mmocore_attribute_strength%"
-  per-point: 0.02
-  cap: 0.50
+  stat-format: points
+  percent-reference: 100.0
+  stat-per-point: 6.0
+  stress-per-ratio: 0.20
 
 mmoitems-weight:
   enabled: true
@@ -503,4 +505,4 @@ mmoitems-weight:
     ARMOR:MITHRIL_ARMOR: 10.0
 ```
 
-Max carry weight increases by 5 per level (up to +200). Every point of strength reduces drain by 2% (up to 50% less). MMOItems get custom weights so your rare gear feels appropriately heavy. Stamina food gives your golden apples and cooked meats RPG value. Weapon costs differentiate playstyles — sword fighters are more efficient than axe users. Dodge and sprint burst add action-RPG flair. Second wind prevents complete wipe-outs. Players can pick their own UI display style. Sleeping gives a generous Well Rested buff for morning adventures.
+Max carry weight increases by 5 per level (up to +200). Strength offsets carry burden so heavy loads cost more stamina unless you are strong. MMOItems get custom weights so your rare gear feels appropriately heavy. Stamina food gives your golden apples and cooked meats RPG value. Weapon costs differentiate playstyles — sword fighters are more efficient than axe users. Dodge and sprint burst add action-RPG flair. Second wind prevents complete wipe-outs. Players can pick their own UI display style. Sleeping gives a generous Well Rested buff for morning adventures.

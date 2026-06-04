@@ -9,7 +9,7 @@ Permission: `soapsstamina.use` (default: everyone)
 
 Alias: `/shs stamina`
 
-### `/stamina display <mode>`
+### `/stamina display <mode>` / `/shs stamina display <mode>`
 Let players choose how their stamina is displayed. Modes: `actionbar`, `bossbar`, or `off`.
 
 Only works when `player-display-choice.enabled` is true in config.
@@ -61,7 +61,7 @@ Available encumbrance keys: `max-weight`, `severe-weight`, `encumbered-drain-mul
 
 Available scaling-weight keys: `per-point`, `cap`, `placeholder`
 
-Available scaling-drain keys: `per-point`, `cap`, `placeholder`
+Available scaling-drain keys: `placeholder`, `stat-format`, `percent-reference`, `stat-per-point`, `stress-per-ratio`
 
 Examples:
 - `/shs weight set DIAMOND_SWORD 3.5` — diamond swords weigh 3.5
@@ -69,6 +69,8 @@ Examples:
 - `/shs weight encumbrance max-weight 150` — encumbered above 150 total weight
 - `/shs weight info IRON_PICKAXE` — shows the current weight of an iron pickaxe
 - `/shs weight scaling-weight per-point 3.0` — 3.0 extra max weight per placeholder point
+- `/shs weight scaling-drain stat-per-point 8.0` — each strength point forgives 8 weight units before burden drain
+- `/shs weight scaling-drain stat-format percent` — use a 0–1 decimal placeholder (e.g. 0.3 = 30%)
 
 ### `/shs toggle <setting>`
 Flips a setting on or off.
@@ -138,7 +140,7 @@ Available settings:
 | `encumbered-drowning` | Encumbrance drowning |
 | `encumbered-fall-damage` | Encumbrance fall damage |
 | `scaling-weight` | Scaling max weight (PAPI) |
-| `scaling-drain` | Scaling drain reduction (PAPI) |
+| `scaling-drain` | Stat vs carry weight drain (PAPI) |
 | `mmoitems-weight` | MMOItems custom weights |
 | `debug` | Console debug logging |
 | `sprint-lock-enabled` | Hard sprint lock at 0 stamina |
@@ -269,7 +271,6 @@ All default to nobody (false).
 | `soapsstamina.bypass.encumbrance` | Encumbrance drain multipliers and effects |
 | `soapsstamina.bypass.elytra` | Elytra gliding stamina drain |
 | `soapsstamina.bypass.climbing` | Climbing stamina drain |
-| `soapsstamina.bypass.eating` | Eating stamina regen (legacy, see stamina-food) |
 | `soapsstamina.bypass.mace` | Mace smash extra stamina cost |
 | `soapsstamina.bypass.damage-intake` | Damage intake stamina drain |
 | `soapsstamina.bypass.boat` | Boat paddling stamina drain |

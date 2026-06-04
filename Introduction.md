@@ -28,7 +28,9 @@ Biomes add another layer with a full exposure system. When you enter a cold or h
 
 Altitude matters too. Above a configurable height threshold, thin mountain air increases stamina drain and applies passive drain. Below a configurable depth threshold, stuffy cave air does the same. Between the two thresholds is a comfortable zone with no penalty. The multiplier scales linearly from the threshold edge to the world boundary.
 
-Weight matters. Armor has weight — full netherite adds 37% more stamina drain. Items in your inventory add up based on per-item weights (over 1000 items are preconfigured). Cross the encumbrance threshold and you get slower drain, Slowness, and a warning message. Cross the severe threshold and it gets much worse — sprint is blocked, you drown faster, and fall damage increases. Shulker boxes and bundles weigh their contents. With PlaceholderAPI, max carry weight can scale with level or attributes, and drain can be reduced by stats.
+Weight matters. Armor adds extra drain — a full netherite set is roughly 37% harsher. Everything in your inventory has a weight; over 1000 items are preconfigured. Cross the encumbrance line and you slow down and drain stamina faster (unless you use scaling-drain — see below). Cross the severe line and sprint can lock, drowning speeds up, and falls hurt more. Shulker boxes and bundles count what is inside them.
+
+With PlaceholderAPI you can go further: **scaling-weight** raises how much you are allowed to carry (often tied to level). **scaling-drain** ties stamina cost to how loaded you are versus a stat like strength — strong characters shrug off a full bag; weak ones feel every block of cobblestone.
 
 MMOItems integration lets you assign custom weights to specific items by their MMOItems type and ID, or set default weights for entire item types. If a weapon already applied a stamina cost through MythicLib, the plugin's attack drain is automatically skipped to prevent double-charging.
 

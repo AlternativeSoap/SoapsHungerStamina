@@ -695,7 +695,7 @@ encumbrance:
 
 `severe-weight` — threshold for severe encumbrance.
 
-`encumbered-drain-multiplier` / `severe-drain-multiplier` — stamina drain multiplier at each tier. 1.4 = 40% more drain.
+`encumbered-drain-multiplier` / `severe-drain-multiplier` — stamina drain multiplier at each tier. 1.4 = 40% more drain. When `scaling-drain.enabled` is true, these multipliers are **not** applied to action stamina drain (encumbrance slowness, sprint block, drowning, and fall damage still apply); load-based drain uses `scaling-drain` instead.
 
 `encumbered-slowness` / `severe-slowness` — slowness amplifier at each tier (0 = Slowness I).
 
@@ -729,7 +729,12 @@ fall-damage:
 
 *File: weight.yml*
 
-Both scaling features require PlaceholderAPI.
+Both scaling features require PlaceholderAPI. Think of them as two knobs:
+
+- **scaling-weight** — “How much can I carry?” (raises max weight from level, dexterity, etc.)
+- **scaling-drain** — “How hard does carrying hurt my stamina?” (your stat cancels some of the load; what is left increases drain)
+
+They work well together on RPG servers but you can enable either one alone.
 
 ```yaml
 scaling-weight:
@@ -741,13 +746,26 @@ scaling-weight:
 scaling-drain:
   enabled: false
   placeholder: "%mmocore_attribute_strength%"
-  per-point: 0.02
-  cap: 0.50
+  stat-format: points
+  percent-reference: 100.0
+  stat-per-point: 6.0
+  stress-per-ratio: 0.20
 ```
 
 `scaling-weight` — increases max carry weight based on a placeholder value. Bonus = placeholder value × per-point, capped at cap. At level 20 with default settings: 20 × 5.0 = 100 extra carry capacity. Supports multiple sources via a `sources:` list in place of the single placeholder.
 
-`scaling-drain` — reduces all stamina drain based on a placeholder value. At 10 strength with defaults: 10 × 0.02 = 20% less drain. Capped at 50%.
+`scaling-drain` — stat vs carry weight. Example with defaults: 45 strength × 6.0 = 270 weight “forgiven” before burden kicks in. Whatever weight is left after that, compared to your max carry, sets how much extra stamina actions cost. Set `enabled: true` and reload — no other keys required for a first test.
+
+**Important:** When scaling-drain is on, the old encumbrance drain multipliers (1.4× / 2.0×) are **not** applied to action drain, so you do not get punished twice. Encumbrance still applies slowness, sprint block, drowning, and fall damage.
+
+| Key | Meaning |
+|-----|---------|
+| `stat-format` | `points` = raw stat (e.g. 45 strength); `percent` = decimal 0–1 (e.g. `0.3` = 30%) |
+| `percent-reference` | When `percent`: multiplies decimal to stat points (`0.3` × `100` → `30`) |
+| `stat-per-point` | Weight units each stat point removes from burden |
+| `stress-per-ratio` | Extra drain per 100% overload vs max carry (0.20 ≈ +20% at full overload) |
+
+Hardcoded limits (not in yml): load reference = player max weight; drain multiplier clamped between `0.50` and `2.0`.
 
 ### MMOItems Custom Weights
 

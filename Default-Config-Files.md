@@ -598,11 +598,20 @@ scaling-weight:
 scaling-drain:
   enabled: false
   placeholder: "%mmocore_attribute_strength%"
-  per-point: 0.02
-  cap: 0.50
+  stat-format: points
+  percent-reference: 100.0
+  stat-per-point: 6.0
+  stress-per-ratio: 0.20
 ```
 
-Both disabled by default. Requires PlaceholderAPI. Lets max carry weight grow with level, and stamina drain decrease with attributes (or any placeholder value). Scaling-weight also supports multiple sources via a `sources:` list.
+Both disabled by default. Requires PlaceholderAPI.
+
+- **scaling-weight** — bonus max carry = placeholder value × `per-point`, capped at `cap`.
+- **scaling-drain** — each stat point forgives `stat-per-point` weight units; leftover load vs max carry adds drain via `stress-per-ratio`. Defaults assume MMOCore strength and `max-weight: 300`. Flip `enabled: true` to try it.
+
+Old `scaling-drain` keys `per-point` and `cap` (flat global reduction) are gone — reload strips them from your file if they are still there.
+
+Scaling-weight supports a `sources:` list for multiple placeholders.
 
 ### MMOItems Custom Weights
 

@@ -25,6 +25,8 @@ Requires [PlaceholderAPI](https://www.spigotmc.org/resources/placeholderapi.6245
 | `%shs_well_rested%` | Remaining Well Rested buff seconds (0 if inactive) | `90` |
 | `%shs_dodge_cooldown%` | Remaining dodge cooldown seconds (0 if ready) | `1.2` |
 | `%shs_sprint_burst_cooldown%` | Remaining sprint burst cooldown seconds (0 if ready) | `22.5` |
+| `%shs_carry_burden%` | Load burden after stat relief (0 = light, 1+ = at or over max carry) | `0.4` |
+| `%shs_scaling_drain_mult%` | Current scaling-drain multiplier on action stamina | `1.12` |
 
 ---
 
@@ -49,6 +51,10 @@ Requires [PlaceholderAPI](https://www.spigotmc.org/resources/placeholderapi.6245
 - `%shs_overexertion%` returns the accumulated overexertion points (0.0 when not overexerting). Overexertion builds when stamina is at 0 and the player keeps draining. Once it exceeds the threshold (default: 25.0), the player takes damage.
 
 - `%shs_overexerted%` returns `true` while the player is actively overexerting (stamina at 0 and still performing actions), `false` otherwise.
+
+- `%shs_carry_burden%` only matters when `scaling-drain` is enabled. `0` means your stat fully covers your load; `1.0` means you are at your carry limit after stat relief.
+
+- `%shs_scaling_drain_mult%` is the multiplier applied to action stamina drain from scaling-drain (1.0 = normal, above 1.0 = harsher).
 
 ---
 
