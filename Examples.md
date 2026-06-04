@@ -1,6 +1,6 @@
 # Examples
 
-Preset configs for different server styles. Action values go in `actions.yml`, everything else in `config.yml`. Run `/shs reload` after editing.
+Starter configs for different server vibes. Action numbers go in `actions.yml`; the rest in `config.yml`. `/shs reload` when you're done editing.
 
 ---
 
@@ -505,4 +505,4 @@ mmoitems-weight:
     ARMOR:MITHRIL_ARMOR: 10.0
 ```
 
-Max carry weight increases by 5 per level (up to +200). Strength offsets carry burden so heavy loads cost more stamina unless you are strong. MMOItems get custom weights so your rare gear feels appropriately heavy. Stamina food gives your golden apples and cooked meats RPG value. Weapon costs differentiate playstyles — sword fighters are more efficient than axe users. Dodge and sprint burst add action-RPG flair. Second wind prevents complete wipe-outs. Players can pick their own UI display style. Sleeping gives a generous Well Rested buff for morning adventures.
+Level adds carry cap (+5 per level, capped). Strength softens the stamina hit from a full inventory. MMOItems weights, stamina food, weapon costs, dodge, sprint burst, second wind, player UI choice, and bed buff are all turned on in this preset. Tweak numbers to taste.

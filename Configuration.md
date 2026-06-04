@@ -1,10 +1,10 @@
 # Configuration
 
-Settings are split across two main files:
-- `plugins/SoapsHungerStamina/config.yml` — general settings, engine, projectiles, overexertion, hunger, effects, biomes, altitude, UI, GUI
-- `plugins/SoapsHungerStamina/actions.yml` — all action drain and regen values
+Most settings live in two files:
+- `plugins/SoapsHungerStamina/config.yml` (general, biomes, UI, overexertion, etc.)
+- `plugins/SoapsHungerStamina/actions.yml` (what each action costs or regens)
 
-You can edit files and run `/shs reload`, use the in-game GUI with `/shs gui`, or change values with `/shs toggle` and `/shs config set`.
+Edit and `/shs reload`, or use `/shs gui`, `/shs toggle`, `/shs config set`.
 
 ---
 
@@ -695,7 +695,7 @@ encumbrance:
 
 `severe-weight` — threshold for severe encumbrance.
 
-`encumbered-drain-multiplier` / `severe-drain-multiplier` — stamina drain multiplier at each tier. 1.4 = 40% more drain. When `scaling-drain.enabled` is true, these multipliers are **not** applied to action stamina drain (encumbrance slowness, sprint block, drowning, and fall damage still apply); load-based drain uses `scaling-drain` instead.
+`encumbered-drain-multiplier` / `severe-drain-multiplier`: extra stamina drain per tier (1.4 = 40% more). If `scaling-drain` is on, these do **not** stack on action drain; slowness, sprint block, drowning, and fall damage still work. Load-based drain comes from `scaling-drain` instead.
 
 `encumbered-slowness` / `severe-slowness` — slowness amplifier at each tier (0 = Slowness I).
 
@@ -729,12 +729,12 @@ fall-damage:
 
 *File: weight.yml*
 
-Both scaling features require PlaceholderAPI. Think of them as two knobs:
+Needs PlaceholderAPI.
 
-- **scaling-weight** — “How much can I carry?” (raises max weight from level, dexterity, etc.)
-- **scaling-drain** — “How hard does carrying hurt my stamina?” (your stat cancels some of the load; what is left increases drain)
+- **scaling-weight:** raises max carry (placeholder × `per-point`, capped).
+- **scaling-drain:** your stat cancels some inventory weight; what's left makes actions cost more stamina.
 
-They work well together on RPG servers but you can enable either one alone.
+Use both on RPG servers, or either one on its own.
 
 ```yaml
 scaling-weight:
@@ -754,9 +754,9 @@ scaling-drain:
 
 `scaling-weight` — increases max carry weight based on a placeholder value. Bonus = placeholder value × per-point, capped at cap. At level 20 with default settings: 20 × 5.0 = 100 extra carry capacity. Supports multiple sources via a `sources:` list in place of the single placeholder.
 
-`scaling-drain` — stat vs carry weight. Example with defaults: 45 strength × 6.0 = 270 weight “forgiven” before burden kicks in. Whatever weight is left after that, compared to your max carry, sets how much extra stamina actions cost. Set `enabled: true` and reload — no other keys required for a first test.
+`scaling-drain`: stat vs backpack weight. With defaults, 45 strength × 6.0 forgives 270 weight before burden counts. Leftover weight vs max carry sets the drain bump. Flip `enabled: true` and reload to try it.
 
-**Important:** When scaling-drain is on, the old encumbrance drain multipliers (1.4× / 2.0×) are **not** applied to action drain, so you do not get punished twice. Encumbrance still applies slowness, sprint block, drowning, and fall damage.
+When this is on, encumbrance drain multipliers (1.4× / 2.0×) don't also hit action drain. You won't get double-penalized. Slowness, sprint block, drowning, and fall damage from encumbrance still apply.
 
 | Key | Meaning |
 |-----|---------|

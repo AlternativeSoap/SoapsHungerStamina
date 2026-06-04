@@ -1,6 +1,6 @@
 # Default Config Files
 
-What each default setting does and what files the plugin creates.
+What the plugin creates on first run and what the defaults mean.
 
 ---
 
@@ -197,7 +197,7 @@ biomes:
   encumbrance-biome-bonus: 0.10
 ```
 
-Off by default. When enabled, biomes use an **exposure system** — players get a grace period (60s cold, 45s hot) before effects kick in:
+Off by default. When enabled, biomes use an exposure timer (60s cold, 45s hot grace) before effects kick in:
 - **Cold:** wearing 2+ armor pieces protects you. Once exposed: 10% faster drain, 0.6/sec passive drain, freeze overlay, snowflake particles. Over-encumbered? Immediate Slowness III.
 - **Hot:** wearing no armor, or standing in water, protects you. Once exposed: 8% faster drain, 0.5/sec passive drain, sweat particles. Over-encumbered? Instant exposure, no grace period.
 - Being encumbered in an extreme biome adds another 10% on top
@@ -606,12 +606,12 @@ scaling-drain:
 
 Both disabled by default. Requires PlaceholderAPI.
 
-- **scaling-weight** — bonus max carry = placeholder value × `per-point`, capped at `cap`.
-- **scaling-drain** — each stat point forgives `stat-per-point` weight units; leftover load vs max carry adds drain via `stress-per-ratio`. Defaults assume MMOCore strength and `max-weight: 300`. Flip `enabled: true` to try it.
+- **scaling-weight:** max carry bonus = placeholder × `per-point`, capped at `cap`.
+- **scaling-drain:** each stat point ignores `stat-per-point` weight; leftover load vs max carry adds drain via `stress-per-ratio`. Defaults target MMOCore strength and `max-weight: 300`. Set `enabled: true` to test.
 
-Old `scaling-drain` keys `per-point` and `cap` (flat global reduction) are gone — reload strips them from your file if they are still there.
+Old `scaling-drain` keys `per-point` and `cap` (flat reduction) were removed. Reload deletes them if your file still has them.
 
-Scaling-weight supports a `sources:` list for multiple placeholders.
+`scaling-weight` can use a `sources:` list for multiple placeholders.
 
 ### MMOItems Custom Weights
 

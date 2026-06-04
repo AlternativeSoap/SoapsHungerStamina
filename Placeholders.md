@@ -1,6 +1,6 @@
 # Placeholders
 
-Requires [PlaceholderAPI](https://www.spigotmc.org/resources/placeholderapi.6245/) installed on your server. Placeholders register automatically when PlaceholderAPI is detected.
+Install [PlaceholderAPI](https://www.spigotmc.org/resources/placeholderapi.6245/). SHS registers its placeholders automatically when PAPI is present.
 
 ---
 
@@ -32,7 +32,7 @@ Requires [PlaceholderAPI](https://www.spigotmc.org/resources/placeholderapi.6245
 
 ## Notes
 
-- `%shs_stamina_bar%` only works when the text bar is enabled in config:
+- `%shs_stamina_bar%` needs the text bar on in config:
   ```yaml
   ui:
     bar:
@@ -41,43 +41,35 @@ Requires [PlaceholderAPI](https://www.spigotmc.org/resources/placeholderapi.6245
       filled-char: "█"
       empty-char: "░"
   ```
-  If the bar is disabled, this placeholder returns an empty string.
+  Bar off = empty string.
 
-- `%shs_encumbered%` returns one of three values:
-  - `NONE` — under the weight limit
-  - `NORMAL` — over the encumbered threshold (default: 300)
-  - `SEVERE` — over the severely encumbered threshold (default: 500)
+- `%shs_encumbered%`: `NONE` (under limit), `NORMAL` (over 300 by default), `SEVERE` (over 500 by default).
 
-- `%shs_overexertion%` returns the accumulated overexertion points (0.0 when not overexerting). Overexertion builds when stamina is at 0 and the player keeps draining. Once it exceeds the threshold (default: 25.0), the player takes damage.
+- `%shs_overexertion%`: builds while stamina is 0 and you're still draining. Damage starts past the threshold (default 25).
 
-- `%shs_overexerted%` returns `true` while the player is actively overexerting (stamina at 0 and still performing actions), `false` otherwise.
+- `%shs_overexerted%`: `true` while actively overexerting.
 
-- `%shs_carry_burden%` only matters when `scaling-drain` is enabled. `0` means your stat fully covers your load; `1.0` means you are at your carry limit after stat relief.
+- `%shs_carry_burden%`: only with `scaling-drain` on. `0` = stat covers the load; `1.0` = at carry cap after stat relief.
 
-- `%shs_scaling_drain_mult%` is the multiplier applied to action stamina drain from scaling-drain (1.0 = normal, above 1.0 = harsher).
+- `%shs_scaling_drain_mult%`: action drain multiplier from scaling-drain (`1.0` normal, higher = worse).
 
 ---
 
 ## Usage Examples
 
-**Scoreboard line:**
+**Scoreboard:**
 ```
 Stamina: %shs_stamina%/%shs_stamina_max%
 ```
 
-**Tab list:**
+**Tab:**
 ```
 %shs_stamina_bar% %shs_stamina_percent%%
 ```
 
-**Hologram with weight:**
+**Weight line:**
 ```
 Weight: %shs_weight% [%shs_encumbered%]
 ```
 
-**Overexertion warning on scoreboard:**
-```
-Overexertion: %shs_overexertion%
-```
-
-These work anywhere PlaceholderAPI placeholders are supported: scoreboards, tab lists, holograms, chat formats, BossBar plugins, etc.
+Works anywhere PAPI placeholders do: scoreboards, tab, holograms, chat plugins, etc.

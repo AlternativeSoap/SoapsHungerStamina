@@ -1,108 +1,58 @@
 # Getting Started
 
-## Installation
+## Install
 
-1. **Make sure you have MMOCore running.**
-   The plugin won't load without it. MythicLib is also required (it's a dependency of MMOCore).
+1. **MMOCore must be running.** MythicLib too (MMOCore depends on it). Without MMOCore the plugin won't load.
 
-2. **Drop the jar into your plugins folder.**
-   Copy `SoapsHungerStamina-1.0.7.jar` into `plugins/`.
+2. **Put the jar in `plugins/`.**  
+   `SoapsHungerStamina-1.0.7.jar`
 
-3. **Optional: Install PlaceholderAPI** for `%shs_*%` placeholders on scoreboards, tab lists, etc.
+3. **PlaceholderAPI** (optional) if you want `%shs_*%` on scoreboards or tab.
 
-4. **Optional: Install MMOItems** for custom item weights and automatic duplicate drain prevention on weapon attacks.
+4. **MMOItems** (optional) for custom item weights and skipping duplicate attack drain.
 
-5. **Start your server.**
-   Restart or load the plugin via your plugin manager.
+5. **Start the server.**
 
-6. **Check the console.**
-   You should see: `SoapsHungerStamina enabled — hooked into MMOCore stamina.`
-   If you get errors about MMOCore, stop and make sure MMOCore is loaded first.
+6. **Console should say:**  
+   `SoapsHungerStamina enabled — hooked into MMOCore stamina.`  
+   If it complains about MMOCore, fix that first.
 
-7. **Config files are auto-generated.**
-   Four files are created on first run:
-   - `config.yml` — general settings, engine, projectiles, overexertion, hunger, effects, biomes, altitude, UI, GUI
-   - `actions.yml` — all action drain/regen values (sprint, jump, swim, attack, elytra, climbing, etc.)
-   - `messages.yml` — all player-facing text (MiniMessage formatted)
-   - `weight.yml` — armor weights, encumbrance, scaling, drowning/fall damage, MMOItems weights, item weights
+7. **First run creates four files:**
+   - `config.yml` – general stuff, biomes, UI, overexertion, etc.
+   - `actions.yml` – what each action costs or regens
+   - `messages.yml` – player-facing text
+   - `weight.yml` – armor, encumbrance, item weights, scaling
 
-## Quick Test
+## Quick test
 
-1. Join the server in Survival mode
-2. Hold `W + Ctrl` to sprint
-3. Watch your stamina display — it should drop
-4. Stop sprinting and your stamina regens (handled by MMOCore)
-5. Keep sprinting after stamina hits zero and your food bar should drop
+1. Join in Survival.
+2. Sprint (`W` + `Ctrl`).
+3. Stamina should drop on your display.
+4. Stop sprinting; MMOCore regen takes over.
+5. Sprint at zero stamina; food bar should start going down (if overflow is on).
 
-## Adjusting Settings
+## Changing settings
 
-You can either edit the config files and run `/shs reload`, or use the in-game GUI with `/shs gui` to change things without leaving the game. Commands like `/shs toggle` and `/shs config set` also work from chat.
+Edit the yml files and `/shs reload`, or open `/shs gui` and click stuff. `/shs toggle` and `/shs config set` work from chat too.
 
-## Default Behavior
+## Defaults (short version)
 
-**Actions** (configured in `actions.yml`):
-- Sprint: 0.8 stamina per second
-- Jump: 1.0 stamina per jump
-- Swim: 0.7 stamina per second
-- Water contact: 0.3 stamina per second
-- Lava contact: 1.0 stamina per second
-- Attack: 0.8 stamina per hit (with optional per-weapon-type costs and exclusion list)
-- Block place: 0.15 stamina per block (with exclusion list)
-- Block break: 0.2 stamina per block (with exclusion list)
-- Shield block: 0.2 upfront + 0.1 per second + 0.5 per hit absorbed (shield forced down at 1.0 stamina)
-- Sneak regen: +1.2 stamina per second (after 1.5s cooldown)
-- Idle regen: +0.6 stamina per second (after 1.5s cooldown)
-- Winded (hit): 0.3 instant + 0.4/s for 3s | Critical: 1.0 instant + 0.8/s for 4s + 2.5s regen lock
-- Elytra: 0.5 stamina per second
-- Climbing: 0.4 stamina per second
-- Mace smash: 2.0 extra stamina (on top of attack cost)
-- Boat: 0.1 stamina per second
-- Crawling: 0.35 stamina per second
-- Riptide: 2.0 stamina per launch
-- Tool use: hoe 0.2, shears 0.15, brush 0.1, flint & steel 0.15
-- Powder snow: 0.5 stamina per second
-- Slime bounce: 0.5 per bounce
-- Soul sand: 1.20x drain multiplier
-- Honey block: 1.15x drain multiplier
-- Potion modifiers: disabled by default (Speed 1.15x, Haste 1.10x)
-- Damage intake: 0.3 stamina per heart of damage
+**actions.yml highlights:** sprint 0.8/s, jump 1.0, swim 0.7/s, attack 0.8, shield 0.2 + 0.1/s + 0.5 per blocked hit, sneak regen +1.2/s, idle +0.6/s. Elytra, climbing, boat, riptide, tools, winded, mace, etc. are all in the file with sane defaults.
 
-**Systems** (configured in `config.yml`):
-- Projectiles: enabled (bow 1.5, crossbow 1.8, trident 2.0, 10 throwable types)
-- Overexertion: enabled (threshold 25.0, warns at 75%, damage starts at 0.5/tick)
-- Second Wind: disabled by default (5s idle at zero → 30% stamina recovery, 90s cooldown)
-- Hunger overflow: enabled at 0.5 food points per second
-- Exhaustion effects: disabled by default (with recovery animation)
-- Sounds: disabled by default (5 configurable event sounds)
-- Biomes: disabled by default (38 pre-configured biomes with exposure system)
-- Altitude: disabled by default
-- Stamina Food: enabled (13 foods configured — golden apple, golden carrot, meats, stews)
-- Dodge: disabled by default (sneak while sprinting, 4.0 cost, 1.5s cooldown)
-- Sprint Burst: disabled by default (speed boost on sprint start, 6.0 cost, 30s cooldown)
-- Bed Rest: enabled (sleeping restores full stamina + Well Rested buff for 120s)
-- Per-world settings: disabled-worlds list and optional per-world drain multipliers
-- Player display choice: disabled by default (let players pick actionbar/bossbar/off)
-- Display: Boss Bar showing stamina
-- GUI: enabled, accessible with `/shs gui`
+**config.yml highlights:** projectiles on, overexertion on, hunger overflow on, biomes/altitude/dodge/sprint-burst off by default, bed rest on, boss bar stamina display, GUI on.
 
-**Weight** (configured in `weight.yml`):
-- Armor weight: enabled (leather 5.5% to netherite 37%)
-- Encumbrance: enabled at 300/500 thresholds
-- Drowning/fall damage: enabled
-- 1000+ item weights preconfigured
-- MMOItems weights: disabled by default
-- Scaling-drain: disabled by default (stat vs carry weight — see below)
+**weight.yml highlights:** armor weight on, encumbrance at 300/500, drowning and fall damage on, 1000+ item weights, scaling-drain off unless you turn it on.
 
-Everything works out of the box. Tune it later if needed.
+You can run it as-is and tune later.
 
-## Optional: Stat vs carry weight (RPG servers)
+## RPG servers: strength vs backpack weight
 
-If you use MMOCore stats and PlaceholderAPI, you can make **strength (or any stat) offset inventory load**:
+If you have MMOCore stats + PlaceholderAPI:
 
-1. In `weight.yml`, set `scaling-drain.enabled: true`.
-2. Leave the defaults or point `placeholder` at your stat (e.g. `%mmocore_attribute_strength%`).
-3. Reload with `/shs reload`.
+1. `weight.yml` → `scaling-drain.enabled: true`
+2. Point `placeholder` at your stat (default is strength).
+3. `/shs reload`
 
-High strength = carrying a full inventory costs less stamina. Low strength + heavy bags = sprinting and fighting drain faster. Encumbrance slowness and sprint block still apply — this only changes how stamina drain scales with load.
+High strength = a full inventory hurts stamina less. Low strength + heavy loot = everything costs more. You still get encumbrance slowness and sprint block; this only changes how stamina scales with weight.
 
-Pair with `scaling-weight` if you also want player level to raise max carry capacity.
+Use `scaling-weight` too if you want level (or another placeholder) to raise max carry.

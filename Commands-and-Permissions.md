@@ -64,13 +64,12 @@ Available scaling-weight keys: `per-point`, `cap`, `placeholder`
 Available scaling-drain keys: `placeholder`, `stat-format`, `percent-reference`, `stat-per-point`, `stress-per-ratio`
 
 Examples:
-- `/shs weight set DIAMOND_SWORD 3.5` — diamond swords weigh 3.5
-- `/shs weight armor set NETHERITE_CHESTPLATE 0.15` — netherite chestplate weight 0.15
-- `/shs weight encumbrance max-weight 150` — encumbered above 150 total weight
-- `/shs weight info IRON_PICKAXE` — shows the current weight of an iron pickaxe
-- `/shs weight scaling-weight per-point 3.0` — 3.0 extra max weight per placeholder point
-- `/shs weight scaling-drain stat-per-point 8.0` — each strength point forgives 8 weight units before burden drain
-- `/shs weight scaling-drain stat-format percent` — use a 0–1 decimal placeholder (e.g. 0.3 = 30%)
+- `/shs weight set DIAMOND_SWORD 3.5`
+- `/shs weight armor set NETHERITE_CHESTPLATE 0.15`
+- `/shs weight encumbrance max-weight 150`
+- `/shs weight scaling-weight per-point 3.0`
+- `/shs weight scaling-drain stat-per-point 8.0`
+- `/shs weight scaling-drain stat-format percent` (placeholder should be 0–1, e.g. `0.3` = 30%)
 
 ### `/shs toggle <setting>`
 Flips a setting on or off.
@@ -291,7 +290,7 @@ All default to nobody (false).
 | `soapsstamina.weightignore.<MATERIAL>` | Skip weight for a specific item (e.g. `soapsstamina.weightignore.diamond_sword`) |
 | `soapsstamina.weightignore.container.<MATERIAL>` | Skip weight for a container and its contents (e.g. `soapsstamina.weightignore.container.shulker_box`) |
 
-The global `soapsstamina.bypass` skips everything. The per-feature ones are more targeted — if you only want someone to skip sprint drain but still pay for everything else, give them `soapsstamina.bypass.sprint` instead.
+`soapsstamina.bypass` skips everything. Per-feature bypasses are narrower: e.g. `soapsstamina.bypass.sprint` only skips sprint drain.
 
 ---
 
