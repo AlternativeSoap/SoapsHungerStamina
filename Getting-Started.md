@@ -2,57 +2,51 @@
 
 ## Install
 
-1. **MMOCore must be running.** MythicLib too (MMOCore depends on it). Without MMOCore the plugin won't load.
+1. Install **Paper 1.21+**, **SoapsCommon**, and **MMOCore**.
+2. Drop `SoapsHungerStamina-1.0.7.jar` into `plugins/`.
+3. Restart the server (not just reload) on first install.
+4. Install **PlaceholderAPI** if you plan to use `%shs_*%` placeholders or scaling-weight / scaling-drain.
 
-2. **Put the jar in `plugins/`.**  
-   `SoapsHungerStamina-1.0.7.jar`
+## First-run checklist
 
-3. **PlaceholderAPI** (optional) if you want `%shs_*%` on scoreboards or tab.
+1. Confirm MMOCore stamina is working for players before tuning SHS.
+2. Open `plugins/SoapsHungerStamina/config.yml` and set `general.disabled-worlds` if some worlds should ignore stamina or weight.
+3. Skim `actions.yml` for sprint, jump, and attack costs. Defaults are moderate survival values.
+4. Pick a hunger mode (`hunger.mode`: `overflow`, `bar`, or `disabled`). See [Hunger Modes](Hunger-Modes.md).
+5. Set `ui.type` to `ACTION_BAR`, `BOSS_BAR`, or `CHAT`. Boss bar is the default.
+6. Review `weight.yml` → `encumbrance.max-weight` and `severe-weight` for your server's economy.
+7. Run `/shs reload` after file edits, or use `/shs gui` for live toggles (admin).
 
-4. **MMOItems** (optional) for custom item weights and skipping duplicate attack drain.
+## Test as a player
 
-5. **Start the server.**
+| Command | Purpose |
+|---------|---------|
+| `/stamina` | Current stamina and hunger (overflow mode) |
+| `/weight` | Current carry weight vs max |
+| `/shs stats` | Session drain/regen stats |
 
-6. **Console should say:**  
-   `SoapsHungerStamina enabled — hooked into MMOCore stamina.`  
-   If it complains about MMOCore, fix that first.
+Sprint, jump, and fight briefly. Watch the boss bar or action bar. Cross the encumbrance threshold by holding heavy blocks.
 
-7. **First run creates four files:**
-   - `config.yml` – general stuff, biomes, UI, overexertion, etc.
-   - `actions.yml` – what each action costs or regens
-   - `messages.yml` – player-facing text
-   - `weight.yml` – armor, encumbrance, item weights, scaling
+## Test as admin
 
-## Quick test
+| Command | Purpose |
+|---------|---------|
+| `/shs help` | Command list |
+| `/shs gui` | Settings GUI |
+| `/shs toggle sprint` | Flip a feature without editing YAML |
+| `/shs config set sprint drain-per-second 1.0` | Live numeric tweak |
 
-1. Join in Survival.
-2. Sprint (`W` + `Ctrl`).
-3. Stamina should drop on your display.
-4. Stop sprinting; MMOCore regen takes over.
-5. Sprint at zero stamina; food bar should start going down (if overflow is on).
+Set `general.debug: true` to log drain events to console. Turn it off on production.
 
-## Changing settings
+## Optional integrations
 
-Edit the yml files and `/shs reload`, or open `/shs gui` and click stuff. `/shs toggle` and `/shs config set` work from chat too.
+| Integration | Enable in |
+|-------------|-----------|
+| MMOItems weights | `weight.yml` → `mmoitems-weight.enabled` |
+| Scaling carry cap by level | `weight.yml` → `scaling-weight.enabled` + PlaceholderAPI |
+| Stat-based load drain | `weight.yml` → `scaling-drain.enabled` + PlaceholderAPI |
+| Player UI choice | `config.yml` → `player-display-choice.enabled` |
 
-## Defaults (short version)
+## Presets
 
-**actions.yml highlights:** sprint 0.8/s, jump 1.0, swim 0.7/s, attack 0.8, shield 0.2 + 0.1/s + 0.5 per blocked hit, sneak regen +1.2/s, idle +0.6/s. Elytra, climbing, boat, riptide, tools, winded, mace, etc. are all in the file with sane defaults.
-
-**config.yml highlights:** projectiles on, overexertion on, hunger overflow on, biomes/altitude/dodge/sprint-burst off by default, bed rest on, boss bar stamina display, GUI on.
-
-**weight.yml highlights:** armor weight on, encumbrance at 300/500, drowning and fall damage on, 1000+ item weights, scaling-drain off unless you turn it on.
-
-You can run it as-is and tune later.
-
-## RPG servers: strength vs backpack weight
-
-If you have MMOCore stats + PlaceholderAPI:
-
-1. `weight.yml` → `scaling-drain.enabled: true`
-2. Point `placeholder` at your stat (default is strength).
-3. `/shs reload`
-
-High strength = a full inventory hurts stamina less. Low strength + heavy loot = everything costs more. You still get encumbrance slowness and sprint block; this only changes how stamina scales with weight.
-
-Use `scaling-weight` too if you want level (or another placeholder) to raise max carry.
+The plugin ships YAML snippets under `presets/` in the source repo (`vanilla-plus`, `pvp-balanced`, `rpg-combat`, `hardcore-survival`). Copy sections into your live config rather than replacing whole files. See [Examples](Examples.md).

@@ -1,75 +1,56 @@
 # Placeholders
 
-Install [PlaceholderAPI](https://www.spigotmc.org/resources/placeholderapi.6245/). SHS registers its placeholders automatically when PAPI is present.
+Requires **PlaceholderAPI**. Identifier: `shs`.
 
----
+Use on scoreboards, tab, chat plugins, and in `weight.yml` scaling placeholders.
 
-## Available Placeholders
+## All placeholders (22)
 
 | Placeholder | Returns | Example |
-|---|---|---|
-| `%shs_stamina%` | Current stamina (whole number) | `78` |
-| `%shs_stamina_max%` | Max stamina (whole number) | `100` |
-| `%shs_stamina_percent%` | Stamina as a percentage 0–100 | `78` |
-| `%shs_stamina_bar%` | Text stamina bar using filled/empty characters | `████████░░` |
+|-------------|---------|---------|
+| `%shs_stamina%` | Current stamina (integer) | `78` |
+| `%shs_stamina_max%` | Max stamina (integer) | `100` |
+| `%shs_stamina_percent%` | Stamina 0-100 (integer) | `78` |
+| `%shs_stamina_bar%` | Text bar from `ui.bar` settings | `████████░░` |
 | `%shs_weight%` | Total inventory weight (1 decimal) | `42.5` |
-| `%shs_encumbered%` | Encumbrance level | `NONE`, `NORMAL`, or `SEVERE` |
-| `%shs_overexertion%` | Current overexertion accumulation (1 decimal) | `8.3` |
-| `%shs_overexerted%` | Whether the player is currently overexerting | `true` or `false` |
-| `%shs_stat_drained%` | Session total stamina drained (1 decimal) | `254.3` |
-| `%shs_stat_regened%` | Session total stamina regened (1 decimal) | `180.7` |
-| `%shs_stat_second_winds%` | Session second wind trigger count | `2` |
-| `%shs_stat_overexertions%` | Session overexertion event count | `1` |
+| `%shs_encumbered%` | `NONE`, `NORMAL`, or `SEVERE` | `NORMAL` |
+| `%shs_overexertion%` | Overexertion accumulation (1 decimal) | `8.3` |
+| `%shs_overexerted%` | Actively overexerting | `true` / `false` |
+| `%shs_stat_drained%` | Session total drained (1 decimal) | `254.3` |
+| `%shs_stat_regened%` | Session total regened (1 decimal) | `180.7` |
+| `%shs_stat_second_winds%` | Session second wind count | `2` |
+| `%shs_stat_overexertions%` | Session overexertion events | `1` |
 | `%shs_stat_time_at_zero%` | Session seconds at 0 stamina (1 decimal) | `12.5` |
-| `%shs_well_fed%` | Remaining Well Fed buff seconds (0 if inactive) | `25` |
-| `%shs_well_rested%` | Remaining Well Rested buff seconds (0 if inactive) | `90` |
-| `%shs_dodge_cooldown%` | Remaining dodge cooldown seconds (0 if ready) | `1.2` |
-| `%shs_sprint_burst_cooldown%` | Remaining sprint burst cooldown seconds (0 if ready) | `22.5` |
-| `%shs_carry_burden%` | Load burden after stat relief (0 = light, 1+ = at or over max carry) | `0.4` |
-| `%shs_scaling_drain_mult%` | Current scaling-drain multiplier on action stamina | `1.12` |
-
----
+| `%shs_well_fed%` | Well Fed buff seconds left (0 if off) | `25` |
+| `%shs_well_rested%` | Well Rested buff seconds left (0 if off) | `90` |
+| `%shs_dodge_cooldown%` | Dodge cooldown seconds left (0 if ready) | `1.2` |
+| `%shs_sprint_burst_cooldown%` | Sprint burst cooldown seconds left (0 if ready) | `22.5` |
+| `%shs_biome%` | Biome category: `COLD`, `HOT`, or `NEUTRAL` | `COLD` |
+| `%shs_winded%` | Player is winded | `true` / `false` |
+| `%shs_display%` | Display preference: `actionbar`, `bossbar`, `off`, or `default` | `bossbar` |
+| `%shs_carry_burden%` | Load burden after stat relief (1 decimal, 0 = light) | `0.40` |
+| `%shs_scaling_drain_mult%` | Action drain multiplier from scaling-drain (2 decimals) | `1.12` |
 
 ## Notes
 
-- `%shs_stamina_bar%` needs the text bar on in config:
-  ```yaml
-  ui:
-    bar:
-      enabled: true
-      length: 10
-      filled-char: "█"
-      empty-char: "░"
-  ```
-  Bar off = empty string.
+**`%shs_stamina_bar%`** uses `config.yml` → `ui.bar.length`, `filled-char`, `empty-char`. Same settings as `%stamina_bar%` in `messages.yml`.
 
-- `%shs_encumbered%`: `NONE` (under limit), `NORMAL` (over 300 by default), `SEVERE` (over 500 by default).
+**`%shs_encumbered%`** tiers use `weight.yml` thresholds (default normal at 300, severe at 500). Per-player max cap can change with `soapsstamina.maxweight.<number>` or scaling-weight.
 
-- `%shs_overexertion%`: builds while stamina is 0 and you're still draining. Damage starts past the threshold (default 25).
+**`%shs_carry_burden%` and `%shs_scaling_drain_mult%`** only matter when `scaling-drain.enabled: true`. Burden `0` means the player's stat fully covers the load; `1.0+` means at or over effective carry cap after stat relief.
 
-- `%shs_overexerted%`: `true` while actively overexerting.
+**Session stats** reset on disconnect. They are not persisted.
 
-- `%shs_carry_burden%`: only with `scaling-drain` on. `0` = stat covers the load; `1.0` = at carry cap after stat relief.
+## Example layouts
 
-- `%shs_scaling_drain_mult%`: action drain multiplier from scaling-drain (`1.0` normal, higher = worse).
-
----
-
-## Usage Examples
-
-**Scoreboard:**
 ```
 Stamina: %shs_stamina%/%shs_stamina_max%
 ```
 
-**Tab:**
 ```
 %shs_stamina_bar% %shs_stamina_percent%%
 ```
 
-**Weight line:**
 ```
-Weight: %shs_weight% [%shs_encumbered%]
+Weight: %shs_weight% [%shs_encumbered%] burden %shs_carry_burden%
 ```
-
-Works anywhere PAPI placeholders do: scoreboards, tab, holograms, chat plugins, etc.

@@ -1,62 +1,47 @@
-# SoapsHungerStamina
+# SoapsHungerStamina Wiki
 
-Stamina and hunger, actually connected. MMOCore handles the bar; this plugin decides what costs stamina in survival.
+Server-owner documentation for **SoapsHungerStamina** v1.0.7.
 
-Sprint, jump, swim, fight, mine, glide, climb, paddle, throw stuff. Run out of stamina and your food bar pays the bill. Keep going at zero and overexertion starts hurting you. Pack too much and movement gets rough. Cold and hot biomes, altitude, weight, beds, dodges, second wind, the works.
+SoapsHungerStamina is an MMOCore stamina addon. It adds action-based stamina drain and regen, inventory weight and encumbrance, hunger integration, biome and altitude pressure, combat winded effects, overexertion damage, and optional dodge, sprint burst, and bed rest recovery.
 
-## What it does
+## Requirements
 
-- Lots of actions drain or restore stamina (sprint, jump, swim, attack, shield, elytra, climbing, mace, bows, tridents, throwables, boats, crawling, riptide, tools, and more)
-- Per-weapon costs and exclusion lists for attacks and block place/break
-- Shields drop when stamina is too low; blocking costs more on big hits
-- Stamina food, second wind, dodge, sprint burst, bed rest buffs
-- Biomes, altitude, soul sand, honey, powder snow, water/lava contact
-- Hunger overflow or replace the food bar with a stamina bar
-- Overexertion damage, winded on hit, exhaustion effects (slowness, sweat, stumble, etc.)
-- Weight: armor load, encumbrance, drowning/fall penalties, MMOItems overrides
-- PlaceholderAPI scaling for max carry (`scaling-weight`) and stat vs load drain (`scaling-drain`)
-- Admin GUI, biome editor, weight commands, per-world toggles
-- 30+ bypass permissions, player-chosen UI, session stats, 19 PAPI placeholders
+| Plugin | Required |
+|--------|----------|
+| Paper 1.21+ | Yes |
+| SoapsCommon | Yes (hard dependency) |
+| MMOCore | Yes (hard dependency) |
+| PlaceholderAPI | Optional (scaling-weight, scaling-drain, `%shs_*%`) |
+| MMOItems | Optional (duplicate attack drain prevention, custom item weights) |
+| ExecutableItems, EcoItems, MythicCrucible | Optional (custom item weights) |
 
-## Docs
+## Quick links
 
-- [Getting Started](Getting-Started.md)
-- [Introduction](Introduction.md)
-- [Configuration](Configuration.md)
-- [Commands & Permissions](Commands-and-Permissions.md)
-- [Default Config Files](Default-Config-Files.md)
-- [Placeholders](Placeholders.md)
-- [Examples](Examples.md)
+| Page | What it covers |
+|------|----------------|
+| [Introduction](Introduction.md) | Feature overview and how systems connect |
+| [Getting Started](Getting-Started.md) | Install, first config steps, go-live checklist |
+| [Configuration](Configuration.md) | `config.yml` reference |
+| [Actions](Actions.md) | `actions.yml` stamina costs and recovery |
+| [Weight and Encumbrance](Weight-and-Encumbrance.md) | `weight.yml`, scaling, penalties |
+| [Hunger Modes](Hunger-Modes.md) | overflow, bar, disabled |
+| [Abilities](Abilities.md) | Dodge, sprint burst, bed rest, stamina food |
+| [Admin GUI](Admin-GUI.md) | In-game settings panel |
+| [Commands and Permissions](Commands-and-Permissions.md) | Full command and permission tables |
+| [Placeholders](Placeholders.md) | All 22 `%shs_*%` PlaceholderAPI placeholders |
+| [Default Config Files](Default-Config-Files.md) | Shipped defaults and file layout |
+| [Examples](Examples.md) | Presets and tuning recipes |
+| [FAQ](FAQ.md) | Common owner questions |
+| [Changelog](Changelog.md) | Version history |
 
-## You need
+## Config files (after first run)
 
-- Paper 1.21.x
-- MMOCore + MythicLib
-- PlaceholderAPI (optional, for `%shs_*%`)
-- MMOItems (optional, custom weights + no double attack drain)
+```
+plugins/SoapsHungerStamina/
+  config.yml      # Global rules, UI, biomes, overexertion, hunger mode
+  actions.yml     # Stamina costs per action and recovery
+  weight.yml      # Item weights, encumbrance, scaling
+  messages.yml    # Player and admin messages (MiniMessage)
+```
 
-| | | |
-|---|---|---|
-| Paper | 1.21.x | Main target |
-| MMOCore | Required | Stamina backend |
-| MythicLib | Required | Comes with MMOCore |
-| PlaceholderAPI | Optional | Placeholders |
-| MMOItems | Optional | Custom item weights |
-
-## Quick start
-
-1. Install Paper, MMOCore, MythicLib, drop in this plugin.
-2. Start once so `config.yml` and `actions.yml` generate.
-3. `/shs gui`: turn on sprint-lock, pick hunger mode (`overflow` or `bar`).
-4. Sprint to zero on a test player. Food should drop; sprint should lock if you enabled it.
-5. Tweak from a preset in [Examples.md](Examples.md) if you want a baseline.
-
-## Performance tips
-
-- Light server: `engine.tick-interval: 4`, leave heavy effects off.
-- Busy server: trim particles/effects, tune biomes, disable stamina in lobby worlds via `disabled-worlds`.
-- Really busy: bump tick interval, simplify actions, use per-world disables.
-
-## Version
-
-1.0.7 by AlternativeSoap
+Reload with `/shs reload` (requires `soapsstamina.admin`).

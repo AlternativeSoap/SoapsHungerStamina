@@ -1,311 +1,98 @@
-# Commands & Permissions
+# Commands and Permissions
 
-## Player Commands
+## Commands
 
-### `/stamina`
-Shows your current stamina, max stamina, percentage, and hunger level.
+| Command | Permission | Who | Description |
+|---------|------------|-----|-------------|
+| `/shs` | None | Anyone | Shows version and usage |
+| `/shs help` | None | Anyone | Help menu |
+| `/shs reload` | `soapsstamina.admin` | Admin | Reload all config files |
+| `/shs stamina` | None | Player | Show own stamina status |
+| `/shs stamina display <off\|actionbar\|bossbar>` | `soapsstamina.display.choose` | Player | Set personal UI preference |
+| `/shs stamina give <player> <amount>` | `soapsstamina.admin` | Admin | Add stamina to a player |
+| `/shs stamina reset <player>` | `soapsstamina.admin` | Admin | Set stamina to max |
+| `/shs stats` | None | Player | Session stamina statistics |
+| `/shs toggle <setting>` | `soapsstamina.admin` | Admin | Toggle a feature on/off |
+| `/shs config set <group> <key> <value>` | `soapsstamina.admin` | Admin | Set a numeric/boolean/string value |
+| `/shs gui` | `soapsstamina.admin` | Admin (player) | Open settings GUI |
+| `/shs weight` | None | Player | Show own weight status |
+| `/shs weight info [material]` | None | Player | Weight of held item or material |
+| `/shs weight set <material> <weight>` | `soapsstamina.admin` | Admin | Set item weight in `weight.yml` |
+| `/shs weight remove <material>` | `soapsstamina.admin` | Admin | Remove item from weight map |
+| `/shs weight armor set <material> <weight>` | `soapsstamina.admin` | Admin | Set armor drain contribution |
+| `/shs weight armor remove <material>` | `soapsstamina.admin` | Admin | Remove armor entry |
+| `/shs weight encumbrance <key> <value>` | `soapsstamina.admin` | Admin | Tune encumbrance settings |
+| `/shs weight scaling-weight <key> <value>` | `soapsstamina.admin` | Admin | Keys: `placeholder`, `per-point`, `cap` |
+| `/shs weight scaling-drain <key> <value>` | `soapsstamina.admin` | Admin | Keys: `placeholder`, `stat-format`, `percent-reference`, `stat-per-point`, `stress-per-ratio` |
+| `/stamina` | `soapsstamina.use` (default true) | Player | Shortcut for own stamina |
+| `/stamina display <off\|actionbar\|bossbar>` | `soapsstamina.display.choose` | Player | Same as `/shs stamina display` |
+| `/weight` | None | Player | Shortcut for own weight |
+| `/weight info [material]` | None | Player | Same as `/shs weight info` |
 
-Permission: `soapsstamina.use` (default: everyone)
+Alias: `/soapshungerstamina` → `/shs`
 
-Alias: `/shs stamina`
+Display commands require `player-display-choice.enabled: true` in `config.yml` and global `ui.enabled: true`.
 
-### `/stamina display <mode>` / `/shs stamina display <mode>`
-Let players choose how their stamina is displayed. Modes: `actionbar`, `bossbar`, or `off`.
+## Toggle settings (`/shs toggle <name>`)
 
-Only works when `player-display-choice.enabled` is true in config.
-Also requires `ui.enabled: true` in config. If UI is globally disabled, this command will show a notice and do nothing.
+`sprint`, `jump`, `swim`, `water-contact`, `lava-contact`, `block-place`, `block-break`, `sneak`, `attack`, `shield-block`, `winded`, `hunger`, `hunger-bar`, `drain-saturation`, `effects`, `slowness`, `sweat-particles`, `heavy-breathing`, `stumble`, `debug`, `sprint-lock-enabled`, `sprint-lock-unlock-above-zero`, `sprint-lock-unlock-threshold`, `low-stamina-warning`, `biomes`, `biome-freeze`, `biome-sweat`, `biome-freeze-particles`, `altitude`, `encumbered-drowning`, `encumbered-fall-damage`, `scaling-weight`, `scaling-drain`, `idle-regen`, `overexertion`, `overexertion-scaling`, `projectiles`, `bow`, `bow-scale-with-charge`, `crossbow`, `trident`, `throwables`, `elytra`, `climbing`, `mace`, `potion-modifiers`, `damage-intake`, `boat`, `crawling`, `riptide`, `tool-use`, `block-interact`, `powder-snow`, `slime-bounce`, `soul-sand`, `honey-block`, `mmoitems-weight`, `executableitems-weight`, `ecoitems-weight`, `crucible-weight`, `sounds`, `second-wind`, `weapon-costs`, `recovery-animation`, `player-display-choice`, `stamina-food`, `dodge`, `sprint-burst`, `bed-rest`, `bed-rest-buff`
 
-Permission: `soapsstamina.display.choose` (default: everyone)
+`hunger` and `hunger-bar` are mutually exclusive modes. Toggling one on warns if the other was active.
 
-### `/weight`
-Shows your current total weight and max weight.
+## Config set groups (`/shs config set <group> <key> <value>`)
 
-Permission: `soapsstamina.use` (default: everyone)
+`sprint`, `jump`, `swim`, `water-contact`, `lava-contact`, `block-place`, `block-break`, `sneak`, `attack`, `shield-block`, `winded`, `hunger`, `engine`, `effects`, `slowness`, `sweat-particles`, `stumble`, `ui`, `general`, `sprint-lock`, `biomes`, `altitude`, `encumbrance`, `stamina-bar`, `overexertion`, `idle`, `bow`, `crossbow`, `trident`, `throwables`, `elytra`, `climbing`, `mace`, `potion-modifiers`, `damage-intake`, `boat`, `crawling`, `riptide`, `tool-use`, `block-interact`, `powder-snow`, `slime-bounce`, `soul-sand`, `honey-block`, `second-wind`, `weapon-costs`, `dodge`, `sprint-burst`, `bed-rest`, `context`
 
-Alias: `/shs weight`
-
-### `/weight info [material]`
-Shows the weight of the item in your main hand, or a specific material if provided.
-
-Permission: `soapsstamina.use` (default: everyone)
-
----
-
-## Admin Commands
-
-All admin commands need `soapsstamina.admin` (default: op).
-
-### `/shs reload`
-Reloads config.yml, actions.yml, messages.yml, and weight.yml from disk. No restart needed.
-
-### `/shs gui`
-Opens the in-game settings panel. Click items to toggle features and adjust values. Only works if `gui.enabled` is true in config.
-
-The GUI includes a Biome Settings page where you can add, remove, and edit biomes directly. Click a biome to change its type (cold/hot) or drain multiplier. No config editing needed.
-
-### `/shs weight <subcommand>`
-Manages items and settings in weight.yml without editing the file.
-
-Subcommands:
-
-- `/shs weight set <material> <weight>` — Set the weight for an item type
-- `/shs weight remove <material>` — Remove an item's custom weight (falls back to default)
-- `/shs weight info [material]` — Show the current weight of an item (available to all players)
-- `/shs weight armor set <material> <weight>` — Set an armor material's weight multiplier
-- `/shs weight armor remove <material>` — Remove an armor material's custom multiplier
-- `/shs weight encumbrance <key> <value>` — Change an encumbrance setting
-- `/shs weight scaling-weight <key> <value>` — Change a scaling-weight setting
-- `/shs weight scaling-drain <key> <value>` — Change a scaling-drain setting
-
-Available encumbrance keys: `max-weight`, `severe-weight`, `encumbered-drain-multiplier`, `severe-drain-multiplier`, `encumbered-slowness`, `severe-slowness`, `block-sprint-severe`, `default-weight`
-
-Available scaling-weight keys: `per-point`, `cap`, `placeholder`
-
-Available scaling-drain keys: `placeholder`, `stat-format`, `percent-reference`, `stat-per-point`, `stress-per-ratio`
-
-Examples:
-- `/shs weight set DIAMOND_SWORD 3.5`
-- `/shs weight armor set NETHERITE_CHESTPLATE 0.15`
-- `/shs weight encumbrance max-weight 150`
-- `/shs weight scaling-weight per-point 3.0`
-- `/shs weight scaling-drain stat-per-point 8.0`
-- `/shs weight scaling-drain stat-format percent` (placeholder should be 0–1, e.g. `0.3` = 30%)
-
-### `/shs toggle <setting>`
-Flips a setting on or off.
-
-Available settings:
-
-| Setting | What it toggles |
-|---|---|
-| `sprint` | Sprint stamina drain |
-| `jump` | Jump stamina cost |
-| `swim` | Swim stamina drain |
-| `water-contact` | Water contact drain |
-| `lava-contact` | Lava contact drain |
-| `block-place` | Block place cost |
-| `block-break` | Block break cost |
-| `sneak` | Sneak regen |
-| `attack` | Attack cost |
-| `shield-block` | Shield block drain |
-| `winded` | Winded (damage intake stamina) |
-| `idle-regen` | Idle regen |
-| `elytra` | Elytra gliding drain |
-| `climbing` | Climbing drain |
-| `block-interact` | Block interaction stamina cost |
-| `mace` | Mace smash extra cost |
-| `potion-modifiers` | Potion effect drain modifiers |
-| `damage-intake` | Damage intake drain |
-| `boat` | Boat paddling drain |
-| `crawling` | Crawling drain |
-| `riptide` | Riptide launch cost |
-| `tool-use` | Tool use (hoe/shears/brush/flint-and-steel) cost |
-| `powder-snow` | Powder snow exposure multiplier |
-| `slime-bounce` | Slime bounce cost |
-| `soul-sand` | Soul sand drain multiplier |
-| `honey-block` | Honey block drain multiplier |
-| `hunger` | Hunger overflow mode |
-| `hunger-bar` | Hunger bar mode |
-| `drain-saturation` | Drain saturation first |
-| `overexertion` | Overexertion system |
-| `overexertion-scaling` | Overexertion damage scaling |
-| `second-wind` | Second Wind recovery |
-| `weapon-costs` | Per-weapon-type attack costs |
-| `sounds` | Sound effects for stamina events |
-| `recovery-animation` | Recovery particle animation |
-| `player-display-choice` | Player display preference |
-| `stamina-food` | Stamina food system |
-| `dodge` | Dodge active ability |
-| `sprint-burst` | Sprint burst speed boost |
-| `bed-rest` | Bed rest stamina recovery |
-| `bed-rest-buff` | Well Rested buff from bed rest |
-| `container-weight` | Container weight calculation |
-| `projectiles` | All projectile costs |
-| `bow` | Bow cost |
-| `bow-scale-with-charge` | Bow charge scaling |
-| `crossbow` | Crossbow cost |
-| `trident` | Trident cost |
-| `throwables` | All throwable costs |
-| `effects` | All exhaustion effects |
-| `slowness` | Exhaustion slowness |
-| `sweat-particles` | Exhaustion sweat particles |
-| `heavy-breathing` | Exhaustion heavy breathing |
-| `stumble` | Exhaustion stumble |
-| `biomes` | Biome system |
-| `biome-freeze` | Biome freeze ticks |
-| `biome-sweat` | Biome sweat particles |
-| `biome-freeze-particles` | Biome freeze particles |
-| `altitude` | Altitude system |
-| `encumbered-drowning` | Encumbrance drowning |
-| `encumbered-fall-damage` | Encumbrance fall damage |
-| `scaling-weight` | Scaling max weight (PAPI) |
-| `scaling-drain` | Stat vs carry weight drain (PAPI) |
-| `mmoitems-weight` | MMOItems custom weights |
-| `debug` | Console debug logging |
-| `sprint-lock-enabled` | Hard sprint lock at 0 stamina |
-| `low-stamina-warning` | Low stamina UI warning |
-| `stamina-bar` | Text stamina bar |
-
-Example: `/shs toggle effects` turns exhaustion effects on or off.
-
-### `/shs config set <group> <key> <value>`
-Changes a specific config value.
-
-Example: `/shs config set sprint drain-per-second 3.0`
-
-Available groups and their keys:
-
-| Group | Keys |
-|---|---|
-| `sprint` | `drain-per-second` |
-| `jump` | `cost` |
-| `swim` | `drain-per-second` |
-| `water-contact` | `drain-per-second` |
-| `lava-contact` | `drain-per-second` |
-| `block-place` | `cost` |
-| `block-break` | `cost` |
-| `sneak` | `regen-per-second` |
-| `attack` | `cost` |
-| `shield-block` | `initial-cost`, `drain-per-second`, `min-stamina`, `damage-cost` |
-| `winded` | `normal-instant-cost`, `normal-drain-per-second`, `normal-duration`, `critical-instant-cost`, `critical-drain-per-second`, `critical-duration`, `critical-regen-lock-duration`, `refresh-on-hit` |
-| `idle` | `regen-per-second`, `regen-action-cooldown` |
-| `elytra` | `drain-per-second` |
-| `climbing` | `drain-per-second` |
-| `mace` | `cost` |
-| `potion-modifiers` | `speed-multiplier`, `haste-multiplier` |
-| `damage-intake` | `cost-per-heart` |
-| `boat` | `drain-per-second` |
-| `crawling` | `drain-per-second` |
-| `riptide` | `cost` |
-| `tool-use` | `hoe-cost`, `shears-cost`, `brush-cost`, `flint-and-steel-cost` |
-| `powder-snow` | `exposure-multiplier` |
-| `slime-bounce` | `cost` |
-| `soul-sand` | `drain-multiplier` |
-| `honey-block` | `drain-multiplier` |
-| `hunger` | `drain-per-second`, `min-hunger`, `drain-saturation` |
-| `overexertion` | `threshold`, `base-damage`, `scaling-divisor`, `max-damage`, `recovery-rate`, `warning-threshold` |
-| `second-wind` | `idle-seconds`, `recovery-percent`, `cooldown-seconds` |
-| `weapon-costs` | `sword`, `axe`, `trident`, `fist` |
-| `stamina-food` | (per-item: use the item material name as key, e.g. `GOLDEN_APPLE instant-stamina 15.0`) |
-| `dodge` | `cost`, `cooldown-ms`, `velocity`, `invulnerable-ticks` |
-| `sprint-burst` | `min-stamina-percent`, `cost`, `speed-amplifier`, `duration-ticks`, `cooldown-ms` |
-| `bed-rest` | `restore-percent`, `buff-duration-seconds`, `buff-drain-reduction` |
-| `biomes` | `cold-drain-multiplier`, `hot-drain-multiplier`, `encumbrance-biome-bonus`, `cold-duration`, `hot-duration`, `decay-rate`, `exposed-drain-cold`, `exposed-drain-hot`, `armor-protection` |
-| `bow` | `cost` |
-| `crossbow` | `cost` |
-| `trident` | `cost` |
-| `throwables` | `snowball`, `egg`, `ender-pearl`, `eye-of-ender`, `splash-potion`, `lingering-potion`, `experience-bottle`, `firework-rocket`, `fishing-rod`, `wind-charge` |
-| `engine` | `tick-interval`, `movement-threshold` |
-| `effects` | `recovery-threshold` |
-| `slowness` | `amplifier` |
-| `sweat-particles` | `count` |
-| `stumble` | `chance`, `strength` |
-| `ui` | `type`, `update-threshold`, `message-cooldown`, `low-stamina-threshold` |
-| `stamina-bar` | `length`, `filled-char`, `empty-char` |
-| `general` | `bypass-permission` |
-| `altitude` | `high-threshold`, `high-multiplier`, `high-passive-drain`, `low-threshold`, `low-multiplier`, `low-passive-drain` |
-| `encumbrance` | `drowning-air-loss`, `fall-damage-max-multiplier` |
-
-Tab completion shows you the available keys and value hints for each group.
-
-### `/shs stamina give <player> <amount>`
-Gives stamina to a player (won't go above their max).
-
-Example: `/shs stamina give Steve 50`
-
-### `/shs stamina reset <player>`
-Sets a player's stamina back to full.
-
-### `/shs help`
-Lists all available commands.
-
-### `/shs stats`
-Shows session statistics for the current session: total stamina drained, total stamina restored, number of second winds triggered, number of overexertions, and time spent at zero stamina.
-
-Permission: `soapsstamina.admin`
-
----
+Run `/shs config set` with no args to see usage. Unknown group/key returns an error message.
 
 ## Permissions
 
-### Core Permissions
+| Permission | Default | Description |
+|------------|---------|-------------|
+| `soapsstamina.admin` | op | Reload, give/reset stamina, gui, toggle, config, weight admin |
+| `soapsstamina.use` | true | Use `/stamina` |
+| `soapsstamina.bypass` | false | Bypass all stamina drain |
+| `soapsstamina.bypass.sprint` | false | Bypass sprint drain |
+| `soapsstamina.bypass.jump` | false | Bypass jump drain |
+| `soapsstamina.bypass.swim` | false | Bypass swim drain |
+| `soapsstamina.bypass.block-place` | false | Bypass block place drain |
+| `soapsstamina.bypass.block-break` | false | Bypass block break drain |
+| `soapsstamina.bypass.sneak` | false | Bypass sneak regen |
+| `soapsstamina.bypass.attack` | false | Bypass attack drain |
+| `soapsstamina.bypass.shield-block` | false | Bypass shield block drain |
+| `soapsstamina.bypass.hunger` | false | Bypass hunger overflow drain |
+| `soapsstamina.bypass.effects` | false | Bypass all exhaustion effects |
+| `soapsstamina.bypass.effects.slowness` | false | Bypass exhaustion slowness |
+| `soapsstamina.bypass.effects.sweat` | false | Bypass sweat particles |
+| `soapsstamina.bypass.effects.breathing` | false | Bypass heavy breathing (darkness) |
+| `soapsstamina.bypass.effects.stumble` | false | Bypass stumble knockback |
+| `soapsstamina.bypass.biomes` | false | Bypass biome drain and effects |
+| `soapsstamina.bypass.altitude` | false | Bypass altitude drain |
+| `soapsstamina.bypass.projectiles` | false | Bypass projectile/throwable drain |
+| `soapsstamina.bypass.encumbrance` | false | Bypass encumbrance multipliers and effects |
+| `soapsstamina.maxweight.*` | false | Per-player max weight (e.g. `soapsstamina.maxweight.500`) |
+| `soapsstamina.bypass.elytra` | false | Bypass elytra drain |
+| `soapsstamina.bypass.climbing` | false | Bypass climbing drain |
+| `soapsstamina.bypass.mace` | false | Bypass mace smash extra cost |
+| `soapsstamina.bypass.damage-intake` | false | Bypass environmental damage stamina drain |
+| `soapsstamina.bypass.boat` | false | Bypass boat paddling drain |
+| `soapsstamina.bypass.crawling` | false | Bypass crawling drain |
+| `soapsstamina.bypass.riptide` | false | Bypass riptide cost |
+| `soapsstamina.bypass.tool-use` | false | Bypass hoe/shears/brush/flint costs |
+| `soapsstamina.bypass.powder-snow` | false | Bypass powder snow exposure boost |
+| `soapsstamina.bypass.slime-bounce` | false | Bypass slime bounce cost |
+| `soapsstamina.bypass.second-wind` | false | Bypass second wind mechanic |
+| `soapsstamina.display.choose` | true | Choose stamina display type |
+| `soapsstamina.bypass.soul-sand` | false | Bypass soul sand drain multiplier |
+| `soapsstamina.bypass.honey-block` | false | Bypass honey block drain multiplier |
+| `soapsstamina.bypass.water-contact` | false | Bypass water contact drain |
+| `soapsstamina.bypass.lava-contact` | false | Bypass lava contact drain |
+| `soapsstamina.bypass.overexertion` | false | Bypass overexertion damage |
+| `soapsstamina.bypass.winded` | false | Bypass winded on damage |
+| `soapsstamina.bypass.idle` | false | Bypass idle regen |
+| `soapsstamina.bypass.stamina-food` | false | Bypass stamina food effects |
+| `soapsstamina.bypass.dodge` | false | Bypass dodge ability |
+| `soapsstamina.bypass.sprint-burst` | false | Bypass sprint burst |
+| `soapsstamina.bypass.bed-rest` | false | Bypass bed rest recovery |
 
-| Permission | What it does | Default |
-|---|---|---|
-| `soapsstamina.use` | Check own stamina with `/stamina` and weight with `/weight` | Everyone |
-| `soapsstamina.admin` | All admin commands (reload, gui, toggle, config, give, reset, weight management, stats) | OP |
-| `soapsstamina.bypass` | Skip all stamina and hunger drain | Nobody |
-| `soapsstamina.display.choose` | Let players choose their display mode with `/stamina display` | Everyone |
-
----
-
-### Per-Feature Bypass Permissions
-
-These let you exempt specific players from specific features. Give a player one of these and that feature won't affect them, even if it's enabled for everyone else.
-
-All default to nobody (false).
-
-| Permission | What it bypasses |
-|---|---|
-| `soapsstamina.bypass.sprint` | Sprint stamina drain |
-| `soapsstamina.bypass.jump` | Jump stamina cost |
-| `soapsstamina.bypass.swim` | Swim, water-contact, and lava-contact stamina drain |
-| `soapsstamina.bypass.block-place` | Block place stamina cost |
-| `soapsstamina.bypass.block-break` | Block break stamina cost |
-| `soapsstamina.bypass.sneak` | Sneak stamina regen bonus |
-| `soapsstamina.bypass.attack` | Attack stamina cost |
-| `soapsstamina.bypass.shield-block` | Shield block stamina drain |
-| `soapsstamina.bypass.winded` | Winded stamina drain (damage-taken drain + regen lock) |
-| `soapsstamina.bypass.idle` | Idle stamina regen bonus |
-| `soapsstamina.bypass.hunger` | Hunger overflow drain |
-| `soapsstamina.bypass.overexertion` | Overexertion damage |
-| `soapsstamina.bypass.effects` | All exhaustion effects |
-| `soapsstamina.bypass.effects.slowness` | Just the slowness effect |
-| `soapsstamina.bypass.effects.sweat` | Just sweat particles |
-| `soapsstamina.bypass.effects.breathing` | Just heavy breathing (darkness) |
-| `soapsstamina.bypass.effects.stumble` | Just the stumble knockback |
-| `soapsstamina.bypass.biomes` | Biome drain multipliers and effects |
-| `soapsstamina.bypass.altitude` | Altitude drain multipliers and passive drain |
-| `soapsstamina.bypass.projectiles` | All projectile and throwable stamina drain |
-| `soapsstamina.bypass.encumbrance` | Encumbrance drain multipliers and effects |
-| `soapsstamina.bypass.elytra` | Elytra gliding stamina drain |
-| `soapsstamina.bypass.climbing` | Climbing stamina drain |
-| `soapsstamina.bypass.mace` | Mace smash extra stamina cost |
-| `soapsstamina.bypass.damage-intake` | Damage intake stamina drain |
-| `soapsstamina.bypass.boat` | Boat paddling stamina drain |
-| `soapsstamina.bypass.crawling` | Crawling stamina drain |
-| `soapsstamina.bypass.riptide` | Riptide trident stamina cost |
-| `soapsstamina.bypass.tool-use` | Tool use (hoe, shears, brush, flint & steel) stamina cost |
-| `soapsstamina.bypass.powder-snow` | Powder snow stamina drain |
-| `soapsstamina.bypass.slime-bounce` | Slime bounce stamina cost |
-| `soapsstamina.bypass.soul-sand` | Soul sand drain multiplier |
-| `soapsstamina.bypass.honey-block` | Honey block drain multiplier |
-| `soapsstamina.bypass.second-wind` | Second Wind recovery |
-| `soapsstamina.bypass.stamina-food` | Stamina food effects |
-| `soapsstamina.bypass.dodge` | Dodge active ability |
-| `soapsstamina.bypass.sprint-burst` | Sprint burst speed boost |
-| `soapsstamina.bypass.bed-rest` | Bed rest stamina recovery |
-| `soapsstamina.display.choose` | Let players pick their own display mode (actionbar/bossbar/off) |
-| `soapsstamina.maxweight.*` | Set custom max weight per player (e.g. `soapsstamina.maxweight.500`) |
-| `soapsstamina.weightignore.<MATERIAL>` | Skip weight for a specific item (e.g. `soapsstamina.weightignore.diamond_sword`) |
-| `soapsstamina.weightignore.container.<MATERIAL>` | Skip weight for a container and its contents (e.g. `soapsstamina.weightignore.container.shulker_box`) |
-
-`soapsstamina.bypass` skips everything. Per-feature bypasses are narrower: e.g. `soapsstamina.bypass.sprint` only skips sprint drain.
-
----
-
-## Tab Completion
-
-All admin commands have tab completion. It shows:
-- Subcommands at each level
-- Toggle setting names
-- Config group and key names
-- Weight subcommands, material names, encumbrance keys, and value hints
-- Value hints (current value, true/false, etc.)
-- Online player names for give/reset
-
----
-
-## PlaceholderAPI
-
-If PlaceholderAPI is installed, placeholders are registered automatically. See [Placeholders](Placeholders.md) for the full list and usage examples.
+Master bypass permission is configurable: `general.bypass-permission` (default `soapsstamina.bypass`).
